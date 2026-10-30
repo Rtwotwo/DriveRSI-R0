@@ -1,0 +1,140 @@
+{
+  "schema_version": 2,
+  "id": "recovery-curriculum-v1",
+  "label": "Automatic reached state -> executed PDM teacher -> online curriculum -> paired native RL learning",
+  "budget": {
+    "max_wall_seconds": 7200,
+    "max_sim_agent_steps": 5000000
+  },
+  "steps": [
+    {
+      "id": "student",
+      "provider": "native_model_training_reference",
+      "inputs": {},
+      "config": {
+        "source_task": "unified-driverl-v2",
+        "source_stage": "resume"
+      },
+      "max_wall_seconds": 60
+    },
+    {
+      "id": "select",
+      "provider": "automatic_recovery_selection",
+      "inputs": {
+        "student": "student"
+      },
+      "config": {
+        "scene": "../../../../../outputs/demonstrations/driverl-multicity-v1/log-03/prepared-final/scene.npz",
+        "road_graph": "../../../../../outputs/demonstrations/driverl-multicity-v1/log-03/prepared-final/road-graph.json",
+        "max_wall_seconds": 600,
+        "source_registry": "../../../../../outputs/quality/native-learning-v1/source-registry.json",
+        "scout_steps": 40
+      },
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "correct",
+      "provider": "same_anchor_counterfactual_correction",
+      "inputs": {
+        "selection": "select"
+      },
+      "config": {
+        "max_wall_seconds": 600
+      },
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "dataset",
+      "provider": "online_recovery_curriculum",
+      "inputs": {
+        "selection": "select",
+        "correction": "correct"
+      },
+      "config": {
+        "request": "../../../training/lifecycle/driverl.json"
+      },
+      "max_wall_seconds": 60
+    },
+    {
+      "id": "control-train",
+      "provider": "curriculum_training",
+      "inputs": {
+        "dataset": "dataset"
+      },
+      "config": {
+        "arm": "control"
+      },
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "control-resume",
+      "provider": "curriculum_resume",
+      "inputs": {
+        "student": "control-train"
+      },
+      "config": {},
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "control-evaluate",
+      "provider": "curriculum_evaluation",
+      "inputs": {
+        "student": "control-resume"
+      },
+      "config": {},
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "treatment-train",
+      "provider": "curriculum_training",
+      "inputs": {
+        "dataset": "dataset"
+      },
+      "config": {
+        "arm": "treatment"
+      },
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "treatment-resume",
+      "provider": "curriculum_resume",
+      "inputs": {
+        "student": "treatment-train"
+      },
+      "config": {},
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "treatment-evaluate",
+      "provider": "curriculum_evaluation",
+      "inputs": {
+        "student": "treatment-resume"
+      },
+      "config": {},
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "replay",
+      "provider": "curriculum_resume",
+      "inputs": {
+        "student": "treatment-train"
+      },
+      "config": {},
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "feedback",
+      "provider": "curriculum_feedback",
+      "inputs": {
+        "control_student": "control-resume",
+        "treatment_student": "treatment-resume",
+        "control_evaluation": "control-evaluate",
+        "treatment_evaluation": "treatment-evaluate",
+        "replay": "replay",
+        "dataset": "dataset"
+      },
+      "config": {},
+      "max_wall_seconds": 60
+    }
+  ]
+}

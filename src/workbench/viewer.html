@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DriveRSI · 场景研究工作台</title>
+<style>
+:root{color-scheme:dark;--bg:#0b121b;--panel:#111d2a;--line:#263747;--text:#e7edf4;--muted:#91a6b9;--cyan:#55d7cc;--gold:#e4b468}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,"Microsoft YaHei",sans-serif}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:21px;margin:0;letter-spacing:.5px}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);font-weight:500;margin:0 0 4px}
+small,.muted{color:var(--muted)}.brand{color:var(--cyan);font:12px monospace;letter-spacing:2px}.tag{padding:4px 9px;border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:22px 30px 14px}.stat{background:var(--panel);border:1px solid var(--line);padding:13px 18px;border-radius:10px}.stat strong{font-size:24px;font-weight:600}.stat span{margin-left:10px;font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:260px minmax(400px,1fr) 310px;gap:16px;padding:0 30px 24px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}.pad{padding:17px}.filters{display:grid;gap:8px;border-bottom:1px solid var(--line)}
+button,select,input{font:inherit;background:#142536;color:var(--text);border:1px solid #355067;border-radius:6px;padding:7px 10px}
+button{cursor:pointer}button:hover{border-color:var(--cyan)}button.primary{background:#1c665f;border-color:#3f9d93}button:disabled{opacity:.4;cursor:default}
+select,input{max-width:100%;min-width:0}input[type=range]{padding:0;accent-color:var(--cyan)}
+.list{height:530px;overflow:auto}.scene{display:block;text-align:left;border:0;border-radius:0;border-bottom:1px solid var(--line);background:none;width:100%;padding:12px 16px}
+.scene.active{background:#1c3942;box-shadow:inset 3px 0 var(--cyan)}.scene strong{display:block;font:13px monospace;margin-bottom:4px}.scene small{display:block;font-size:11px}
+.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:14px 17px}
+.toolbar strong{font-size:15px}.canvaswrap{position:relative;height:440px;background:#101a24}canvas{width:100%;height:100%;display:block}
+.overlay{position:absolute;top:12px;left:14px;pointer-events:none;font-size:12px;background:#0b121be0;padding:6px 10px;border-radius:5px;color:var(--muted)}
+.legend{display:flex;gap:13px;flex-wrap:wrap;padding:9px 17px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)}
+.dot{display:inline-block;width:8px;height:8px;margin-right:4px;border-radius:2px}.timeline{padding:12px 17px;border-top:1px solid var(--line)}.timeline input{width:100%;margin:9px 0}.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.time{margin-left:auto;font:13px monospace}
+.warning{font-size:12px;color:var(--gold);background:#342b1c;border-left:3px solid var(--gold);padding:9px 13px;margin:12px 0}
+.kv{display:grid;grid-template-columns:98px 1fr;gap:8px;font-size:12px}.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:11px;background:#243341;padding:3px 7px;border-radius:4px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.flow div{padding:12px 10px;border:1px solid var(--line);border-radius:6px;font-size:12px}.flow b{display:block;color:var(--cyan);font-weight:500;margin-bottom:5px}
+.evidence{padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;display:flex;justify-content:space-between;gap:12px}.evidence span{color:var(--gold)}
+.campaign{margin:16px 0;border:1px solid var(--line);border-radius:8px;padding:16px;overflow-wrap:anywhere}.campaign h3{color:var(--cyan);font-size:15px}.campaign .stages{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}.campaign .stages span{padding:5px 8px;border:1px solid var(--line);border-radius:4px;font-size:11px}.campaign .stages .active{background:#1c665f}.campaign details{border-top:1px solid var(--line);padding:10px 0}.campaign summary{cursor:pointer}.campaign .checks{display:flex;gap:6px;flex-wrap:wrap}.check-pass{color:var(--cyan)}.check-fail{color:#ffbc8a}.campaign table{width:100%;font-size:11px;border-collapse:collapse}.campaign td,.campaign th{border-bottom:1px solid var(--line);padding:5px;text-align:right}.campaign th:first-child,.campaign td:first-child{text-align:left}.campaign .metricwrap{overflow:auto}
+.experiments{margin-top:16px}.exp{padding:12px 0;border-top:1px solid var(--line)}.exp p{margin:6px 0;font-size:12px}.job{border:1px solid var(--line);border-radius:6px;padding:12px;margin:10px 0}.job-status{color:var(--cyan)}progress{display:block;width:100%;height:6px;accent-color:var(--cyan);margin:4px 0 8px}.job small{overflow-wrap:anywhere}
+#error{color:#ffa9a9;margin:12px 30px;display:none}.footer{padding:8px 30px 24px;font-size:12px;color:var(--muted)}
+@media(max-width:1200px){.layout{grid-template-columns:225px minmax(350px,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}.right .experiments{margin:0}}
+@media(max-width:750px){header{padding:0 14px}.stats{padding:14px;grid-template-columns:1fr 1fr}.layout{padding:0 14px;grid-template-columns:1fr}.list{height:160px}.right{display:block}.canvaswrap{height:360px}.flow{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<header><div><div class="brand">DRIVERSI / RESEARCH CONSOLE</div><h1>场景研究工作台</h1></div><div><span class="tag">只读 · 服务器数据</span> <span class="tag">工程开发集</span></div><a id="ttoLink" href="/tto" hidden>DriveTTO 极端难例 · 24 个重点场景</a></header>
+<div id="error" role="alert"></div>
+<section class="stats">
+<div class="stat"><h3>可检查场景</h3><strong id="sceneCount">—</strong><span>按需加载</span></div>
+<div class="stat"><h3>地图区域</h3><strong id="cityCount">—</strong><span>真实 NAVSIM 来源</span></div>
+<div class="stat"><h3>已登记开发实验</h3><strong id="experimentCount">—</strong><span>模型 / 改进器分开</span></div>
+<div class="stat"><h3>自动改进实验</h3><strong id="campaignCount">0</strong><span>独立门控 · 研究模型</span></div>
+</section>
+<div class="layout">
+<aside class="panel">
+<div class="pad filters"><h2>场景库</h2><input id="search" aria-label="搜索场景或原始日志" placeholder="场景 ID / 原始日志">
+<select id="city" aria-label="城市"><option value="">所有地图区域</option></select>
+<select id="split" aria-label="工程划分"><option value="">全部工程划分</option><option value="train">工程 train</option><option value="evaluation">工程 evaluation</option></select>
+<small id="filterCount"></small></div><div id="list" class="list"></div>
+</aside>
+<main>
+<section class="panel">
+<div class="toolbar"><div><strong id="sceneTitle">正在读取场景</strong><div class="muted" id="sceneSubtitle" style="font-size:11px"></div></div><button id="fit">适配地图</button></div>
+<div class="canvaswrap"><canvas id="map" aria-label="场景参考轨迹俯视图"></canvas><div class="overlay">参考回放 · 非策略 rollout ｜ 点选对象 / 滚轮缩放</div></div>
+<div class="legend"><span><i class="dot" style="background:#55d7cc"></i>可控候选车辆（当前仍为回放）</span><span><i class="dot" style="background:#e4b468"></i>其他编译车辆</span><span>○ 行人　△ 骑行者</span><span>虚线：裁剪支持边界</span></div>
+<div class="timeline"><div class="controls"><button id="play" class="primary">播放</button><button id="prev" aria-label="上一帧">←</button><button id="next" aria-label="下一帧">→</button><select id="rate" aria-label="播放速度"><option value=".5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select><span id="time" class="time">—</span></div>
+<input id="seek" type="range" min="0" max="0" value="0" step="1" aria-label="场景时间轴">
+<div class="controls" style="font-size:12px"><label><input id="paths" type="checkbox" checked> 所选对象轨迹</label><label><input id="follow" type="checkbox"> 跟随对象</label><small id="timing"></small></div></div>
+</section>
+<section class="panel pad" style="margin-top:16px"><h2>从场景证据到改进实验</h2>
+<div class="flow"><div><b>01 / 发现失败</b>场景、版本、轨迹<br><small>排除仿真与观测失效</small></div><div><b>02 / 检验假设</b>同状态配对干预<br><small>区分覆盖、选择和执行</small></div><div><b>03 / 限预算改进</b>RL / 蒸馏 / 世界模型<br><small>保留失败与总成本</small></div><div><b>04 / 独立验证</b>模型与改进器分开<br><small>未见任务、相同起点</small></div></div>
+<div class="warning">此页播放编译后的源轨迹，不证明因果交互。完整交互、RGB、分叉和模型结果需要绑定对应实验产物。页面展示过的工程场景不能作为未见 RSI 验收任务。</div>
+</section>
+<section id="drive-harness" class="panel pad" style="margin-top:16px"><h2>DriveHarness 任务与证据</h2><p class="muted">阶段完成、工程通过与训练准入分别记录。纠正执行动作可进入显式诊断模仿训练；独立开发收益与退化保留，均不自动晋级。产物引用可在各阶段执行证据中核对。依赖图模式隔离失败分支；blocked 表示未执行，任务失败也可能保留其他已完成分支。</p><div id="harnessTasks"></div></section>
+<section id="platform-quality" class="panel pad" style="margin-top:16px"><h2>平台质量与能力边界</h2><p id="qualityStamp" class="muted">正在读取质量记录</p><div id="qualityComponents"></div><small>这是有日期的验收记录，不能替代实时健康检查；图像可显示、可供诊断与可用于高质量训练分别判定。</small></section>
+<section id="auto-improvement" class="panel pad" style="margin-top:16px"><h2>自动改进与模型晋级</h2>
+<p class="muted">难例挖掘 → 训练课程 → 预算训练 → 独立配对评测 → 晋级或保留原模型</p>
+<label><input id="allCampaigns" type="checkbox" checked> 显示全部自动实验</label>
+<div id="campaigns"></div>
+<small>只读进度。门控协议预先冻结，晋级日志不在场景库展示。晋级仅更新研究模型，不授予教师资格；改进器自身学习尚未实现。</small>
+</section></main>
+<aside class="right">
+<section class="panel pad"><h2>所选对象与来源</h2><select id="actor" aria-label="选择场景对象" style="width:100%"></select>
+<dl class="kv" id="actorDetail"></dl><hr><dl class="kv" id="sourceDetail"></dl>
+<h3>已编译地图来源层</h3><div id="layers" class="chips"></div>
+<div class="warning" id="coverage"></div>
+<h3>此视图的证据覆盖</h3><div class="evidence">策略联合动作<span>未绑定</span></div><div class="evidence">写实 RGB / 相机标定<span>未绑定</span></div><div class="evidence">配对干预分支<span>未绑定</span></div><div class="evidence">信号灯 / 标志几何<span>未提供</span></div>
+</section>
+<section class="panel pad experiments"><h2>关联开发实验</h2><label style="font-size:12px"><input id="allExperiments" type="checkbox"> 显示全部开发实验</label><p id="experimentSync" class="muted" style="font-size:11px">正在读取</p><div id="experiments"></div><hr><small>实验记录由服务端 CLI 登记。页面不启动训练、不修改评测协议；保护场景明细与元测试不公开；晋级区仅展示汇总裁决。</small></section>
+</aside>
+</div><div class="footer">画面只显示当前编译资产。没有对象不等于真实场景中不存在对象；RGB 质量、驾驶能力与改进器能力需分别评测。</div>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+let catalog=[],experiments=[],campaigns=[],scene=null,frame=0,selected=0,playing=false,anchor=0,anchorTime=0,requestId=0,zoom=1,view=null;
+const canvas=$("map"),ctx=canvas.getContext("2d");
+const cityNames={"sg-one-north":"Singapore","us-ma-boston":"Boston","us-nv-las-vegas-strip":"Las Vegas","us-pa-pittsburgh-hazelwood":"Pittsburgh"};
+function el(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n}
+function kv(target,rows){const p=$(target);p.replaceChildren();for(const [k,v] of rows){p.append(el("dt",k),el("dd",String(v)))}}
+async function api(url){const r=await fetch(url);if(!r.ok)throw new Error("场景资源不可用 ("+r.status+")");return r.json()}
+function error(e){$("error").textContent=e.message;$("error").style.display="block"}
+function filter(){
+ const q=$("search").value.trim().toLowerCase(),city=$("city").value,split=$("split").value;
+ const rows=catalog.filter(r=>(!city||r.city===city)&&(!split||r.split===split)&&(!q||(r.id+" "+r.source_group).toLowerCase().includes(q)));
+ $("filterCount").textContent=rows.length+" / "+catalog.length+" 个场景";
+ const list=$("list");list.replaceChildren();
+ for(const row of rows){const b=el("button",undefined,"scene"+(scene&&row.id===scene.id?" active":""));b.dataset.id=row.id;
+ b.append(el("strong",row.id),el("small",(cityNames[row.city]||row.city)+" · "+row.duration.toFixed(1)+" s · "+row.controlled_count+" 可控候选"),el("small",row.split+" / "+row.source_group));
+ b.onclick=()=>load(row.id);list.append(b)}
+}
+function pause(){playing=false;$("play").textContent="播放"}
+function setFrame(n){if(!scene)return;frame=Math.max(0,Math.min(scene.times.length-1,n));$("seek").value=String(frame);anchor=performance.now();anchorTime=scene.times[frame];draw()}
+async function load(id){
+ const token=++requestId;pause();$("error").style.display="none";
+ try{const data=await api("/api/scene?id="+encodeURIComponent(id));if(token!==requestId)return;
+ if(!catalog.some(r=>r.id===data.id))throw new Error("该场景已不在公开列表中");
+ pause();anchor=performance.now();anchorTime=data.times[0];
+ scene=data;frame=0;selected=0;zoom=1;$("follow").checked=false;$("seek").max=String(data.times.length-1);$("seek").value="0";
+ $("sceneTitle").textContent=data.id;$("sceneSubtitle").textContent=(cityNames[data.city]||data.city)+" / "+data.split+" / 源日志 "+data.source_group;
+ $("actor").replaceChildren();for(let i=0;i<data.actors.length;i++){const a=data.actors[i],o=el("option",a.id+" · "+a.kind);o.value=String(i);$("actor").append(o)}
+ const m=data.metadata,s=m.source_timing?.interval_seconds?.median;
+ $("timing").textContent="源采样 "+(s?(1/s).toFixed(2)+" Hz":"未知")+" / 参考插值 "+(data.times.length>1?(1/(data.times[1]-data.times[0])).toFixed(1)+" Hz":"未知");
+ kv("sourceDetail",[["原始日志",m.source_log||"未提供"],["实际窗口",data.times.at(-1).toFixed(2)+" s"],["编译对象",data.actors.length],["可控候选",data.controlled_count],["数据用途",(m.source_partition||"未知分区")+" / 工程开发"],["原始未来",(m.horizon_plan?.available_future_seconds?.toFixed(2)??"未知")+" s"]]);
+ $("layers").replaceChildren();for(const layer of m.map_layers||[])$("layers").append(el("span",layer,"chip"));if(!m.map_layers?.length)$("layers").append(el("span","未提供","chip"));
+ $("coverage").textContent="人口是编译子集。全窗口筛除 "+(m.excluded_incomplete_tracks??"未知")+" 条；初始类别不支持 "+(m.excluded_unsupported_initial??"未知")+" 条；容量排除 "+(m.excluded_over_capacity??"未知")+" 条。以上为源元数据口径，不相加为总缺失人数。画面仅绘制车道线及裁剪边界，其他来源层不代表已渲染。";
+ filter();renderExperiments();renderCampaigns();draw();history.replaceState(null,"","?scene="+encodeURIComponent(id)+location.hash);
+ }catch(e){if(token===requestId)error(e)}
+}
+function renderExperiments(){
+ const p=$("experiments");p.replaceChildren();
+ if(!scene)return;
+ const rows=experiments.filter(e=>$("allExperiments").checked||e.plan.scene_ids.includes(scene.id));
+ if(!rows.length){p.append(el("p","该场景暂无已登记实验。","muted"),el("small","可勾选显示全部开发实验；页面不会启动或取消任务。"));return}
+ const names={queued:"待执行",running:"执行中",completed:"评测完成",failed:"失败",budget_exhausted:"预算耗尽",cancelled:"已取消"};
+ const phases={admitted:"已准入",training:"训练 / 采样",evaluating:"独立评测",evaluated:"评测结束"};
+ const fmt=n=>Number.isFinite(n)?n.toFixed(2):"—";
+ for(const e of rows){
+  const n=el("div",undefined,"exp");
+  n.append(el("strong",e.plan.id),el("p",(e.plan.target==="improver"?"改进器":"模型")+"比较 · "+e.plan.arms.baseline.version+" → "+e.plan.arms.candidate.version),el("p",e.plan.hypothesis),el("small","已结算尝试 "+e.attempts.length+" 次 / 未独立裁决晋级"));
+  const links=el("div",undefined,"chips");
+  for(const sid of e.plan.scene_ids){const b=el("button",sid);b.style.fontSize="10px";b.onclick=()=>load(sid);links.append(b)}
+  n.append(links);
+  for(const arm of ["baseline","candidate"]){
+   const c=e.cost_by_arm[arm];n.append(el("p",arm+" 已结算：GPU "+fmt(c.gpu_seconds)+" s，CPU "+fmt(c.cpu_seconds)+" s，LLM "+c.llm_tokens+" tokens，仿真准入 "+c.sim_agent_steps+" 步，"+c.trials+" 次尝试"));
+   if(e.over_budget[arm].length)n.append(el("p","预算超出："+e.over_budget[arm].join(", "),"warning"));
+  }
+  const jobs=e.jobs||[];
+  for(const j of jobs){
+   const card=el("div",undefined,"job");card.dataset.jobId=j.id;card.dataset.status=j.status;
+   card.append(el("strong",j.id),el("p",(names[j.status]||j.status)+" · "+(phases[j.phase]||names[j.phase]||j.phase),"job-status"),el("small",j.job.tool+" / "+j.job.device+" / "+j.job.arm));
+   const progress=j.progress||{};
+   card.append(el("p","有效采样 "+(progress.valid_transitions||0)+" · 更新 "+(progress.updates||0)+" · 已评场景 "+(progress.evaluated_scenes||0)+" · 墙钟 "+fmt(j.elapsed_seconds)+" s"));
+   for(const key of ["cpu_seconds","gpu_seconds","sim_agent_steps"]){
+    const cap=j.job.reserved[key],used=j.cost[key],label={cpu_seconds:"CPU s",gpu_seconds:"GPU 预留 s",sim_agent_steps:"仿真准入步"}[key];
+    card.append(el("small",label+"："+fmt(used)+" / "+fmt(cap)));
+    const bar=el("progress");bar.max=cap||1;bar.value=Math.min(used,cap||1);bar.setAttribute("aria-label",label);card.append(bar);
+   }
+   if(j.failure_reason)card.append(el("p",j.failure_reason,"warning"));
+   if(j.evaluation){
+    const r=j.evaluation;
+    card.append(el("p",(r.purpose==="development_mining"?"训练集难例探测（非独立评测）：":"独立进程评测：")+r.actor_episodes+" 个车辆回合；碰撞 "+fmt(r.collision_per_actor)+"，越界 "+fmt(r.offroad_per_actor)+"，到达 "+fmt(r.goal_per_actor)+"，回报 "+fmt(r.return_sum_per_actor)));
+    card.append(el("small","开发评测；不是官方 PDMS，也不是教师资格或 RSI 晋级。"));
+   }
+   const trace=el("small",(j.events||[]).map(x=>(phases[x.phase]||x.phase)+" @ "+fmt(x.elapsed_seconds)+"s").join(" → "));card.append(trace);
+   n.append(card);
+  }
+  const latest=arm=>jobs.filter(j=>j.job.arm===arm&&j.status==="completed"&&j.evaluation).sort((a,b)=>(b.finished_at||0)-(a.finished_at||0))[0];
+  const a=latest("baseline"),b=latest("candidate"),metric=e.plan.protocol?.metric;
+  if(a&&b&&metric){const av=a.evaluation[metric],bv=b.evaluation[metric];if(Number.isFinite(av)&&Number.isFinite(bv)){n.append(el("p","最新完成尝试对照："+metric+" "+fmt(av)+" → "+fmt(bv)+"；差值 "+fmt(bv-av)),el("small","单次开发结果，不代表显著提升；全部失败尝试和成本仍列在上方。"))}}
+  p.append(n);
+ }
+}
+async function refreshQuality(){
+ const panel=$("qualityComponents");
+ try{const q=await api("/api/quality");panel.replaceChildren();
+ $("qualityStamp").textContent=q.status==="evidence_snapshot"?"证据时间："+q.generated_at+" · 尚未整体达到工业级验收":"尚未登记质量报告";
+ const names={verified_scope:"限定范围已验证",limited:"有限支持",not_verified:"尚未验证",blocked:"输入缺失或受阻"};
+ for(const c of q.components||[]){const card=el("article",undefined,"campaign");card.dataset.qualityComponent=c.name;
+ card.append(el("h3",c.name),el("strong",names[c.status]||c.status),el("p",c.evidence));
+ const dl=el("dl");for(const [k,v] of Object.entries(c.metrics||{})){dl.append(el("dt",k),el("dd",String(v)))}card.append(dl);
+ const ul=el("ul");for(const reason of c.limits)ul.append(el("li",reason));card.append(ul);panel.append(card)}
+ }catch(e){panel.replaceChildren();$("qualityStamp").textContent="质量报告不可用；不能视为通过";}
+}
+refreshQuality();setInterval(refreshQuality,10000);
+const harnessExpanded=new Set();
+let harnessBusy=false;
+async function refreshHarness(){
+ if(harnessBusy)return;harnessBusy=true;
+ const root=$("harnessTasks");
+ try{const data=await api("/api/harness");root.replaceChildren();
+ if(!data.tasks.length){const p=document.createElement("p");p.textContent="当前账本没有 DriveHarness 任务";root.append(p)}
+ for(const t of data.tasks){const box=document.createElement("article");box.className="job";
+ const h=document.createElement("h3");h.textContent=t.label+" · "+t.status+(t.needs_recovery?" · 等待显式恢复":"");box.append(h);
+ if(t.interruption){const stop=document.createElement("p");stop.textContent="原始中止原因："+t.interruption.status+" / "+t.interruption.reason;box.append(stop)}
+ const p=document.createElement("p");p.textContent=t.id+" · agent steps "+t.sim_agent_steps+" · "+Number(t.elapsed_seconds||0).toFixed(2)+" s";box.append(p);
+ if(t.plan){const graph=document.createElement("details"),label=document.createElement("summary"),table=document.createElement("table");
+ const key=t.id+"/graph";graph.open=harnessExpanded.has(key);graph.addEventListener("toggle",()=>{if(graph.isConnected){if(graph.open)harnessExpanded.add(key);else harnessExpanded.delete(key)}});
+ label.textContent="依赖与执行顺序（"+t.plan.length+" 节点 / schema "+t.schema_version+"）";table.setAttribute("aria-label","任务依赖图");
+ for(const node of t.plan){const row=document.createElement("tr");for(const value of [node.id,node.dependencies.join(" + ")||"起点",node.status]){const cell=document.createElement("td");cell.textContent=value;row.append(cell)}table.append(row)}
+ graph.append(label,table);box.append(graph)}
+ for(const stage of t.stages){const d=document.createElement("p");d.textContent=stage.id+" / "+stage.provider+" → "+stage.status+(stage.reason?" · "+stage.reason:"");box.append(d);
+ if(stage.cost_basis){const cost=document.createElement("p");cost.className="muted";cost.textContent="阶段计费 "+stage.charged_agent_steps+" agent steps · "+stage.cost_basis;box.append(cost)}
+ if(stage.failure){const err=document.createElement("p");err.textContent="失败分类："+stage.failure.category+" / "+stage.failure.phase;box.append(err)}
+ if(stage.blocked_by&&Object.keys(stage.blocked_by).length){const why=document.createElement("p");why.textContent="未执行，依赖不可用："+JSON.stringify(stage.blocked_by);box.append(why)}
+ if(stage.admission){const q=document.createElement("small");q.textContent="准入："+JSON.stringify(stage.admission);box.append(q)}
+ if(stage.summary){const v=stage.summary,stats=document.createElement("p");stats.className="muted";
+ const info=[];if(v.artifact_reference)info.push("产物 "+v.artifact_reference.identity.slice(0,12));
+ if(v.input_references)info.push("依赖 "+Object.entries(v.input_references).map(([k,id])=>k+":"+id.slice(0,8)).join(" · "));
+ if(v.samples_consumed!==undefined)info.push("纠正样本 "+v.samples_consumed+" / 更新 "+v.updates);
+ if(v.return_delta_per_actor!==undefined)info.push("独立开发集 return Δ "+Number(v.return_delta_per_actor).toFixed(4)+" / 安全无退化 "+v.safety_nonregression);
+ if(v.outcome)info.push("反馈 "+v.outcome);if(v.initial_loss!==undefined)info.push("监督损失 "+v.initial_loss.toFixed(4)+" → "+v.final_loss.toFixed(4));
+ stats.textContent=info.join(" · ");box.append(stats);}
+ if(stage.summary){const details=document.createElement("details"),title=document.createElement("summary"),pre=document.createElement("pre");const key=t.id+"/"+stage.id;details.open=harnessExpanded.has(key);details.addEventListener("toggle",()=>{if(details.isConnected){if(details.open)harnessExpanded.add(key);else harnessExpanded.delete(key)}});title.textContent="执行证据";pre.textContent=JSON.stringify(stage.summary,null,2);pre.style.whiteSpace="pre-wrap";details.append(title,pre);box.append(details)}}
+ if(t.failure_reason){const p=document.createElement("p");p.textContent=t.failure_reason;box.append(p)}root.append(box)}
+ }catch(e){root.textContent="DriveHarness 状态暂不可用："+e.message}finally{harnessBusy=false}
+}
+refreshHarness();setInterval(refreshHarness,2000);
+
+
+const campaignExpanded=new Map();
+function renderCampaigns(){
+ const panel=$("campaigns");panel.replaceChildren();
+ const rows=campaigns.filter(c=>$("allCampaigns").checked||scene&&c.scene_ids.includes(scene.id));
+ if(!rows.length){panel.append(el("p","暂无符合筛选的自动实验。","muted"));return}
+ const fmt=n=>Number.isFinite(n)?n.toFixed(3):"—";
+ const status={registered:"已登记",running:"运行中",completed:"流程完成",cancelled:"已取消",failed:"失败",budget_exhausted:"预算耗尽"};
+ const phases={starting:"准备",mining:"难例挖掘",proposal:"生成方案",training:"预算训练",gate:"独立配对评测",round_finished:"本轮已裁决",completed:"流程完成",recovery_required:"等待恢复处置"};
+ const decisions={promoted:"晋级研究模型",rejected:"拒绝晋级 · 保留原模型",inconclusive:"证据不足 · 保留原模型"};
+ const checkNames={sufficient_evidence:"最低证据量",minimum_gain:"最低收益",collision_absolute:"碰撞绝对上限",collision_non_regression:"碰撞不退化",offroad_absolute:"越界绝对上限",offroad_non_regression:"越界不退化"};
+ for(const c of rows){
+  const card=el("article",undefined,"campaign");card.dataset.campaignId=c.id;card.dataset.status=c.status;
+  card.append(el("h3",c.id),el("p",(status[c.status]||c.status)+" / "+(phases[c.phase]||status[c.phase]||c.phase)+" · 已裁决 "+c.history.length+" / "+c.rounds_limit+" 轮"),el("p","当前研究模型："+c.incumbent));
+  const stages=el("div",undefined,"stages");for(const k of ["mining","proposal","training","gate","round_finished"]){stages.append(el("span",phases[k],c.phase===k?"active":""))}card.append(stages);
+  card.append(el("small","改进器 "+c.improver+" · 固定门控 "+c.gate_policy.id+" · "+c.gate_policy.metric+" / "+c.gate_policy.direction+" · 最小增益 "+c.gate_policy.min_gain));
+  for(const [k,label] of [["cpu_seconds","CPU 秒"],["gpu_seconds","GPU 预留秒"],["sim_agent_steps","仿真准入步"],["trials","尝试次数"]]){const cap=c.budget[k],used=c.cost[k];card.append(el("p",label+"："+fmt(used)+" / "+fmt(cap)));const bar=el("progress");bar.max=cap||1;bar.value=Math.min(used,cap||1);bar.setAttribute("aria-label",label);card.append(bar)}
+  if(c.failure_reason)card.append(el("p",c.failure_reason,"warning"));
+  const rounds=[...c.history];if(c.current)rounds.push(c.current);
+  for(const [index,r] of rounds.entries()){
+   const detail=el("details"),key=c.id+"/"+r.index;detail.open=campaignExpanded.has(key)?campaignExpanded.get(key):index===rounds.length-1;detail.ontoggle=()=>campaignExpanded.set(key,detail.open);detail.dataset.round=String(r.index);
+   detail.append(el("summary","第 "+(r.index+1)+" 轮 · "+(r.decision?decisions[r.decision.outcome]:"进行中")));
+   detail.append(el("p","父模型："+r.parent.version));
+   if(r.proposal){detail.append(el("p","课程："+r.proposal.hard_cases.length+" 个难例 + "+r.proposal.replay_paths.length+" 个回放场景 · 配方 "+r.proposal.recipe),el("small",r.proposal.reason));const chips=el("div",undefined,"chips");for(const path of r.proposal.selected_paths){const id=path.split("/").at(-1).replace(/\.npz$/,"");const b=el("button",id);b.onclick=()=>load(id);chips.append(b)}detail.append(chips)}
+   for(const [kind,p] of Object.entries(r.stage_progress||{})){const q=p.progress||{};detail.append(el("p",(phases[kind]||kind)+"："+(status[p.status]||p.status)+" · 有效样本 "+(q.valid_transitions||0)+" · 更新 "+(q.updates||0)+" · 已评场景 "+(q.evaluated_scenes||0)));if(p.failure_reason)detail.append(el("small",p.failure_reason,"warning"))}
+   if(r.candidate)detail.append(el("p","候选："+r.candidate.version));
+   if(r.decision){const d=r.decision;const checks=el("div",undefined,"checks");for(const [k,v] of Object.entries(d.checks))checks.append(el("span",(v?"✓ ":"× ")+(checkNames[k]||k),v?"check-pass":"check-fail"));detail.append(checks,el("p","配对增益 "+fmt(d.gain)+" · "+d.scenes+" 个场景 / "+d.groups+" 份日志 / "+d.actor_episodes+" 个车辆回合"));
+    const wrap=el("div",undefined,"metricwrap"),table=el("table"),head=el("tr");for(const t of ["指标","父模型","候选"])head.append(el("th",t));table.append(head);for(const [key,label] of [[c.gate_policy.metric,"主指标"],["collision_per_actor","碰撞 / 车辆"],["offroad_per_actor","越界 / 车辆"]]){const row=el("tr");row.append(el("td",label),el("td",fmt(d.reference_metrics[key])),el("td",fmt(d.candidate_metrics[key])));table.append(row)}wrap.append(table);detail.append(wrap,el("small","工程选择门控，未声称统计显著性、官方 PDMS 或教师资格。"));
+   }
+   card.append(detail);
+  }
+  panel.append(card);
+ }
+}
+let experimentRefreshPending=false;
+async function refreshExperiments(){
+ if(experimentRefreshPending||document.hidden)return;
+ experimentRefreshPending=true;
+ try{const [ledger,data]=await Promise.all([api("/api/experiments"),api("/api/catalog")]);
+ catalog=data.scenes;$("sceneCount").textContent=catalog.length;
+ if(scene&&!catalog.some(r=>r.id===scene.id)){
+  ++requestId;pause();scene=null;frame=0;$("seek").value="0";$("seek").max="0";
+  $("sceneTitle").textContent="场景已从公开列表移除";$("sceneSubtitle").textContent="";$("time").textContent="—";
+  for(const id of ["actor","actorDetail","sourceDetail","layers"])$(id).replaceChildren();
+  $("coverage").textContent="";$("timing").textContent="";filter();draw();
+  if(catalog.length)await load(catalog[0].id);
+ }
+ filter();experiments=ledger.experiments;campaigns=ledger.campaigns||[];$("campaignCount").textContent=campaigns.length;$("experimentCount").textContent=experiments.length;$("experimentSync").textContent="每 2 秒更新 · "+new Date().toLocaleTimeString();renderExperiments();renderCampaigns()}
+ catch(e){$("experimentSync").textContent="更新失败；当前显示上次结果"}
+ finally{experimentRefreshPending=false}
+}
+
+function bounds(){
+ const pts=scene.roads.flatMap(r=>r.points).concat(scene.poses.flatMap(row=>row.map(p=>p.slice(0,2))));
+ let minx=Infinity,miny=Infinity,maxx=-Infinity,maxy=-Infinity;
+ for(const [x,y] of pts){minx=Math.min(minx,x);maxx=Math.max(maxx,x);miny=Math.min(miny,y);maxy=Math.max(maxy,y)}
+ return {cx:(minx+maxx)/2,cy:(miny+maxy)/2,w:Math.max(20,maxx-minx),h:Math.max(20,maxy-miny)}
+}
+function draw(){
+ const rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+ canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+ const w=rect.width,h=rect.height;ctx.fillStyle="#101a24";ctx.fillRect(0,0,w,h);if(!scene)return;
+ const b=bounds();let {cx,cy}=b;if($("follow").checked){cx=scene.poses[frame][selected][0];cy=scene.poses[frame][selected][1]}
+ const scale=Math.min((w-50)/b.w,(h-50)/b.h)*zoom;
+ view={cx,cy,scale,w,h};const point=p=>[w/2+(p[0]-cx)*scale,h/2-(p[1]-cy)*scale];
+ ctx.lineWidth=1;ctx.strokeStyle="#1c2a37";
+ for(let x=Math.floor((cx-w/2/scale)/20)*20;x<cx+w/2/scale;x+=20){const q=point([x,0]);ctx.beginPath();ctx.moveTo(q[0],0);ctx.lineTo(q[0],h);ctx.stroke()}
+ for(let y=Math.floor((cy-h/2/scale)/20)*20;y<cy+h/2/scale;y+=20){const q=point([0,y]);ctx.beginPath();ctx.moveTo(0,q[1]);ctx.lineTo(w,q[1]);ctx.stroke()}
+ function line(pts,color,width,dash=[]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();pts.forEach((p,i)=>{const q=point(p);if(i)ctx.lineTo(...q);else ctx.moveTo(...q)});ctx.stroke();ctx.setLineDash([])}
+ for(const r of scene.roads)line(r.points,r.kind===6?"#526376":"#758597",r.kind===6?1:1.2,r.kind===6?[4,4]:[]);
+ if($("paths").checked)line(scene.poses.map(row=>row[selected]),"#8ff1df",2);
+ scene.actors.forEach((a,i)=>{const p=scene.poses[frame][i],q=point(p),len=a.dimensions[0]*scale,wide=a.dimensions[1]*scale;
+ ctx.save();ctx.translate(...q);ctx.rotate(-p[3]);ctx.fillStyle=a.control_eligible?"#55d7cc":"#e4b468";ctx.strokeStyle=i===selected?"#ffffff":"#16232c";ctx.lineWidth=i===selected?2:1;ctx.beginPath();
+ if(a.kind==="pedestrian")ctx.arc(0,0,Math.max(3,wide/2),0,2*Math.PI);else if(a.kind==="cyclist"){ctx.moveTo(len/2,0);ctx.lineTo(-len/2,-wide/2);ctx.lineTo(-len/2,wide/2);ctx.closePath()}else ctx.rect(-len/2,-wide/2,len,wide);
+ ctx.fill();ctx.stroke();if(a.kind==="vehicle"){ctx.strokeStyle="#16333a";ctx.beginPath();ctx.moveTo(len*.1,-wide*.4);ctx.lineTo(len*.1,wide*.4);ctx.stroke()}ctx.restore();
+ if(i===selected){ctx.fillStyle="#ffffff";ctx.font="11px sans-serif";ctx.fillText(a.id==="ego"?"ego":"选中对象",q[0]+8,q[1]-8)}});
+ ctx.fillStyle="#91a6b9";ctx.font="11px monospace";ctx.fillText("网格 20 m",14,h-12);
+ $("time").textContent=scene.times[frame].toFixed(2)+" / "+scene.times.at(-1).toFixed(2)+" s · "+frame+"/"+(scene.times.length-1);
+ const a=scene.actors[selected],p=scene.poses[frame][selected],speed=scene.speeds[frame][selected];
+ kv("actorDetail",[["对象身份",a.id],["类别",a.kind],["当前控制","源轨迹参考回放"],["控制资格",a.control_eligible?"可控候选":"未选为可控"],["速度",speed.toFixed(2)+" m/s · "+(speed*3.6).toFixed(1)+" km/h"],["位置",p[0].toFixed(1)+", "+p[1].toFixed(1)+" m"]]);
+}
+$("play").onclick=()=>{if(!scene)return;if(playing){pause();return}if(frame===scene.times.length-1)setFrame(0);playing=true;anchor=performance.now();anchorTime=scene.times[frame];$("play").textContent="暂停"};
+$("prev").onclick=()=>{pause();setFrame(frame-1)};$("next").onclick=()=>{pause();setFrame(frame+1)};
+$("seek").oninput=()=>{pause();setFrame(Number($("seek").value))};
+$("rate").onchange=()=>{anchor=performance.now();anchorTime=scene?scene.times[frame]:0};
+$("actor").onchange=()=>{selected=Number($("actor").value);draw()};
+$("paths").onchange=draw;$("follow").onchange=draw;$("fit").onclick=()=>{zoom=1;$("follow").checked=false;draw()};
+$("allExperiments").onchange=renderExperiments;$("allCampaigns").onchange=renderCampaigns;
+$("search").oninput=filter;$("city").onchange=filter;$("split").onchange=filter;
+canvas.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.5,Math.min(8,zoom*(e.deltaY<0?1.15:1/1.15)));draw()},{passive:false});
+canvas.onclick=e=>{if(!scene||!view)return;const r=canvas.getBoundingClientRect(),x=view.cx+(e.clientX-r.left-view.w/2)/view.scale,y=view.cy-(e.clientY-r.top-view.h/2)/view.scale;
+ let best=-1,dist=Infinity;scene.poses[frame].forEach((p,i)=>{const d=Math.hypot(p[0]-x,p[1]-y);if(d<dist){dist=d;best=i}});if(best>=0&&dist<8){selected=best;$("actor").value=String(best);draw()}};
+new ResizeObserver(draw).observe(canvas.parentElement);
+function animate(now){if(playing&&scene){const t=anchorTime+(now-anchor)/1000*Number($("rate").value);let f=frame;while(f+1<scene.times.length&&scene.times[f+1]<=t)f++;if(f!==frame){frame=f;$("seek").value=String(f);draw()}if(t>=scene.times.at(-1))pause()}requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
+(async()=>{try{const [data,ledger]=await Promise.all([api("/api/catalog"),api("/api/experiments")]);catalog=data.scenes;experiments=ledger.experiments;$("sceneCount").textContent=catalog.length;$("experimentCount").textContent=experiments.length;
+ const cities=[...new Set(catalog.map(r=>r.city))].sort();$("cityCount").textContent=cities.length;for(const city of cities){const o=el("option",cityNames[city]||city);o.value=city;$("city").append(o)}
+ filter();const id=new URLSearchParams(location.search).get("scene");if(catalog.length)await load(catalog.some(r=>r.id===id)?id:catalog[0].id);else $("sceneTitle").textContent="没有可用场景";
+ renderCampaigns();$("experimentSync").textContent="每 2 秒自动更新";setInterval(refreshExperiments,2000);
+ }catch(e){error(e)}})();
+</script><script>fetch('/api/health').then(r=>r.json()).then(d=>{document.getElementById('ttoLink').hidden=!d.tto_available}).catch(()=>{});</script></body></html>

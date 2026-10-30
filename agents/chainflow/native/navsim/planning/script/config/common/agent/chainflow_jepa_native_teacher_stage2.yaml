@@ -1,0 +1,23 @@
+defaults:
+  - chainflow_jepa_native_teacher
+  - _self_
+
+config:
+  training_stage: 2
+  use_diffusion_decoder: true
+  # Both training scorer and evaluation use free-running DiT candidates.
+  sampled_score_fraction: 1.0
+
+loss:
+  diffusion_loss_weight: 10.0
+  diffusion_trajectory_loss_weight: 20.0
+
+scheduler_args:
+  num_epochs: 40
+
+lr_args:
+  base_lr: 5e-5
+  scorer_lr: 3e-5
+  ar_lr: 1e-5
+  visual_lr: 1e-6
+  jepa_lr: 5e-5

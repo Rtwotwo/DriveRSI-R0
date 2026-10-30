@@ -1,0 +1,28 @@
+{
+  "config_path": "@DRIVERSI_ROOT@/outputs/datasets/mtgs-boston-pilot/extracted/mtgs_ckpt_main_mt/main_mt/MTGS/road_block-331220_4690660_331190_4690710/config.yml",
+  "checkpoint_path": "@DRIVERSI_ROOT@/outputs/datasets/mtgs-boston-pilot/extracted/mtgs_ckpt_main_mt/main_mt/MTGS/road_block-331220_4690660_331190_4690710/nerfstudio_models/step-000030000.ckpt",
+  "road_block_config": "@DRIVERSI_ROOT@/outputs/datasets/mtgs-boston-pilot/bindings/road_block.yml",
+  "scene": "@DRIVERSI_ROOT@/outputs/datasets/navsim-mtgs-boston-v1/scene.npz",
+  "road_graph": "@DRIVERSI_ROOT@/outputs/datasets/navsim-mtgs-boston-v1/road_graph.json",
+  "binding": "@DRIVERSI_ROOT@/outputs/datasets/navsim-mtgs-boston-v1/source-binding-v2.json",
+  "world_python": "@DRIVERSI_ROOT@/.venv/bin/python",
+  "native_path": "@DRIVERSI_ROOT@/.venvs/native-32341-py311/_native.cpython-311-x86_64-linux-gnu.so",
+  "population_config": "@DRIVERSI_ROOT@/src/config/populations/navsim-mtgs-boston-v1.json",
+  "cameras": [
+    "CAM_F0",
+    "CAM_R0"
+  ],
+  "sensor_stride": 2,
+  "desired_speed": 13.0,
+  "height_mode": "reference-track",
+  "virtual_camera_actors": [
+    "e064658636885f06",
+    "2903abf058475d78"
+  ],
+  "visual_actors": [
+    "ego",
+    "e064658636885f06"
+  ],
+  "brake_actor": "2903abf058475d78",
+  "scale": 0.5
+}

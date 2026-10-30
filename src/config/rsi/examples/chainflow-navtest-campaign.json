@@ -1,0 +1,27 @@
+{
+  "campaign": "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1",
+  "merge": {
+    "index": "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/navtest/index.json",
+    "shard_outputs": [
+      "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/baseline9405/shard-0",
+      "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/baseline9405/shard-1",
+      "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/baseline9405/shard-2",
+      "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/baseline9405/shard-3"
+    ],
+    "output": "@DRIVERSI_ROOT@/exp/navtrain-navtest-campaign-v1/baseline9405"
+  },
+  "stage1_config": "@DRIVERSI_ROOT@/src/config/agents/chainflow_vla/stage1.json",
+  "confirmation_gpu": 2,
+  "confirmation_limit": 48,
+  "index_workers": 4,
+  "max_wait_seconds": 14400,
+  "capability_budget": {
+    "collision": 8,
+    "road_compliance": 8,
+    "direction_compliance": 8,
+    "interaction": 8,
+    "route_progress": 8,
+    "comfort": 8
+  },
+  "task_id": "full-navtest-to-navtrain-v5"
+}

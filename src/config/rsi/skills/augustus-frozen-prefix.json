@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "version": "observed-prefix-v1",
+  "information_scope": "current_ego_state_and_navigation_only",
+  "low_speed_mps": 2.0,
+  "skills": {
+    "turn_conflict_check": "Follow the given navigation command. Before committing to the turn, inspect the visible crossing area and approaching road users in the provided history. If a conflict is visible, adjust the timing and speed of the turn while preserving the intended route. Do not infer that an unseen traffic light is green. Keep the trajectory smooth and inside the visible drivable corridor; avoid stopping when the observations support safe progress.",
+    "low_speed_progress_check": "Use the observed history to distinguish a stopped obstacle ahead from an open path. If the lane ahead is visibly occupied, maintain a suitable gap and avoid accelerating into it. If the observed route is clear, allow smooth forward progress instead of stopping unnecessarily. Preserve the navigation command and lane continuity. Do not assume that a road user is moving from a single image alone.",
+    "following_speed_check": "Check the visible lead vehicle and the change in its relative position across the provided history. If the gap is closing, choose smooth speed reduction that preserves separation. If there is no visible conflict, maintain useful progress along the given route. Keep the planned lateral path within the observed drivable corridor. Avoid abrupt braking or lateral changes without supporting visual evidence."
+  }
+}

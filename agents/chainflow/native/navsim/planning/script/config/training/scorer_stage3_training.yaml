@@ -1,0 +1,53 @@
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+defaults:
+  - default_common
+  - default_evaluation
+  - default_train_val_test_log_split
+  - _self_
+  - agent: chainflow_post_scorer_stage3
+
+split: trainval
+cache_path: null
+use_cache_without_dataset: false
+force_cache_computation: false
+experiment_name: chainflow_post_scorer_stage3_safe_cvpo
+seed: 27
+validation_run: false
+
+dataloader:
+  params:
+    batch_size: 8
+    num_workers: 8
+    pin_memory: false
+    prefetch_factor: 2
+
+trainer:
+  params:
+    max_epochs: ${agent.scheduler_args.num_epochs}
+    check_val_every_n_epoch: 1
+    val_check_interval: 1.0
+    limit_train_batches: 1.0
+    # Full navtrainval is used for fitting; select checkpoints with the
+    # separate full external evaluation, as in the other Stage3 launchers.
+    limit_val_batches: 0.0
+    accelerator: gpu
+    devices: 8
+    strategy: ddp_find_unused_parameters_false
+    precision: 32-true
+    num_nodes: 1
+    num_sanity_val_steps: 0
+    fast_dev_run: false
+    accumulate_grad_batches: 1
+    gradient_clip_val: 1.0
+    gradient_clip_algorithm: norm
+    default_root_dir: ${output_dir}
+
+train_ckpt_path: null

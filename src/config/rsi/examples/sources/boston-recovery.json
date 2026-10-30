@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "source_log": "2021.08.18.18.32.06_veh-28_00049_00111",
+  "scene_sha256": "8c1fa25daaaeb4e8d0980e104b1638aea1137ae5a9ac7191036e60674195d4d7",
+  "protected_logs": [
+    "2021.08.18.06.04.33_veh-51",
+    "2021.05.12.19.36.12_veh-35"
+  ],
+  "split": "train",
+  "db_path": "/path/to/nuplan/nuplan-v1.1/splits/boston/2021.08.18.18.32.06_veh-28_00049_00111.db"
+}

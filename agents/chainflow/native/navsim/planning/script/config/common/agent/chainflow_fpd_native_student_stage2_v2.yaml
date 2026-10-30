@@ -1,0 +1,103 @@
+# Official student architecture at 79bfad7; paper-based training, NAVSIM-only.
+_target_: navsim.agents.chainflow_fpd_native_student_stage2_v2.agent.ChainFlowFPDNativeStudentStage2V2Agent
+config:
+  phase: distill
+  paper: https://arxiv.org/html/2610.13232v1
+  data_protocol: navsim_only_103288
+  architecture_revision: fpd_release_79bfad7_v4
+  upstream_commit: 79bfad7c77c936138d14f8ecea0b3a55f6d563ff
+  teacher_target_cache: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_vla/chainflow_fpd_native_student_stage2/navtrainval/teacher_targets/epoch-29-step-48390
+  teacher_checkpoint: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_vla/chainflow_fpd_native_teacher/navtrainval/stage2/10.05_11.03.22_from_epoch23/lightning_logs/version_0/checkpoints/epoch-29-step-48390.ckpt
+  proposal_num: 64
+  num_poses: 8
+  num_history_frames: 4 # Loader history; the model reads the current frame only.
+  full_history_status: false
+  num_scene_tokens: 16
+  cam_f0: [3]
+  cam_b0: [3]
+  cam_l0: [3]
+  cam_r0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r1: []
+  cam_r2: []
+  lidar_pc: []
+  one_token_per_traj: true
+  ref_num: 4
+  scorer_ref_num: 4
+  refiner_num_heads: 1 # Proposal and Scorer; DiT separately uses 8 heads.
+  refiner_ls_values: 0.0
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  train_scene_tokens: true # Training assumption; release freezes them for inference.
+  image_size: [1148, 672]
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: ${oc.env:NAVSIM_DEVKIT_ROOT}/weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    image_size: [1148, 672]
+    num_scene_tokens: 16
+    tf_d_model: 256
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    in_chans: 3
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+    activation_checkpointing: true # Memory optimization; same batch/forward.
+  diffusion_type: ddim
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024 # Upstream refiner.hidden_dim is FFN width, not token width.
+  diffusion_dropout: 0.0
+  diffusion_ego_status_dim: 8 # Current velocity, acceleration, navigation; no pose.
+  diffusion_num_inference_steps: 12 # Released base_v1 preset; paper table says 8.
+  diffusion_eval_noise_seed: 27 # MD5(scenario_token:27), exactly as released.
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: scaled_linear
+  ddim_beta_start: 0.0001
+  ddim_beta_end: 0.02
+  diffusion_activation_checkpointing: true
+  ranking_precision: bf16_sigmoid_numpy_fp64
+  ranking_weights: # Model selection policy, NOT the real PDM label/evaluator.
+    noc: 0.9
+    dac: 0.9
+    ddc: 0.0
+    ep: 8.0
+    ttc: 4.0
+    comfort: 2.0
+  use_online_vlm: false
+  use_vlm_feature_cache: false
+  train_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+  objective:
+    # Eq10 publishes lambdas symbolically, not their numeric values.
+    # All six defaults below are DECLARED ASSUMPTIONS, not official constants.
+    lambda_prop: 1.0
+    lambda_diff: 1.0
+    lambda_traj: 1.0
+    lambda_metric: 1.0
+    lambda_neg: 1.0
+    lambda_pos: 1.0
+    lambda_ddc: 1.0 # Released sixth head; auxiliary BCE weight is undisclosed.
+    sasc_top_k: 8 # Paper says highly ranked, no public numeric K.
+    sasc_neighbor_radius: 2.0 # XY ADE meters; proximity cutoff undisclosed.
+checkpoint_path: ''
+checkpoint_strict_load: true
+initialization_checkpoint: '' # Final/best checkpoint from this agent's completed base30 run.
+lr_args:
+  base_lr: 2e-5 # Appendix A student distillation LR.
+  weight_decay: 0.01 # Undisclosed; AdamW implementation default here.
+  betas: [0.9, 0.999] # Undisclosed.
+scheduler_args:
+  num_epochs: 10 # Appendix A student distillation epochs.
+  dataset_size: 103288
+  warmup_fraction: 0.05 # Paper specifies linear warmup, not duration.
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: null
+progress_bar: false
+console_log_every_n_steps: 20

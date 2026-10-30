@@ -1,0 +1,198 @@
+_target_: navsim.agents.chainflow_post_scorer_stage3.chainflow_vla_agent.ChainFlowPostScorerStage3Agent
+
+config:
+  # Exact V1 Epoch06 generator/scorer topology.  Every batch reconstructs the
+  # deterministic deployment pool online; trajectory/PDM caches are disabled.
+  proposal_num: 64
+  num_poses: 8
+  long_trajectory_additional_poses: 2
+  ref_num: 4
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+
+  use_diffusion_decoder: true
+  train_diffusion_decoder_only: false
+  # Legacy V1 phase-validation flag only. The subclass immediately freezes the
+  # complete original scorer and optimizes only score_residual_adapter.
+  train_scorer: true
+  diffusion_type: "ddim"
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_vlm_hidden_dim: 1536
+  diffusion_use_ar_proposal_tokens: false
+  stage3_gated_ar_conditioning: true
+  diffusion_gradient_checkpointing: false
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: "scaled_linear"
+  diffusion_num_inference_steps: 12
+
+  # Scorer-only Stage3. The generator and original scorer remain frozen; the
+  # custom loss performs true six-component calibration plus a safe finite-
+  # action CVPO projection over the deployed 64 candidates.
+  stage3_rl_enabled: false
+  stage3_ddp_static_graph: false
+  stage3_scorer_calibration: true
+  # Full navtrainval fitting follows the other Stage3 launchers. Checkpoint
+  # selection is performed by the external 12,146-scene evaluation workflow.
+  stage3_scorer_online_validation: false
+  train_scorer_only: true
+  stage3_reference_checkpoint_path: ""
+  stage3_allow_policy_reference_mismatch: false
+
+  scorer_cache_only: false
+  scorer_residual_alpha: 1.0
+  scorer_residual_hidden_dim: 64
+  scorer_residual_correction_bound: 4.0
+
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+
+  # This is a read-only frozen-generator input, not VLM training.
+  use_vlm_feature_cache: true
+  vlm_feature_cache_path: ${oc.env:VLM_FEATURE_CACHE_PATH}
+  vlm_feature_cache_format: gz
+  vlm_feature_cache_name: internvl_feature
+  vlm_hidden_key: last_hidden_state
+  use_online_vlm: false
+  vlm_online_checkpoint_path: ""
+  vlm_online_model_type: internvl
+  vlm_online_force_image_size: 448
+  vlm_online_max_dynamic_patch: 12
+  vlm_online_dynamic_image_size: true
+  vlm_online_use_thumbnail: true
+  vlm_online_num_image_token: 256
+  vlm_online_max_length: 2800
+
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  tf_dropout: 0.0
+
+  cam_f0: [3]
+  cam_l0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r0: [3]
+  cam_r1: []
+  cam_r2: []
+  cam_b0: [3]
+  lidar_pc: []
+
+  image_size: [1148, 672]
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  lidar_min_x: -35
+  lidar_max_x: 35
+  lidar_min_y: -35
+  lidar_max_y: 35
+  lidar_image_size: [518, 518]
+  lidar_hist_max_per_pixel: 5
+  lidar_max_height: 100.0
+  lidar_split_height: 0.2
+  lidar_use_ground_plane: true
+  lidar_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    in_chans: 2
+
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+
+loss:
+  _target_: navsim.agents.chainflow_post_scorer_stage3.online_rft.OnlineSafeCVPOScorerLoss
+  policy_temperature: 0.5
+  component_weight: 1.0
+  list_weight: 0.5
+  residual_l2_weight: 1.0e-4
+  e_step_kl_target: 0.05
+  trust_kl_target: 0.08
+  trust_beta_init: 0.10
+  trust_dual_lr: 0.05
+  trust_beta_min: 1.0e-4
+  trust_beta_max: 100.0
+  prior_uniform_mix: 0.01
+  eta_min: 1.0e-3
+  eta_max: 100.0
+  eta_bisection_steps: 16
+  no_safe_list_weight: 0.5
+  predicted_safe_threshold: 0.9
+  safety_tolerance: 1.0e-6
+  feasible_tolerance: 1.0e-6
+  recomposition_tolerance: 5.0e-4
+  component_weights:
+    no_at_fault_collisions: 2.0
+    drivable_area_compliance: 2.0
+    time_to_collision_within_bound: 1.5
+    ego_progress: 1.0
+    driving_direction_compliance: 0.5
+    comfort: 0.5
+  safety_cost_weights:
+    no_at_fault_collisions: 4.0
+    drivable_area_compliance: 2.0
+    time_to_collision_within_bound: 1.0
+
+checkpoint_path: ""
+checkpoint_strict_load: true
+
+lr_args:
+  name: AdamW
+  base_lr: 1.0e-5
+  base_batch_size: 64
+  weight_decay: 1.0e-4
+  warmup_steps: 400
+  warmup_start_factor: 0.1
+  eta_min: 1.0e-6
+
+scheduler_args:
+  num_epochs: 10
+  dataset_size: 103288
+
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: true
+progress_bar: false
+console_log_every_n_steps: 100

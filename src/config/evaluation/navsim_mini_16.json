@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "selection_rule": "First four distinct source_log names per map in existing mini scene filename order; frozen before this round's fixes. Log names can be segments of the same drive; not a held-out independent benchmark.",
+  "cases": [
+    {"scene": "scene-000001.npz", "scenario_id": "1a11259978a256cd"},
+    {"scene": "scene-000003.npz", "scenario_id": "9fcad9f9b195560d"},
+    {"scene": "scene-000005.npz", "scenario_id": "d19f45a12d9255e9"},
+    {"scene": "scene-000007.npz", "scenario_id": "1d7583b3abc8553b"},
+    {"scene": "scene-000097.npz", "scenario_id": "dec4a731e315587b"},
+    {"scene": "scene-000107.npz", "scenario_id": "3e042b008b6859db"},
+    {"scene": "scene-000111.npz", "scenario_id": "fc0620d9f11a5f0b"},
+    {"scene": "scene-000113.npz", "scenario_id": "3535951655a05ffc"},
+    {"scene": "scene-000099.npz", "scenario_id": "7e5031e344b45c14"},
+    {"scene": "scene-000101.npz", "scenario_id": "d7c2912dae875bc0"},
+    {"scene": "scene-000103.npz", "scenario_id": "30c9a57a75715373"},
+    {"scene": "scene-000105.npz", "scenario_id": "75e9560bbf695296"},
+    {"scene": "scene-000115.npz", "scenario_id": "65b9cb0a629d55b6"},
+    {"scene": "scene-000118.npz", "scenario_id": "e65bd45dd4ce5922"},
+    {"scene": "scene-000121.npz", "scenario_id": "8c52d43af52a5422"},
+    {"scene": "scene-000123.npz", "scenario_id": "87fdbcdc68155216"}
+  ]
+}

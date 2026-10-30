@@ -1,0 +1,5 @@
+# Core Python environment dependencies for independent WorldEngine visual admission.
+# GS rendering itself remains in its isolated native environment.
+pyquaternion==0.9.9
+Pillow==10.4.0
+opencv-python-headless==4.8.1.78

@@ -1,0 +1,16 @@
+defaults:
+  - chainflow_fpd_native_teacher
+  - _self_
+
+config:
+  training_stage: 2
+  use_diffusion_decoder: true
+  # Fixed mixture, not an assumed convergence deadline. Evaluation always uses DiT.
+  sampled_score_fraction: 0.5
+
+loss:
+  diffusion_loss_weight: 10.0
+  diffusion_trajectory_loss_weight: 20.0
+
+scheduler_args:
+  num_epochs: 40

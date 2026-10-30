@@ -1,0 +1,22 @@
+schema_version: 1
+model: driverl
+family: closed_loop_rl
+repository: agents/driverl/native
+revision: 24959547edac549d64c34b2aab62d5c52599d078
+python: "@DRIVERSI_ROOT@/.venvs/driverl/bin/python"
+weights:
+  checkpoint: weights/driverl/checkpoint_3800.pt
+paths:
+  data: /path/to/datasets
+  maps: /path/to/datasets/maps
+settings:
+  release_id: driverl-selfplay-u3800
+  gpu: 0
+  task: val14_r
+capabilities:
+  preflight: true
+  evaluate: true
+  train: false
+  online_control: false
+input_contract: native_nuplan_history_map_routes
+output_contract: native_nuplan_absolute_ego_state_trajectory

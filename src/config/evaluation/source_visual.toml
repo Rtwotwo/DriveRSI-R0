@@ -1,0 +1,32 @@
+schema_version = 1
+# Inspection examples, not a benchmark: first mini log in each US map at its
+# midpoint; Singapore uses the previously inspected last mini log midpoint.
+# Thirteen original samples span approximately six seconds; no interpolation.
+
+[[scenes]]
+id = "las-vegas"
+label = "Las Vegas · 原始相机与道路"
+log = "2021.05.12.22.00.38_veh-35_01008_01518.pkl"
+start_frame = 510
+frames = 13
+
+[[scenes]]
+id = "boston"
+label = "Boston · 原始相机与道路"
+log = "2021.08.09.17.55.59_veh-28_00021_00307.pkl"
+start_frame = 286
+frames = 13
+
+[[scenes]]
+id = "pittsburgh"
+label = "Pittsburgh · 原始相机与道路"
+log = "2021.08.17.16.57.11_veh-08_01200_01636.pkl"
+start_frame = 436
+frames = 13
+
+[[scenes]]
+id = "singapore"
+label = "Singapore · 原始相机与道路"
+log = "2021.10.11.08.31.07_veh-50_01750_01948.pkl"
+start_frame = 198
+frames = 13

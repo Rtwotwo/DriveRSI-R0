@@ -1,0 +1,11 @@
+schema_version = 1
+duration_seconds = 6.0
+speed_mps = 4.0
+gap_m = 14.0
+intervention_seconds = 1.0
+response_seconds = 3.0
+width = 160
+height = 96
+sensor_stride = 1
+history = 2
+seed = 20261013

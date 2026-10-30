@@ -1,0 +1,41 @@
+# Training split: NAVSIM train + val (103,288) plus PDM groups 0-2 (134,732).
+# The historical user-facing name navsimval does NOT mean a held-out val set.
+# PDM 0-2 identifies source shards, not a score threshold. Total: 238,020.
+# Real roots use trainval_fut, which contains future camera images.
+# Generic trainer: train_test_split=navsimval_sim134k
+# With default_training_simscale also select scale_training=pdm_reaction_4s_134k.
+defaults:
+  - scene_filter: navtrain
+  - /train_test_split_synthetic/scene_filter@_global_.train_test_split.synthetic_sources.pdm_0.scene_filter: synthetic_reaction_pdm_v1.0-0
+  - /train_test_split_synthetic/scene_filter@_global_.train_test_split.synthetic_sources.pdm_1.scene_filter: synthetic_reaction_pdm_v1.0-1
+  - /train_test_split_synthetic/scene_filter@_global_.train_test_split.synthetic_sources.pdm_2.scene_filter: synthetic_reaction_pdm_v1.0-2
+  - _self_
+
+data_split: trainval_fut
+training_log_partitions:
+  - train
+  - val
+
+synthetic_log_root: ${oc.env:OPENSCENE_DATA_ROOT}/navsim_logs
+synthetic_sensor_root: ${oc.env:OPENSCENE_DATA_ROOT}/sensor_blobs
+
+expected_real_train_samples: 103288
+expected_total_train_samples: 238020
+require_exact_scheduler_dataset_size: true
+
+synthetic_sources:
+  pdm_0:
+    data_split: synthetic_reaction_pdm_v1.0-0
+    expected_num_samples: 33000
+    require_invalid_tokens: true
+    invalid_tokens_sha256: 36fcc93bc406bb76c82987418bb7325cdd369435fdd3b25d7695c178e953246b
+
+  pdm_1:
+    data_split: synthetic_reaction_pdm_v1.0-1
+    expected_num_samples: 55471
+    require_invalid_tokens: false
+
+  pdm_2:
+    data_split: synthetic_reaction_pdm_v1.0-2
+    expected_num_samples: 46261
+    require_invalid_tokens: false

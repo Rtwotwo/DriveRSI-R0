@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "facets",
+    "events",
+    "distinctive_features",
+    "unknowns",
+    "proposed_new_tags"
+  ],
+  "properties": {
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text_zh",
+        "evidence_ids",
+        "fact_ids",
+        "certainty"
+      ],
+      "properties": {
+        "text_zh": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "certainty": {
+          "enum": [
+            "supported",
+            "tentative"
+          ]
+        }
+      }
+    },
+    "facets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "axis",
+          "label",
+          "text_zh",
+          "evidence_ids",
+          "fact_ids",
+          "certainty"
+        ],
+        "properties": {
+          "axis": {
+            "enum": [
+              "road_context",
+              "road_geometry",
+              "ego_motion",
+              "traffic_configuration",
+              "interaction",
+              "visibility",
+              "environment",
+              "road_markings"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "text_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "fact_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "certainty": {
+            "enum": [
+              "supported",
+              "tentative"
+            ]
+          }
+        }
+      },
+      "maxItems": 24
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_type",
+          "actors",
+          "time_span_s",
+          "text_zh",
+          "evidence_ids",
+          "fact_ids",
+          "certainty"
+        ],
+        "properties": {
+          "event_type": {
+            "enum": [
+              "ego_forward_progress",
+              "ego_turn",
+              "ego_slowing",
+              "ego_stopping",
+              "ego_lane_change",
+              "vehicle_following",
+              "vehicle_cut_in",
+              "vehicle_cut_out",
+              "vehicle_crossing",
+              "pedestrian_crossing",
+              "cyclist_interaction",
+              "ego_passing_nearly_stationary_actor",
+              "relative_gap_closing",
+              "merge_interaction",
+              "yielding_interaction"
+            ]
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "time_span_s": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "text_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "fact_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "certainty": {
+            "enum": [
+              "supported",
+              "tentative"
+            ]
+          }
+        }
+      },
+      "maxItems": 8
+    },
+    "distinctive_features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text_zh",
+          "evidence_ids",
+          "fact_ids",
+          "certainty"
+        ],
+        "properties": {
+          "text_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "fact_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "certainty": {
+            "enum": [
+              "supported",
+              "tentative"
+            ]
+          }
+        }
+      },
+      "maxItems": 6
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "reason_zh"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "reason_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          }
+        }
+      },
+      "maxItems": 12
+    },
+    "proposed_new_tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "axis",
+          "proposed_name_zh",
+          "reason_zh"
+        ],
+        "properties": {
+          "axis": {
+            "enum": [
+              "road_context",
+              "road_geometry",
+              "ego_motion",
+              "traffic_configuration",
+              "interaction",
+              "visibility",
+              "environment",
+              "road_markings"
+            ]
+          },
+          "proposed_name_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "reason_zh": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          }
+        }
+      },
+      "maxItems": 4
+    }
+  }
+}

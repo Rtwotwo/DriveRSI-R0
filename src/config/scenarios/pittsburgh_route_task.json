@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "scenario_id": "7e5031e344b45c14",
+  "source_log": "2021.08.17.16.57.11_veh-08_01200_01636",
+  "initial_nodes": {"734326b0d62d5907": "connector:18470", "c652e84e1e2754b3": "connector:19966"},
+  "purpose": "Explicit engineering intentions at an ambiguous junction entry and a converging connector exit. Other valid intentions exist; these are not inferred human intent or automatic matching successes."
+}

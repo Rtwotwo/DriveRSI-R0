@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "augustus-bounded-learning",
+  "model_config": "../agents/augustus/native.yaml",
+  "mode": "supervised",
+  "initialization": "model_weights",
+  "budget": {
+    "max_wall_seconds": 3600,
+    "max_optimizer_steps": 1000,
+    "max_environment_steps": 0,
+    "max_scoring_agent_steps": 100000
+  }
+}

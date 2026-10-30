@@ -1,0 +1,11 @@
+# NAVSIM validation partition exposed as a small training split for ablations.
+# It reuses the official val_logs list and the unchanged NAVSIM scene filter.
+defaults:
+  - scene_filter: navtrain
+
+data_split: trainval
+training_log_partitions:
+  - val
+
+expected_real_train_samples: 18179
+expected_total_train_samples: 18179

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "parent_provenance": "unknown",
+  "train": {
+    "source_logs": [
+      "2021.08.17.13.10.50_veh-08_00122_00295"
+    ],
+    "scene": "@DRIVERSI_ROOT@/outputs/demonstrations/driverl-multicity-v1/log-03/prepared-final/scene.npz",
+    "registry": "@DRIVERSI_ROOT@/outputs/quality/native-learning-v1/source-registry.json"
+  },
+  "development": {
+    "source_logs": [
+      "2021.08.18.06.04.33_veh-51_00016_00170"
+    ],
+    "scene": "@DRIVERSI_ROOT@/outputs/demonstrations/driverl-multicity-v1/log-05/prepared-final/scene.npz"
+  }
+}

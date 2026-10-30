@@ -1,0 +1,74 @@
+[
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 15,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 20,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 30,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 15,
+    "intervention_tick": 10
+  },
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 20,
+    "intervention_tick": 10
+  },
+  {
+    "challenger": "148289bf874c5772",
+    "responder": "c2219a05534f574e",
+    "length_m": 30,
+    "intervention_tick": 10
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 15,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 20,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 30,
+    "intervention_tick": 0
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 15,
+    "intervention_tick": 10
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 20,
+    "intervention_tick": 10
+  },
+  {
+    "challenger": "ego",
+    "responder": "148289bf874c5772",
+    "length_m": 30,
+    "intervention_tick": 10
+  }
+]

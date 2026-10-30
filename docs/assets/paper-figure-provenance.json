@@ -1,0 +1,19 @@
+{
+  "scope": "unchanged_manuscript_overview",
+  "modified": false,
+  "tex_reference": "cvpr2027-draft/Figures/overview.tex",
+  "files": [
+    {
+      "path": "overview.png",
+      "source": "cvpr2027-draft/Figures/overview.png",
+      "sha256": "9e3c462d8dedb85a967f2a191c861d4bba5c906bd8af6dc0484368acb63caecc",
+      "bytes": 769428
+    },
+    {
+      "path": "overview.pdf",
+      "source": "cvpr2027-draft/Figures/overview.pdf",
+      "sha256": "76495e3c5ba278223b1a3966d62efebbaeb5399812a39cf86834830a974be267",
+      "bytes": 10321036
+    }
+  ]
+}

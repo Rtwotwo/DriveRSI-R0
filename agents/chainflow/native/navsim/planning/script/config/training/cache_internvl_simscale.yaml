@@ -1,0 +1,47 @@
+# @package _global_
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+defaults:
+  - default_common
+  - default_evaluation
+  - default_train_val_test_log_split
+  - agent: internvl_agent
+  - override /train_test_split: navtrain_simscale
+  - _self_
+
+split: trainval
+mode: plan
+pdm_shard: 0
+source_names: ["pdm_${pdm_shard}"]
+# Opt in only for this caching job; other source consumers keep their loader.
+synthetic_metric_cache_root: ${oc.env:OPENSCENE_DATA_ROOT}/navsim_cache
+cache_path: ${oc.env:NAVSIM_EXP_ROOT}/vlm_feature_cache/train_VLM_features_synthetic_reaction_pdm_v1.0-${pdm_shard}
+# Every selected synthetic sample must physically exist under its shard root.
+fallback_cache_roots: []
+hidden_dim: 1536
+seed: 0
+require_reference_check: true
+reference_cache_root: ${oc.env:NAVSIM_EXP_ROOT}/vlm_feature_cache/navtrain_vlm_feature_cache
+reference_samples: 3
+reference_rtol: 0.0
+reference_atol: 0.0
+verify_depth: paths
+verify_samples_per_source: 1
+distributed_timeout_seconds: 86400
+max_samples: 0
+experiment_name: internvl_pdm_shard_${pdm_shard}
+agent:
+  checkpoint_path: ""
+  cache_mode: true
+  cache_hidden_state: true
+  cam_type: single
+  dynamic_image_size: true
+  use_thumbnail: true
+  force_image_size: 448
+  max_dynamic_patch: 12

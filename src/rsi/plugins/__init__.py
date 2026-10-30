@@ -1,0 +1,1 @@
+"""rsi/plugins functional package."""

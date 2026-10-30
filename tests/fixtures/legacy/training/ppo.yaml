@@ -1,0 +1,18 @@
+schema_version: 1
+trainer: ppo
+agent: ../agents/mlp.yaml
+budget: 100000
+worlds: 4
+rollout_steps: 32
+seed: 0
+device: cpu
+optimization:
+  learning_rate: 0.0003
+  epochs: 4
+  minibatch_size: 512
+sampling:
+  workers: 0
+  scene_cache_size: 32
+  max_rollout_mib: 1024
+  worker_timeout_seconds: 30.0
+recording: full

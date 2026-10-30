@@ -1,0 +1,13 @@
+{
+  "base_url": "https://private-provider.example.invalid/compatible-mode/v1",
+  "models": ["DEPLOYED_VISION_MODEL"],
+  "concurrency": 2,
+  "requests_per_minute": 10,
+  "max_requests": 12,
+  "max_attempts": 2,
+  "timeout_seconds": 120,
+  "max_tokens": 2048,
+  "image_max_side": 768,
+  "jpeg_quality": 85,
+  "enable_thinking": false
+}

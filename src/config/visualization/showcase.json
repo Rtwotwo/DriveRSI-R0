@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "host": "127.0.0.1",
+  "port": 38515,
+  "root": "viz",
+  "runtime_dir": "exp/services/showcase",
+  "tmux_session": "driversi-viz",
+  "restart_initial_seconds": 1.0,
+  "restart_max_seconds": 30.0,
+  "log_max_bytes": 5242880,
+  "log_backups": 3
+}

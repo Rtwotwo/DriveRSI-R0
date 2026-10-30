@@ -1,0 +1,13 @@
+{
+  "backend": "qwen3_5",
+  "model_path": "@DRIVERSI_ROOT@/weights/vlm/Qwen3.5-2B",
+  "cameras": [
+    "CAM_F0",
+    "CAM_L0",
+    "CAM_R0"
+  ],
+  "max_side": 768,
+  "max_new_tokens": 512,
+  "max_seconds_per_scene": 90,
+  "prompt_version": "history_state_v8"
+}

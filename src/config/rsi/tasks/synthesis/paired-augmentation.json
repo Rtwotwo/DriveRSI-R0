@@ -1,0 +1,203 @@
+{
+  "schema_version": 2,
+  "id": "synthesis-paired-demo",
+  "label": "New DriveTTO search to matched native learning; current-run holdout only",
+  "budget": {
+    "max_wall_seconds": 15000,
+    "max_sim_agent_steps": 12000
+  },
+  "steps": [
+    {
+      "id": "search",
+      "provider": "drivetto_search_skill",
+      "inputs": {},
+      "config": {
+        "backend": "/path/to/workspace/DriveScorer",
+        "python": "@DRIVERSI_ROOT@/.venvs/chainflow/bin/python",
+        "cases": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/cases.json",
+        "protected_logs": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/protected.json",
+        "initial_keys": [
+          [
+            150,
+            0
+          ],
+          [
+            -150,
+            0
+          ],
+          [
+            0,
+            150
+          ],
+          [
+            0,
+            -150
+          ]
+        ],
+        "refinement_keys": [
+          [
+            50,
+            0
+          ],
+          [
+            -50,
+            0
+          ],
+          [
+            0,
+            50
+          ],
+          [
+            0,
+            -50
+          ]
+        ],
+        "max_queries": 44,
+        "max_wall_seconds": 600
+      },
+      "max_wall_seconds": 660
+    },
+    {
+      "id": "admit",
+      "provider": "drivetto_independent_admission",
+      "inputs": {
+        "search": "search"
+      },
+      "config": {
+        "max_scenes": 4,
+        "max_wall_seconds": 300
+      },
+      "max_wall_seconds": 330
+    },
+    {
+      "id": "history",
+      "provider": "synthesis_history",
+      "inputs": {
+        "admission": "admit"
+      },
+      "config": {
+        "manifest": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/dataset.json"
+      },
+      "max_wall_seconds": 120
+    },
+    {
+      "id": "control-data",
+      "provider": "synthesis_native_dataset",
+      "inputs": {
+        "sensors": "history"
+      },
+      "config": {
+        "python": "@DRIVERSI_ROOT@/.venvs/augustus/bin/python",
+        "max_wall_seconds": 300,
+        "label_source": "original"
+      },
+      "max_wall_seconds": 330
+    },
+    {
+      "id": "control-train",
+      "provider": "native_dataset_training",
+      "inputs": {
+        "dataset": "control-data"
+      },
+      "config": {
+        "request": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/request.json"
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "control-resume",
+      "provider": "native_dataset_resume",
+      "inputs": {
+        "student": "control-train"
+      },
+      "config": {
+        "max_sim_agent_steps": 640
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "control-eval",
+      "provider": "native_dataset_evaluation",
+      "inputs": {
+        "student": "control-resume"
+      },
+      "config": {
+        "evaluator": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/evaluator.json",
+        "max_sim_agent_steps": 640
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "treatment-data",
+      "provider": "synthesis_native_dataset",
+      "inputs": {
+        "sensors": "history"
+      },
+      "config": {
+        "python": "@DRIVERSI_ROOT@/.venvs/augustus/bin/python",
+        "max_wall_seconds": 300,
+        "label_source": "drivetto"
+      },
+      "max_wall_seconds": 330
+    },
+    {
+      "id": "treatment-train",
+      "provider": "native_dataset_training",
+      "inputs": {
+        "dataset": "treatment-data"
+      },
+      "config": {
+        "request": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/request.json"
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "treatment-resume",
+      "provider": "native_dataset_resume",
+      "inputs": {
+        "student": "treatment-train"
+      },
+      "config": {
+        "max_sim_agent_steps": 640
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "replay",
+      "provider": "native_dataset_resume",
+      "inputs": {
+        "student": "treatment-train"
+      },
+      "config": {
+        "max_sim_agent_steps": 640
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "treatment-eval",
+      "provider": "native_dataset_evaluation",
+      "inputs": {
+        "student": "treatment-resume"
+      },
+      "config": {
+        "evaluator": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/evaluator.json",
+        "max_sim_agent_steps": 640
+      },
+      "max_wall_seconds": 1800
+    },
+    {
+      "id": "feedback",
+      "provider": "paired_synthesis_feedback",
+      "inputs": {
+        "control_student": "control-resume",
+        "treatment_student": "treatment-resume",
+        "control_evaluation": "control-eval",
+        "treatment_evaluation": "treatment-eval",
+        "replay": "replay",
+        "search": "search"
+      },
+      "config": {},
+      "max_wall_seconds": 120
+    }
+  ]
+}

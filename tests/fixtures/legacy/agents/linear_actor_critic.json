@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "task": "structured_actor_critic",
+  "model_target": "tests.support.diagnostic_agents:LinearActorCritic",
+  "inference_target": "driversi.training.legacy.frozen:NpzPolicy",
+  "observation_version": "puffer-current-1124-time-v1",
+  "action_space": "jerk_discrete_12",
+  "input_mode": "privileged_structured",
+  "parameters": {}
+}

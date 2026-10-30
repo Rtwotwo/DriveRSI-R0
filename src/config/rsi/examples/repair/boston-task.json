@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "harness-boston-diagnostic-v1",
+  "label": "NAVSIM same-state repair / engineering inspection",
+  "budget": {
+    "max_wall_seconds": 180,
+    "max_sim_agent_steps": 1500
+  },
+  "steps": [
+    {
+      "id": "repair",
+      "provider": "same_state_repair",
+      "inputs": {},
+      "config": {
+        "spec": "boston-spec.json"
+      },
+      "max_wall_seconds": 120
+    },
+    {
+      "id": "admission",
+      "provider": "repair_admission",
+      "inputs": {
+        "evidence": "repair"
+      },
+      "config": {
+        "requirement": "engineering_diagnostic"
+      },
+      "max_wall_seconds": 15
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "id": "native-driverl-v3",
+  "label": "Pinned DriveRL inventory and official CPU checkpoint-load validation",
+  "budget": {
+    "max_wall_seconds": 420,
+    "max_sim_agent_steps": 0
+  },
+  "steps": [
+    {
+      "id": "inventory",
+      "provider": "native_model_inventory",
+      "inputs": {},
+      "config": {
+        "model_config": "../../../agents/driverl/native.yaml",
+        "operation": "preflight"
+      },
+      "max_wall_seconds": 60
+    },
+    {
+      "id": "load",
+      "provider": "native_model_preflight",
+      "inputs": {
+        "inventory": "inventory"
+      },
+      "config": {
+        "max_wall_seconds": 300
+      },
+      "max_wall_seconds": 330
+    }
+  ]
+}

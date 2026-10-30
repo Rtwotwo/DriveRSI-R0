@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "dependencies": {
+    "drivor": {
+      "directory": "driving/drivor",
+      "domain": "driving",
+      "revision": "fc6e5aa144bbcb5a046e22c18f1bd5cf3af8634a",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "navsim-v1.1": {
+      "directory": "driving/navsim-v1.1",
+      "domain": "driving",
+      "revision": "3e8291bfa89ff247231e0227778840cd0a036896",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "navsim-v2.2": {
+      "directory": "driving/navsim-v2.2",
+      "domain": "driving",
+      "revision": "359c7f72304bfa8273e754224a213d3751bd2340",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "nuplan-devkit": {
+      "directory": "driving/nuplan-devkit",
+      "domain": "driving",
+      "revision": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "mtgs": {
+      "directory": "rendering/mtgs",
+      "domain": "rendering",
+      "revision": "7ab67a3e386e5a4830017819324922a7bb9f26f7",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "streetcrafter": {
+      "directory": "rendering/streetcrafter",
+      "domain": "rendering",
+      "revision": "9937775ba12f069d363c61ad00ff977900660f9c",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    },
+    "worlddreamer": {
+      "directory": "rendering/worlddreamer",
+      "domain": "rendering",
+      "revision": "bab94c537c6fb2c136caf53604c4a0b9a99efac6",
+      "provenance": "source-manifest.json",
+      "import_policy": "native_namespace_in_isolated_worker"
+    }
+  }
+}

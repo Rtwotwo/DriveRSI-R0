@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "id": "augustus-unified-pilot",
+  "model_config": "../../agents/augustus/lifecycle.yaml",
+  "mode": "supervised",
+  "initialization": "model_weights",
+  "data": "augustus-data.json",
+  "pilot": {
+    "seed": 42,
+    "batch_size": 2,
+    "evaluation_steps": 20
+  },
+  "budget": {
+    "max_wall_seconds": 1600,
+    "max_optimizer_steps": 2,
+    "max_environment_steps": 0,
+    "max_scoring_agent_steps": 640
+  }
+}

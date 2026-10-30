@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "harness-navsim-history-v1",
+  "label": "NAVSIM planning export: four history frames, optional future RGB",
+  "budget": {
+    "max_wall_seconds": 180,
+    "max_sim_agent_steps": 0
+  },
+  "steps": [
+    {
+      "id": "export",
+      "provider": "navsim_export",
+      "inputs": {},
+      "config": {
+        "session": "../../../../../outputs/demonstrations/four-frame-augmentation-v1/boston/render-navsim/session/manifest.json",
+        "scene": "../../../../../outputs/demonstrations/four-frame-augmentation-v1/boston/scene.npz",
+        "anchor_tick": 20,
+        "future_images": false
+      },
+      "max_wall_seconds": 160
+    }
+  ]
+}

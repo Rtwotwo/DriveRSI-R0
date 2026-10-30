@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "id": "unified-driverl-v2",
+  "label": "driverl actual native learning lifecycle; pilot only",
+  "budget": {
+    "max_wall_seconds": 14400,
+    "max_sim_agent_steps": 5000
+  },
+  "steps": [
+    {
+      "id": "train",
+      "provider": "native_model_unified_training",
+      "inputs": {},
+      "config": {
+        "request": "../../../training/lifecycle/driverl.json"
+      },
+      "max_wall_seconds": 900
+    },
+    {
+      "id": "resume",
+      "provider": "native_model_unified_resume",
+      "inputs": {
+        "student": "train"
+      },
+      "config": {
+        "request": "../../../training/lifecycle/driverl.json"
+      },
+      "max_wall_seconds": 900
+    },
+    {
+      "id": "replay",
+      "provider": "native_model_unified_resume",
+      "inputs": {
+        "student": "train"
+      },
+      "config": {
+        "request": "../../../training/lifecycle/driverl.json"
+      },
+      "max_wall_seconds": 900
+    },
+    {
+      "id": "evaluation",
+      "provider": "native_model_unified_evaluation",
+      "inputs": {
+        "student": "resume"
+      },
+      "config": {
+        "request": "../../../training/lifecycle/driverl.json"
+      },
+      "max_wall_seconds": 900
+    },
+    {
+      "id": "feedback",
+      "provider": "native_model_unified_feedback",
+      "inputs": {
+        "student": "resume",
+        "replay": "replay",
+        "evaluation": "evaluation"
+      },
+      "config": {},
+      "max_wall_seconds": 900
+    }
+  ]
+}

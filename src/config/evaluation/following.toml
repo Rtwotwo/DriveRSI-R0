@@ -1,0 +1,7 @@
+schema_version = 1
+speeds_mps = [6.0, 7.0, 8.0, 9.0, 10.0]
+bumper_gaps_m = [20.0, 25.0, 30.0, 35.0, 40.0]
+duration_seconds = 9.0
+intervention_seconds = 1.0
+speed_reduction_mps = 3.0
+maximum_response_seconds = 2.0

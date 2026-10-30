@@ -1,0 +1,20 @@
+{
+  "python": "3.10.19 (main, Nov 28 2025, 10:11:13) [GCC 11.4.0]",
+  "packages": {
+    "torch": "2.5.1",
+    "torchvision": "0.20.1",
+    "numpy": "1.26.3",
+    "transformers": "4.19.1",
+    "open_clip_torch": "2.20.0",
+    "xformers": "0.0.28.post3",
+    "omegaconf": "2.3.0",
+    "Pillow": "12.3.0",
+    "opencv-python": "4.8.1.78",
+    "safetensors": "0.4.5"
+  },
+  "runtime_environment": "isolated venv with read-only shared torch packages from .venvs/mtgs",
+  "paper_environment_equivalence": false,
+  "weights_root": "weights/streetcrafter",
+  "outputs_root": "exp",
+  "runtime_imports_from_clones": false
+}

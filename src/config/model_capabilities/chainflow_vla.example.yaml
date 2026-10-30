@@ -1,0 +1,13 @@
+# Interface declaration only. No DriveRSI trajectory execution adapter is supplied here.
+# Mirrors the local stage1 config: 8 XY-heading poses over 4 seconds.
+schema_version: 1
+role: trajectory_policy
+input_schema: navsim-chainflow-vla-four-camera-ego-history-v1
+output_schema: ego-relative-xy-heading-trajectory-v1
+input_clock: history_to_observation
+output_clock: future_sequence
+output_dt_seconds: 0.5
+horizon_seconds: 4.0
+state_scope: stateless
+likelihood: none
+authority: trajectory_proposal

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DriveRSI MiniMax-H3 whitebox profile v1 (internal metadata, not a native request)",
+  "type": "object",
+  "required": [
+    "schema",
+    "profile",
+    "token",
+    "source",
+    "target",
+    "timeline",
+    "multi_view",
+    "use",
+    "jobs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "driversi.minimax_h3_whitebox.v1"
+    },
+    "profile": {
+      "const": "minimax_h3_ref2va_v1"
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "camera_id",
+          "media_binding",
+          "appearance_claims",
+          "prompt_fields",
+          "request"
+        ],
+        "properties": {
+          "camera_id": {
+            "enum": [
+              "CAM_F0",
+              "CAM_L0",
+              "CAM_R0",
+              "CAM_B0"
+            ]
+          },
+          "prompt_fields": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "subject_definitions",
+              "summary",
+              "retention_analysis",
+              "detailed_description",
+              "overall_soundscape",
+              "non_diegetic_music"
+            ],
+            "properties": {
+              "subject_definitions": {
+                "type": "string",
+                "minLength": 1
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              },
+              "retention_analysis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "detailed_description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "overall_soundscape": {
+                "type": "string",
+                "minLength": 1
+              },
+              "non_diegetic_music": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "request": {
+            "$ref": "#/$defs/request"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task",
+        "prompt",
+        "conditions",
+        "target",
+        "seed"
+      ],
+      "properties": {
+        "task": {
+          "const": "ref2va"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "uri",
+              "role"
+            ],
+            "properties": {
+              "type": {
+                "const": "video"
+              },
+              "uri": {
+                "type": "string",
+                "pattern": "^file:///"
+              },
+              "role": {
+                "const": "reference"
+              }
+            }
+          }
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "short_edge",
+            "aspect_ratio",
+            "duration_seconds"
+          ],
+          "properties": {
+            "short_edge": {
+              "const": 768
+            },
+            "aspect_ratio": {
+              "const": "16:9"
+            },
+            "duration_seconds": {
+              "const": 7
+            }
+          }
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

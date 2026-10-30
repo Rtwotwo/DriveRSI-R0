@@ -1,0 +1,53 @@
+{
+  "excluded_nonruntime_files": [
+    ".gitignore",
+    ".gitmodules",
+    ".nojekyll",
+    "assets/Overview.pdf",
+    "assets/Overview.png",
+    "assets/favicon.png",
+    "assets/video_demo_compressed.mp4",
+    "assets/video_demo_poster.jpg"
+  ],
+  "files": {
+    "LICENSE": "8036bf5e8c48f6aefffd12f1bf6ad7f557620993209b91f94fc3fac5509df901",
+    "NOTICE": "7da3179fda26e42c667feec37d5a71a086600d8eaee387d258eae43ead3f054d",
+    "README.md": "59f25162c58a61c5eec257836607ba98bd0b0fce16929574ae39985d81bb2b15",
+    "configs/inference/base_v1.yaml": "418e924743b287533816efb8f0eb165c59c3adf5b92d7d8522334f4fa33cd326",
+    "configs/inference/base_v2.yaml": "663b89f18576d06f191165c34a19259f93c49cf8ea97efeab044e92150c58bf4",
+    "configs/inference/pro_v1.yaml": "8098d1879ad7da02f9dda20050d30af2e45326063980caeec83255cac69490f4",
+    "configs/inference/pro_v2.yaml": "e483d0673a75161cbccc1144117e657412d2b64686a80ebc046bb814d0d621d0",
+    "diffsynth/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/layers/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/layers/image_encoder/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/layers/image_encoder/dinov2_lora.py": "013d197599afaa663869d069dfbb8ace07a6910dc7cb88213cbfd2987422f4ac",
+    "diffsynth/planning/fpd_planner/layers/utils/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/layers/utils/mlp.py": "db4c71a1e045ca588dacf1ce8d517897148d6f13724b41d8f61177c44cc93529",
+    "diffsynth/planning/fpd_planner/model.py": "f9ee2f9626ee5e7f76b2ffc39de9dc2119119bc6756315ae8e0c29fbf5a4fa53",
+    "diffsynth/planning/fpd_planner/refiner.py": "2fcf4ea4455f735df065a61805215c733dab005236a7d1e166652290fa07a806",
+    "diffsynth/planning/fpd_planner/reweighted_ranking.py": "ae828ff42940432d410fc6f38f7bfb32ae7e525b55006206b9248d8ca7f08a7f",
+    "diffsynth/planning/fpd_planner/score_module/__init__.py": "ed7b2b4d2b8ec02ed1ce9c3a8443b459e18ee61bc363a823f61b1a57597efde0",
+    "diffsynth/planning/fpd_planner/score_module/scorer.py": "d0f09082fef2c814567a6e81e80a7a8a48f46c11b20c594a094b688668eccf02",
+    "diffsynth/planning/fpd_planner/timm_layers.py": "fbc27c0f38e8f465205c5719650c68d77d6797e0ba908ed90659908dead0cc57",
+    "diffsynth/planning/fpd_planner/trajectory_selection.py": "6fdf897d897e791da814d61d338bb22eea63fc1a4b2b0b53a78246143e6b7752",
+    "diffsynth/planning/fpd_planner/transformer_decoder.py": "d4f38783a11adfc9f5fd3a5dee0d61449e6928557cc3d826a274c689cae2bc3d",
+    "fpd_drive/__init__.py": "a9c297cb45823068ab5b89e17ea11ca7e3de28fe55bfc2187cdd5d97e39d8041",
+    "fpd_drive/inference.py": "6ea6eedf457a2de87cda15c246dc231811fb4e0da0ae25877105e2e39f34a074",
+    "fpd_drive/model.py": "f42ee708572ac2724ecb0a174ceefc5b3e273471b9f5e07778ff1e9fd3986487",
+    "fpd_drive/navhard.py": "84b4c576374eee580367f9ef967faa765091ef72fa92f6b4716f1df7014cf9b9",
+    "fpd_drive/navsim.py": "02ee22b8cf40a6928f380af416ce69040038c9b656f8cf7ae0d000badfacd8a4",
+    "fpd_drive/selection.py": "308e276e21353bac12c210f529912ddf1f60e0dbd875d6445dbe20ecd3617362",
+    "index.html": "68dd48a74985b4a1a6abbbd44fabd7a32360c48f9131e48f2f17ca53f2d725d5",
+    "requirements-inference.txt": "294d336e273bcf0dd54c82109493bfd6488d6a62d087c3b34ac2c0fb4323233d",
+    "run_inference.py": "16723de7e3166c79f584ac72f0a0259022f723740f3f05c61a86b34cd52198f8"
+  },
+  "license_files": [
+    "LICENSE",
+    "NOTICE"
+  ],
+  "revision": "79bfad7c77c936138d14f8ecea0b3a55f6d563ff",
+  "schema_version": 1,
+  "upstream_url": "https://github.com/CountNemoChan/FPD-Drive.git"
+}

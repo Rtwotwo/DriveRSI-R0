@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "id": "augustus-label-control-v1",
+  "template": "../examples/augustus-original-study.json",
+  "minimum_mean_pdms_gain": 0.001,
+  "evaluation_role": "development"
+}

@@ -1,0 +1,15 @@
+{
+  "source": "ChainFlow-VLA pinned local reference",
+  "revision": "0f3565f66546139a0183bc5807d5f7234ae2d4b0",
+  "changes": [],
+  "files": [
+    {
+      "path": "navsim/evaluate/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "navsim/evaluate/pdm_score.py",
+      "sha256": "d24c05879bfce821e45a0bee2b6b90f020f963f407ff16f1aa62613dc2bd6840"
+    }
+  ]
+}

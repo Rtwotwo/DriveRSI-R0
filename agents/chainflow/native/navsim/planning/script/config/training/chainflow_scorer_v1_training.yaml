@@ -1,0 +1,60 @@
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+# Compose only common NAVSIM infrastructure, never another agent/training yaml.
+defaults:
+  - default_common
+  - default_evaluation
+  - default_train_val_test_log_split
+  - agent: chainflow_scorer_v1
+  - override train_test_split: navtrainval
+  - _self_
+
+split: trainval
+cache_path: null
+# The shared cache-only loader does not merge val_logs into train_logs. Keep
+# dataset-backed loading for the intended navtrainval (approximately 103k) split.
+use_cache_without_dataset: false
+force_cache_computation: false
+experiment_name: chainflow_scorer_v1_navtrainval103k
+seed: 2
+validation_run: false
+date_format: '%Y.%m.%d_%H.%M.%S'
+# Isolate the shared training entry's automatic resume search within this UID.
+output_dir: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_scorer_v1/${experiment_name}/${experiment_uid}/training
+
+dataloader:
+  params:
+    batch_size: 8
+    num_workers: 4
+    pin_memory: false
+    prefetch_factor: 2
+
+trainer:
+  params:
+    max_epochs: ${agent.scheduler_args.num_epochs}
+    check_val_every_n_epoch: 1
+    val_check_interval: 1.0
+    limit_train_batches: 1.0
+    limit_val_batches: 0.0
+    accelerator: gpu
+    devices: 6
+    # Some inherited optional heads can be inactive. Do not assume all model
+    # parameters participate in every batch until multi-GPU profiling verifies it.
+    strategy: ddp_find_unused_parameters_true
+    precision: bf16-mixed
+    num_nodes: 1
+    num_sanity_val_steps: 0
+    fast_dev_run: false
+    accumulate_grad_batches: 1
+    gradient_clip_val: 1.0
+    gradient_clip_algorithm: norm
+    default_root_dir: ${output_dir}
+
+train_ckpt_path: null

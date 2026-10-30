@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AppearanceOnlyV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "setting",
+    "road_appearance",
+    "built_environment",
+    "vegetation",
+    "illumination",
+    "distinctive_features"
+  ],
+  "properties": {
+    "setting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "evidence_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "road_appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "evidence_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "built_environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "evidence_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "vegetation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "evidence_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "illumination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "evidence_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "distinctive_features": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text",
+          "evidence_ids"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "evidence_ids": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

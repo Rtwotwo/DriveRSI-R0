@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "parent_provenance": "unknown",
+  "train": {
+    "source_logs": [
+      "2021.08.18.18.32.06_veh-28_00049_00111",
+      "2021.08.17.13.10.50_veh-08_00122_00295"
+    ],
+    "scene": "@DRIVERSI_ROOT@/exp/active-recovery-v3/prepared-boston-navigation-exact/scene.npz",
+    "registry": "@DRIVERSI_ROOT@/src/config/rsi/examples/sources/boston-recovery.json"
+  },
+  "development": {
+    "source_logs": [
+      "2021.08.18.06.04.33_veh-51_00016_00170",
+      "2021.05.12.19.36.12_veh-35_00005_00204"
+    ],
+    "scene": "@DRIVERSI_ROOT@/outputs/demonstrations/driverl-multicity-v1/log-05/prepared-final/scene.npz"
+  }
+}

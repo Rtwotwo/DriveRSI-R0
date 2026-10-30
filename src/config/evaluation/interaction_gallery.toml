@@ -1,0 +1,6 @@
+schema_version = 1
+duration_seconds = 9.0
+max_actors = 32
+selection_file = "navsim_mini_16.json"
+following_config_file = "following.toml"
+selected_following_cases = [0, 12, 24]

@@ -1,0 +1,18 @@
+{
+  "schema_version": "driversi.cluster_caption.v1",
+  "model": "deepseek-v4.1-flash-1017",
+  "workers": 8,
+  "calls_per_worker": 8,
+  "max_output_tokens": 1800,
+  "reserved_input_tokens": 2500,
+  "cost_reserved_input_tokens": 16384,
+  "requests_per_minute": 480,
+  "tokens_per_minute": 1000000,
+  "max_requests": 112000,
+  "cost_cap_cny": 1600,
+  "busy_input_cny_per_million": 2,
+  "busy_output_cny_per_million": 8,
+  "image_max_side": 768,
+  "jpeg_quality": 80,
+  "failure_stop_fraction": 0.2
+}

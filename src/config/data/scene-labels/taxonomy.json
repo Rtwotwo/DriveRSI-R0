@@ -1,0 +1,24 @@
+{
+  "version": "driversi.scene_taxonomy.v1-draft",
+  "unit": "scene",
+  "assignment": "multiple labels per axis; unknown is missing evidence, not false; no forced event",
+  "facets": {
+    "road_context": ["urban_street", "residential_street", "arterial", "motorway", "parking_area", "tunnel", "bridge"],
+    "road_geometry": ["straight_segment", "curved_segment", "intersection_visible", "t_junction", "roundabout", "merge_area", "diverge_area", "marked_crosswalk_visible"],
+    "ego_motion": ["forward_progress", "left_turn", "right_turn", "lane_change_left", "lane_change_right", "stopped_interval", "deceleration", "acceleration", "reverse_motion"],
+    "traffic_configuration": ["roadside_parked_vehicles", "vehicle_ahead", "adjacent_vehicle", "oncoming_vehicle", "pedestrians_present", "cyclists_present", "static_obstacles_present"],
+    "interaction": ["following", "cut_in", "cut_out", "pedestrian_crossing", "vehicle_crossing", "passing_stationary_actor", "merging", "yielding", "relative_gap_closing"],
+    "visibility": ["occlusion_by_vehicle", "occlusion_by_infrastructure", "occlusion_by_vegetation", "shadow_transition", "glare_visible"],
+    "environment": ["construction_adjacent", "trees_or_vegetation", "glass_buildings", "masonry_buildings", "visible_daylight", "low_illumination", "wet_looking_road", "snow_visible"],
+    "road_markings": ["double_yellow_visible", "single_yellow_visible", "white_dashed_visible", "white_solid_visible", "crosswalk_bars_visible", "parking_markings_visible", "markings_indistinct"]
+  },
+  "event_types": ["ego_forward_progress", "ego_turn", "ego_slowing", "ego_stopping", "ego_lane_change", "vehicle_following", "vehicle_cut_in", "vehicle_cut_out", "vehicle_crossing", "pedestrian_crossing", "cyclist_interaction", "ego_passing_nearly_stationary_actor", "relative_gap_closing", "merge_interaction", "yielding_interaction"],
+  "rules": [
+    "Road markings are visual observations, not lane connectivity or right-of-way.",
+    "A lane-change/cut-in claim needs lane-membership evidence; relative lateral motion alone is insufficient.",
+    "Yielding is an interpretation unless causal timing and counterpart evidence support it.",
+    "Nearly stationary means annotation motion only; do not infer parking intent from a short displacement.",
+    "Appearance-only differences remain attributes, not automatic splits of driving capabilities.",
+    "Novel types may be proposed for human review; they do not silently extend the production vocabulary."
+  ]
+}

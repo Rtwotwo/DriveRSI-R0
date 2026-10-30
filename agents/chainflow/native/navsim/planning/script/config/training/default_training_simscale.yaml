@@ -1,0 +1,68 @@
+# Stage-1 settings match default_training. This must be a primary config:
+# Hydra does not allow inheriting a config that sets hydra.searchpath.
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+defaults:
+  - default_common
+  - default_evaluation
+  - default_train_val_test_log_split
+  - agent: chainflow_vla_stage1
+  - scale_training: pdm_reaction_4s_v1
+  - _self_
+
+split: trainval
+# Existing files are reused; workers compute missing samples on first access.
+cache_mode: read_through
+cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/training_cache
+synthetic_cache_root: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}
+use_cache_without_dataset: false
+force_cache_computation: false
+experiment_name: chainflow_vla
+seed: 2
+validation_run: false
+
+# Common-denominator supervision for every ChainFlow Stage-1 agent: construct
+# only the standard 8-pose / 4-second target. Model-specific auxiliary targets
+# and losses are intentionally outside the scale-data contract.
+agent:
+  config:
+    long_trajectory_additional_poses: 0
+
+dataloader:
+  params:
+    batch_size: 6
+    num_workers: 10
+    persistent_workers: true
+    pin_memory: false
+    prefetch_factor: 2
+
+trainer:
+  params:
+    max_epochs: ${oc.select:agent.scheduler_args.num_epochs,25}
+    check_val_every_n_epoch: 1
+    val_check_interval: 1.0
+    limit_train_batches: 1.0
+    limit_val_batches: 0.0
+    accelerator: gpu
+    devices: 8
+    strategy: ddp
+    precision: 16-mixed
+    num_nodes: 1
+    num_sanity_val_steps: 0
+    fast_dev_run: false
+    accumulate_grad_batches: 1
+    gradient_clip_val: 0.0
+    gradient_clip_algorithm: norm
+    default_root_dir: ${output_dir}
+
+train_ckpt_path: null
+
+# PDM default: <synthetic_cache_root>/training_cache_<data_split>.
+# An explicit train_test_split.synthetic_sources.<name>.cache_path overrides it.

@@ -1,0 +1,3 @@
+defaults:
+- scene_filter: navpilot_fut_test_v2
+data_split: test

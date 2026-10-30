@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "expected": {
+    "navtrain": 103288,
+    "navtest": 12146
+  },
+  "seed": 42,
+  "threads": 8,
+  "text_dimensions": 128,
+  "max_text_features": 40000,
+  "weights": {
+    "text": 0.85,
+    "facts": 0.15
+  },
+  "target_leaf_size": 64,
+  "min_child_size": 8,
+  "max_depth": 20,
+  "split_fit_samples": 4096,
+  "outlier_quantile": 0.99,
+  "cuts": {
+    "coarse": 5,
+    "medium": 8,
+    "fine": 11
+  },
+  "use": "exploratory_only",
+  "caption_admission_unchanged": true,
+  "image_vectors_used": false,
+  "topology_directory": "lib/cluster_caption/clusters/topology"
+}

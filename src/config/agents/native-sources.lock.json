@@ -1,0 +1,48 @@
+{
+  "AUGUstus": {
+    "revision": "edf3422304e4b2987e839a9212cf1176782e7380",
+    "role": "native_vla_sft_adapter_grpo_not_integrated",
+    "url": "https://github.com/haha-yuki-haha/AUGUstus"
+  },
+  "AutoVLA": {
+    "revision": "ba34eed74ce6729e7986592d0e66cbaca397b4fa",
+    "status": "reference_only_vla_integration_paused_by_user",
+    "url": "https://github.com/ucla-mobility/AutoVLA"
+  },
+  "ChainFlow-VLA": {
+    "revision": "0f3565f66546139a0183bc5807d5f7234ae2d4b0",
+    "url": "https://github.com/AFARI-Research/ChainFlow-VLA"
+  },
+  "DriveFine": {
+    "revision": "f44f86e5e9e48645acbffef340d9b3df90e60654",
+    "url": "https://github.com/MSunDYY/DriveFine.git"
+  },
+  "DriveZero": {
+    "revision": "24959547edac549d64c34b2aab62d5c52599d078",
+    "url": "https://github.com/XiaomiAutoL3/DriveZero.git"
+  },
+  "DrivoR": {
+    "revision": "fc6e5aa144bbcb5a046e22c18f1bd5cf3af8634a",
+    "url": "https://github.com/valeoai/DrivoR"
+  },
+  "FPD-Drive": {
+    "revision": "79bfad7c77c936138d14f8ecea0b3a55f6d563ff",
+    "url": "https://github.com/CountNemoChan/FPD-Drive.git"
+  },
+  "SimWAM": {
+    "revision": "1433ee7e06a62bd8b89da74455df0d82bda7b726",
+    "url": "https://github.com/H-EmbodVis/SimWAM"
+  },
+  "navsim-v1.1": {
+    "revision": "3e8291bfa89ff247231e0227778840cd0a036896",
+    "url": "https://github.com/autonomousvision/navsim"
+  },
+  "navsim-v2.2": {
+    "revision": "359c7f72304bfa8273e754224a213d3751bd2340",
+    "url": "https://github.com/autonomousvision/navsim"
+  },
+  "nuplan-devkit": {
+    "revision": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+    "url": "https://github.com/motional/nuplan-devkit"
+  }
+}

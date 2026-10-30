@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "policies": [
+    {
+      "policy_id": "route-standard",
+      "version": "engineering-v1",
+      "controller": "route-idm-v2",
+      "parameters": {
+        "desired_speed": 13.0,
+        "headway": 1.5
+      }
+    },
+    {
+      "policy_id": "route-cautious",
+      "version": "engineering-v1",
+      "controller": "route-idm-v2",
+      "parameters": {
+        "desired_speed": 12.0,
+        "headway": 2.4
+      }
+    }
+  ],
+  "assignments": [
+    {
+      "actor_id": "ego",
+      "policy_id": "route-cautious",
+      "role": "candidate"
+    },
+    {
+      "actor_id": "148289bf874c5772",
+      "policy_id": "route-standard",
+      "role": "reference_opponent"
+    },
+    {
+      "actor_id": "e064658636885f06",
+      "policy_id": "route-cautious",
+      "role": "candidate"
+    },
+    {
+      "actor_id": "2903abf058475d78",
+      "policy_id": "route-standard",
+      "role": "reference_opponent"
+    },
+    {
+      "actor_id": "c2219a05534f574e",
+      "policy_id": "route-standard",
+      "role": "reference_opponent"
+    },
+    {
+      "actor_id": "92e26080efe452be",
+      "policy_id": "route-standard",
+      "role": "reference_opponent"
+    },
+    {
+      "actor_id": "c047e3729cc45695",
+      "policy_id": "route-standard",
+      "role": "reference_opponent"
+    }
+  ]
+}

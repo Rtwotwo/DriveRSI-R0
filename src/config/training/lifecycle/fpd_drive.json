@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "id": "fpd_drive-unified-pilot",
+  "model_config": "../../agents/fpd_drive/lifecycle.yaml",
+  "mode": "supervised",
+  "initialization": "model_weights",
+  "data": "fpd_drive-data.json",
+  "pilot": {
+    "seed": 42,
+    "batch_size": 2,
+    "evaluation_steps": 20
+  },
+  "budget": {
+    "max_wall_seconds": 600,
+    "max_optimizer_steps": 2,
+    "max_environment_steps": 0,
+    "max_scoring_agent_steps": 0
+  }
+}

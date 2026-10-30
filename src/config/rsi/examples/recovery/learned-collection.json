@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "id": "learned-recovery-v2",
+  "label": "Updated DriveRL candidate -> actual reached states; unpromoted diagnostic only",
+  "budget": {
+    "max_wall_seconds": 900,
+    "max_sim_agent_steps": 10000
+  },
+  "steps": [
+    {
+      "id": "student",
+      "provider": "native_model_training_reference",
+      "inputs": {},
+      "config": {
+        "source_task": "unified-driverl-v2",
+        "source_stage": "resume"
+      },
+      "max_wall_seconds": 60
+    },
+    {
+      "id": "collect",
+      "provider": "learned_recovery_collection",
+      "inputs": {
+        "student": "student"
+      },
+      "config": {
+        "scene": "../../../../../outputs/demonstrations/driverl-multicity-v1/log-03/prepared-final/scene.npz",
+        "road_graph": "../../../../../outputs/demonstrations/driverl-multicity-v1/log-03/prepared-final/road-graph.json",
+        "anchor_tick": 20,
+        "max_wall_seconds": 600,
+        "source_registry": "../../../../../outputs/quality/native-learning-v1/source-registry.json"
+      },
+      "max_wall_seconds": 660
+    }
+  ]
+}

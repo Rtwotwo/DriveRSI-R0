@@ -1,0 +1,11 @@
+{
+  "max_candidates": 3,
+  "max_rounds": 2,
+  "targets": [10, 20],
+  "mastery_pdms": 0.95,
+  "attempts_per_source": 32,
+  "replay_limit": 32,
+  "location_role": "audit_only",
+  "release_scope": "full_navtest_adaptive",
+  "preserve_native_loss": true
+}

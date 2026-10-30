@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "parent_provenance": "unknown",
+  "manifest": "@DRIVERSI_ROOT@/outputs/datasets/augustus-native-pilot-v3/dataset.json",
+  "metric_cache": "@DRIVERSI_ROOT@/outputs/datasets/augustus-native-pilot-v1/development_metric_cache",
+  "train": {
+    "source_logs": [
+      "2021.10.05.07.49.39_veh-52_00934_01406"
+    ]
+  },
+  "development": {
+    "source_logs": [
+      "2021.05.12.19.36.12_veh-35_00005_00204"
+    ]
+  }
+}

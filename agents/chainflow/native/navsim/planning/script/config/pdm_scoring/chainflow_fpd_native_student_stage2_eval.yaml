@@ -1,0 +1,57 @@
+defaults:
+  - default_common
+  - default_evaluation
+  - default_scoring_parameters
+  - ddp
+  - agent: chainflow_fpd_native_student_stage2
+  - _self_
+  - override train_test_split: navtest
+
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/metric_cache
+experiment_name: chainflow_fpd_native_student_stage2/navtrainval/distill
+seed: 0
+deterministic: true
+# Standard current-observation student evaluation; teacher paths/cache are unnecessary.
+restore_training_config: true
+require_complete_evaluation: true
+write_evaluation_summary: true
+privileged_future_input: false
+evaluation_agent_overrides:
+  initialization_checkpoint: ''
+  checkpoint_strict_load: true
+  enable_ray: false
+  config:
+    long_trajectory_additional_poses: 0
+    teacher_target_cache: null
+expected_eval_scenes: 12146
+training_config_path: null
+
+agent:
+  enable_ray: false
+  initialization_checkpoint: ''
+  checkpoint_strict_load: true
+  config:
+    long_trajectory_additional_poses: 0
+    teacher_target_cache: null
+
+dataloader:
+  params:
+    batch_size: 8
+    num_workers: 4
+
+trainer:
+  params:
+    devices: 8
+    precision: bf16-mixed
+
+test_time_optimizer:
+  enabled: false

@@ -1,0 +1,48 @@
+{
+  "command": [
+    "bash",
+    "@DRIVERSI_ROOT@/agents/driverl/native/DriveRL/scripts/run_driverl_nuplan_eval.sh",
+    "eval"
+  ],
+  "environment": {
+    "DRIVERL_EVAL_PYTHON": "@DRIVERSI_ROOT@/.venvs/driverl/bin/python",
+    "DRIVERL_EVAL_RELEASE_ID": "driverl-teacher-u2400",
+    "DRIVERL_EVAL_CONFIG_PATH": "@DRIVERSI_ROOT@/agents/driverl/native/DriveRL/release/configs/driverl_teacher.yaml",
+    "DRIVERL_EVAL_CHECKPOINT_PATH": "@DRIVERSI_ROOT@/weights/driverl/checkpoint_2400.pt",
+    "NUPLAN_DATA_ROOT": "/path/to/nuplan",
+    "NUPLAN_MAPS_ROOT": "/path/to/datasets/maps",
+    "DRIVERL_EVAL_DB_LINK_ROOT": "@DRIVERSI_ROOT@/outputs/quality/driverl-benchmark-v1/db-links",
+    "DRIVERL_EVAL_TASKS": "val14_nr,val14_r,test14hard_nr,test14hard_r,test14random_nr,test14random_r",
+    "DRIVERL_EVAL_LOCAL_GPUS": "1",
+    "CUDA_VISIBLE_DEVICES": "6",
+    "DRIVERL_EVAL_WORKER_MODE": "ray_local",
+    "DRIVERL_EVAL_PARALLEL_WORKERS": "8",
+    "DRIVERL_EVAL_RAY_TEMP_DIR": "/path/to/.ray-drl-bench",
+    "DRIVERL_EVAL_RAY_INCLUDE_DASHBOARD": "0",
+    "DRIVERL_EVAL_TTS_ENABLED": "0",
+    "DRIVERL_EVAL_SAVE_SIMULATION_LOGS": "1",
+    "DRIVERL_EVAL_ROUTE_GOAL_HORIZON_S": "12",
+    "DRIVERL_EVAL_ROUTE_GOAL_MIN_SPEED_MPS": "5",
+    "DRIVERL_EVAL_ROUTE_GOAL_PAIR_MODE": "legacy",
+    "DRIVERL_EVAL_BICYCLE_MAX_ACCELERATION": "4",
+    "DRIVERL_EVAL_BICYCLE_MAX_STEERING_RATE": ".8",
+    "DRIVERL_EVAL_RUN_ID": "u2400-no-tts-20261020",
+    "DRIVERL_EVAL_OUTPUT_ROOT": "@DRIVERSI_ROOT@/outputs/demonstrations/driverl-benchmark-v1",
+    "DRIVERL_EVAL_CONTINUE_ON_FAILURE": "1",
+    "OMP_NUM_THREADS": "2"
+  },
+  "expected_scenarios_per_mode": {
+    "val14": 1118,
+    "test14hard": 272,
+    "test14random": 261
+  },
+  "paper_no_tts": {
+    "val14_nr": 95.16,
+    "val14_r": 94.25,
+    "test14hard_nr": 89.97,
+    "test14hard_r": 89.18,
+    "test14random_nr": 94.5,
+    "test14random_r": 95.0
+  },
+  "train": false
+}

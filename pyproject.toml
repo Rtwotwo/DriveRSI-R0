@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "driversi"
+version = "0.1.0"
+description = "Multi-agent driving research platform"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<2", "PyYAML>=6,<7"]
+
+[project.optional-dependencies]
+clustering = ["scikit-learn>=1.5,<1.6", "scipy>=1.14,<1.15"]
+training = ["torch>=2.5,<3"]
+maps = ["shapely>=2.1,<3", "pyogrio>=0.9,<1", "pyproj>=3.6,<4"]
+dev = ["pytest>=8,<9", "ruff>=0.11,<1"]
+
+[project.scripts]
+driversi = "driversi.cli:main"
+
+[tool.setuptools]
+package-dir = {driversi = "src", driversi_agents = "agents"}
+include-package-data = false
+
+[tool.setuptools.package-data]
+"driversi" = ["layout.json"]
+"driversi.visualization" = ["static/*.html", "static/*.js", "static/*.css"]
+"driversi.rendering.inspection" = ["showcase.html"]
+"driversi.config" = ["*.json", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.toml", "**/*.txt", "**/*.md"]
+"driversi.vendor" = ["registry.json"]
+"driversi.sim" = ["native.c"]
+"driversi.rendering.whitebox" = ["*.html", "*.js"]
+"driversi.rendering.camera_review" = ["*.html", "*.js"]
+"driversi.workbench" = ["viewer.html", "tto_viewer.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["native: requires the compiled PufferDrive extension"]
+
+[tool.ruff]
+extend-exclude = ["agents/*/native", "agents/driverl/learning/muon", "src/vendor"]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["driversi", "driversi_agents"]

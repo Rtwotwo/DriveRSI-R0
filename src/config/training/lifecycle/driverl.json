@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "id": "driverl-unified-pilot",
+  "model_config": "../../agents/driverl/native.yaml",
+  "mode": "online_rl",
+  "initialization": "model_weights",
+  "data": "driverl-data.json",
+  "pilot": {
+    "seed": 42,
+    "batch_size": 4,
+    "evaluation_steps": 20
+  },
+  "budget": {
+    "max_wall_seconds": 300,
+    "max_optimizer_steps": 1,
+    "max_environment_steps": 4,
+    "max_scoring_agent_steps": 0
+  }
+}

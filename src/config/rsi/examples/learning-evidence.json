@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "cases": [],
+  "recipes": [],
+  "memory": [],
+  "studies": [],
+  "budget": {
+    "wall_seconds": 3600,
+    "gpu_seconds": 3600,
+    "score_queries": 1250
+  },
+  "protected_logs": [],
+  "max_failed_attempts": 3
+}

@@ -1,0 +1,14 @@
+defaults:
+  - chainflow_fpd_native_student_stage2
+  - _self_
+
+# Same Stage2 initialization, current-only architecture, optimizer and compute.
+# GT + true PDM + final-choice correction; no teacher-specific objective.
+config:
+  distillation_variant: real_only
+loss:
+  refined_multi_weight: 0.0
+  ar_anchor_weight: 0.0
+  teacher_preference_weight: 0.0
+  teacher_pool_metric_weight: 0.0
+  match_targets_for_ranking: false

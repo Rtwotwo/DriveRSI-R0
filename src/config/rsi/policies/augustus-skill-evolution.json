@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "version": "frozen-skill-evolution-v1",
+  "episodes": 2,
+  "doctor_model": "deepseek-v4.1-flash-1017",
+  "max_doctor_requests": 2,
+  "validation_drives_per_episode": 8,
+  "seeds": [42, 43],
+  "arms": ["native", "incumbent", "candidate"],
+  "editable": ["one_skill_text"],
+  "frozen": ["model_weights", "action_decoder", "current_state_router", "native_scorer"],
+  "promotion": "development_gain_and_validation_gain_no_new_zeros_or_safety_regressions",
+  "release_scope": "experiment_only",
+  "unknown_request_outcome": "stop_without_resend"
+}

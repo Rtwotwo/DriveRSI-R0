@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "trainer": "ppo",
+  "agent": "../agents/privileged_mlp.json",
+  "budget": 100000,
+  "worlds": 4,
+  "rollout_steps": 32,
+  "seed": 0,
+  "device": "cpu",
+  "optimization": {
+    "learning_rate": 0.0003,
+    "epochs": 4,
+    "minibatch_size": 512
+  }
+}

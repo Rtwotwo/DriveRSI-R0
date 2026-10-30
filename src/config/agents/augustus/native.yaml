@@ -1,0 +1,24 @@
+schema_version: 1
+model: augustus
+family: vision_language_action
+repository: agents/augustus/native
+revision: edf3422304e4b2987e839a9212cf1176782e7380
+python: .venvs/augustus/bin/python
+weights:
+  parent: weights/augustus/SFT
+paths:
+  dataset_manifest: outputs/datasets/augustus-rsi/dataset.json
+  validation_metric_cache: outputs/datasets/augustus-rsi/validation_metric_cache
+  development_metric_cache: outputs/datasets/augustus-rsi/development_metric_cache
+settings:
+  gpu: 0
+  gpus:
+  - 0
+  max_sim_agent_steps: 100000
+capabilities:
+  train: true
+  evaluate: true
+  online_control: false
+  grpo: false
+input_contract: native_four_frame_three_camera_prediction_cot_original_anchor
+output_contract: native_eight_pose_4s_trajectory_or_complete_parent_initialized_checkpoint

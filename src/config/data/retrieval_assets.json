@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "root": "lib/retrieval",
+  "registry": "lib/retrieval/assets.json",
+  "splits": {
+    "navtrain": {
+      "catalog": "lib/retrieval/navtrain/catalog.sqlite",
+      "centroids": "lib/retrieval/navtrain/centroids-v1"
+    },
+    "navtest": {
+      "catalog": "lib/retrieval/navtest/catalog.sqlite",
+      "centroids": "lib/retrieval/navtest/centroids-v1"
+    }
+  },
+  "generated": "lib/retrieval/generated",
+  "publish_raw_assets": false
+}

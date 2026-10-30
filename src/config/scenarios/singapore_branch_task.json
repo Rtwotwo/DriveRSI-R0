@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "scenario_id": "87fdbcdc68155216",
+  "source_log": "2021.10.11.02.57.41_veh-50_01522_02088",
+  "initial_nodes": {},
+  "successors": {
+    "5ecc0b850d8e5c38": {
+      "lane:52230": "connector:53697"
+    }
+  },
+  "purpose": "Explicit engineering task: continue from lane:52230 through connector:53697 into lane:52112. This chooses a map-valid continuation, not the original driver's inferred intention."
+}

@@ -1,0 +1,147 @@
+_target_: navsim.agents.chainflow_post_scorer_stage3_clover.chainflow_vla_agent.ChainFlowPostScorerStage3CloverAgent
+
+config:
+  # Exact E06 generator topology; only the original ScoreDecoder is fitted.
+  proposal_num: 64
+  num_poses: 8
+  long_trajectory_additional_poses: 2
+  ref_num: 4
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+  use_diffusion_decoder: true
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  diffusion_type: ddim
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_vlm_hidden_dim: 1536
+  diffusion_use_ar_proposal_tokens: false
+  stage3_gated_ar_conditioning: true
+  diffusion_gradient_checkpointing: false
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: scaled_linear
+  diffusion_num_inference_steps: 12
+  stage3_rl_enabled: false
+  stage3_ddp_static_graph: false
+  stage3_scorer_calibration: true
+  stage3_scorer_online_validation: false
+  train_scorer_only: true
+  scorer_cache_only: false
+  clover_source_checkpoint: ${oc.env:E06_CKPT_PATH}
+  scorer_projection_dropout: 0.1
+  scorer_drop_path: 0.2
+
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+  # Read-only input for the frozen E06 generator; there is no VLM training.
+  use_vlm_feature_cache: true
+  vlm_feature_cache_path: ${oc.env:VLM_FEATURE_CACHE_PATH}
+  vlm_feature_cache_format: gz
+  vlm_feature_cache_name: internvl_feature
+  vlm_hidden_key: last_hidden_state
+  use_online_vlm: false
+  vlm_online_checkpoint_path: ""
+  vlm_online_model_type: internvl
+  vlm_online_force_image_size: 448
+  vlm_online_max_dynamic_patch: 12
+  vlm_online_dynamic_image_size: true
+  vlm_online_use_thumbnail: true
+  vlm_online_num_image_token: 256
+  vlm_online_max_length: 2800
+
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  tf_dropout: 0.0
+  cam_f0: [3]
+  cam_l0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r0: [3]
+  cam_r1: []
+  cam_r2: []
+  cam_b0: [3]
+  lidar_pc: []
+  image_size: [1148, 672]
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+  lidar_min_x: -35
+  lidar_max_x: 35
+  lidar_min_y: -35
+  lidar_max_y: 35
+  lidar_image_size: [518, 518]
+  lidar_hist_max_per_pixel: 5
+  lidar_max_height: 100.0
+  lidar_split_height: 0.2
+  lidar_use_ground_plane: true
+  lidar_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    in_chans: 2
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+
+loss:
+  _target_: navsim.agents.chainflow_post_scorer_stage3_clover.loss.CloverScorerLoss
+  recomposition_tolerance: 5.0e-4
+  safety_tolerance: 1.0e-6
+  predicted_positive_threshold: 0.9
+
+checkpoint_path: ${oc.env:E06_CKPT_PATH}
+# Resolve the same explicit full-resume path as Trainer before initialize().
+resume_checkpoint_path: ${oc.select:train_ckpt_path,null}
+checkpoint_strict_load: true
+lr_args:
+  name: AdamW
+  base_lr: 1.0e-5
+  eta_min: 1.0e-6
+  weight_decay: 1.0e-4
+  warmup_steps: 400
+  warmup_start_factor: 0.1
+scheduler_args:
+  num_epochs: 10
+  dataset_size: 103288
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: true
+progress_bar: false
+console_log_every_n_steps: 100

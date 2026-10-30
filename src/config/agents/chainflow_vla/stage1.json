@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "role": "training_evaluation_reference",
+  "model": "chainflow_stage1",
+  "native_root": "agents/chainflow/native",
+  "native_config": "navsim/planning/script/config/common/agent/chainflow_vla_stage1.yaml",
+  "checkpoint": "weights/chainflow/stage1_navtrainval_9405.ckpt",
+  "backbone": "weights/chainflow/dinov2.safetensors",
+  "upstream_revision": "0f3565f66546139a0183bc5807d5f7234ae2d4b0",
+  "inference_adapter": "driversi_agents.chainflow.stage1:trajectory_from_input",
+  "exp_root": "exp",
+  "training_status": "native_loss_paired_training_adapter",
+  "native_loss": "ChainFlowVLALoss",
+  "fpd": "retained_reference",
+  "training_adapter": "driversi_agents.chainflow.training:run",
+  "training_lifecycle_config": "src/config/agents/chainflow_vla/lifecycle.yaml",
+  "pilot_evidence": "exp/chainflow-9405-rsi-v1/implementation-ledger.json",
+  "synthetic_training_enabled": true,
+  "baseline": {
+    "released_pdms": 94.05,
+    "local_full_benchmark_reproduced": false,
+    "training_source": "navtrainval",
+    "sha256": "8e54c374d093a7b4ec48939ec56fac702a3bd71e7625702920e51f428cc95c28"
+  },
+  "synthetic_training_scope": "explicitly_admitted_low_fidelity_pilot",
+  "stable_improvement_demonstrated": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "id": "navsim-augmentation-selection-v2",
+  "label": "NAVSIM evidence triage; no training or automatic quality admission",
+  "budget": {
+    "max_wall_seconds": 120,
+    "max_sim_agent_steps": 0
+  },
+  "steps": [
+    {
+      "id": "select",
+      "provider": "navsim_augmentation_decision",
+      "inputs": {},
+      "config": {
+        "evidence": "@DRIVERSI_ROOT@/exp/navsim-mainline-v1/inputs/evidence.json",
+        "llm": null
+      },
+      "max_wall_seconds": 90
+    }
+  ]
+}

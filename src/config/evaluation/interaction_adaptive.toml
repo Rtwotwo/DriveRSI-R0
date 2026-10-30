@@ -1,0 +1,19 @@
+schema_version = 2
+duration_mode = "fit_source"
+duration_seconds = 22.0
+min_duration_seconds = 2.5
+max_actors = 32
+selection_file = "navsim_mini_16.json"
+following_config_file = "following.toml"
+selected_following_cases = [0, 12, 24]
+
+# Keep all 16 frozen source starts. These budgets are fixed before execution,
+# demonstrate user-requested differences, and do not claim source exhaustion.
+# All other cases request 22 s; the current 9 s backend cap must remain visible.
+[[cases]]
+scene = "scene-000001.npz"
+duration_seconds = 3.0
+
+[[cases]]
+scene = "scene-000003.npz"
+duration_seconds = 6.0

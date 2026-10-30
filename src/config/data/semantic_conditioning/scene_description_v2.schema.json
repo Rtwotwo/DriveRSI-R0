@@ -1,0 +1,526 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "driversi.scene_description.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scope",
+    "scene_identity",
+    "information_scope",
+    "scene_overview",
+    "structured_facts",
+    "appearance",
+    "distinctive_features",
+    "retrieval",
+    "video_generation",
+    "evidence",
+    "facts_identity",
+    "limitations",
+    "trainable"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "driversi.scene_description.v2"
+    },
+    "scope": {
+      "enum": [
+        "retrieval_history",
+        "video_clip"
+      ]
+    },
+    "scene_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "token",
+        "source_split",
+        "role"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "source_split": {
+          "const": "navtrain"
+        },
+        "role": {
+          "enum": [
+            "source_log",
+            "executed_branch"
+          ]
+        }
+      }
+    },
+    "information_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "future_included",
+        "start_relative_s",
+        "end_relative_s",
+        "online_policy_input"
+      ],
+      "properties": {
+        "future_included": {
+          "type": "boolean"
+        },
+        "start_relative_s": {
+          "const": -2
+        },
+        "end_relative_s": {
+          "enum": [
+            0,
+            5
+          ]
+        },
+        "online_policy_input": {
+          "const": false
+        }
+      }
+    },
+    "scene_overview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structured",
+        "reviewed_visual"
+      ],
+      "properties": {
+        "structured": {
+          "type": "string"
+        },
+        "reviewed_visual": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "text",
+                "evidence_ids"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 500
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "maxItems": 16,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "structured_facts": {
+      "type": "object"
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observations",
+        "approved_paths",
+        "review",
+        "status"
+      ],
+      "properties": {
+        "observations": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "title": "DriveRSI observed appearance v2",
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "overview",
+                "road_layout",
+                "surroundings",
+                "lighting",
+                "road_surface",
+                "traffic_configuration",
+                "temporal_changes",
+                "distinctive_features"
+              ],
+              "properties": {
+                "overview": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "road_layout": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "surroundings": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "lighting": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "road_surface": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "traffic_configuration": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "temporal_changes": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "text",
+                    "evidence_ids"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "distinctive_features": {
+                  "type": "array",
+                  "maxItems": 4,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "text",
+                      "evidence_ids"
+                    ],
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                      },
+                      "evidence_ids": {
+                        "type": "array",
+                        "maxItems": 16,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "approved_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "review": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "partially_reviewed",
+            "draft_not_released"
+          ]
+        }
+      }
+    },
+    "distinctive_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retrieval": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text",
+            "facets"
+          ],
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "facets": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "nearby_30m_counts",
+                "heading_change_degrees",
+                "path_length_m"
+              ],
+              "properties": {
+                "nearby_30m_counts": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                },
+                "heading_change_degrees": {
+                  "type": "number"
+                },
+                "path_length_m": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "video_generation": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "positive_prompt",
+            "negative_prompt",
+            "camera_prompts",
+            "geometry_constraints",
+            "status"
+          ],
+          "properties": {
+            "positive_prompt": {
+              "type": "string"
+            },
+            "negative_prompt": {
+              "type": "string"
+            },
+            "camera_prompts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "CAM_F0",
+                "CAM_L0",
+                "CAM_R0",
+                "CAM_B0"
+              ],
+              "properties": {
+                "CAM_F0": {
+                  "type": "string"
+                },
+                "CAM_L0": {
+                  "type": "string"
+                },
+                "CAM_R0": {
+                  "type": "string"
+                },
+                "CAM_B0": {
+                  "type": "string"
+                }
+              }
+            },
+            "geometry_constraints": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "const": "conditioning_ready_not_generated_video_quality_approval"
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "facts_identity": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trainable": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "retrieval_history"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "video_generation": {
+            "type": "null"
+          },
+          "retrieval": {
+            "type": "object"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "retrieval": {
+            "type": "null"
+          },
+          "video_generation": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
+}

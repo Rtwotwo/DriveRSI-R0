@@ -1,0 +1,7 @@
+{
+  "endpoint": "https://YOUR_PROVIDER/v1/chat/completions",
+  "model": "YOUR_MODEL",
+  "api_key_env": "DRIVERSI_LLM_API_KEY",
+  "timeout_seconds": 45,
+  "max_tokens": 2048
+}

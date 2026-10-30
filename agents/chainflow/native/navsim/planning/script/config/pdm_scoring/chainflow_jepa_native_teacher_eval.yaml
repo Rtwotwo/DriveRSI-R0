@@ -1,0 +1,57 @@
+defaults:
+  - default_common
+  - default_evaluation
+  - default_scoring_parameters
+  - ddp
+  - agent: chainflow_jepa_native_teacher
+  - _self_
+  - override train_test_split: navtest
+
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/metric_cache
+experiment_name: chainflow_jepa_native_teacher/navtrainval/stage1
+seed: 0
+deterministic: true
+# Four history observations only; real future frames and bootstrap weights are unused.
+restore_training_config: true
+require_complete_evaluation: true
+write_evaluation_summary: true
+privileged_future_input: false
+evaluation_agent_overrides:
+  bootstrap_checkpoint_path: ''
+  stage1_checkpoint_path: ''
+  checkpoint_strict_load: true
+  enable_ray: false
+  config:
+    long_trajectory_additional_poses: 0
+expected_eval_scenes: 12146
+training_config_path: null
+
+agent:
+  enable_ray: false
+  bootstrap_checkpoint_path: ''
+  stage1_checkpoint_path: ''
+  checkpoint_strict_load: true
+  config:
+    long_trajectory_additional_poses: 0
+
+dataloader:
+  params:
+    batch_size: 8
+    num_workers: 4
+
+trainer:
+  params:
+    devices: 8
+    precision: bf16-mixed
+
+test_time_optimizer:
+  enabled: false

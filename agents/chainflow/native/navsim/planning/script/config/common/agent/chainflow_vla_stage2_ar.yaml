@@ -1,0 +1,7 @@
+# Stage2 checkpoint with the final AR proposals sent directly to the scorer.
+defaults:
+  - chainflow_vla_stage2
+  - _self_
+
+config:
+  eval_trajectory_source: ar

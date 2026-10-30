@@ -1,0 +1,5 @@
+defaults:
+  - chainflow_jepa_native_teacher
+  - _self_
+
+# 25 epochs: current/history-conditioned JEPA + native AR + scoring.

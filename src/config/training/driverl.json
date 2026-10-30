@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "driverl-bounded-learning",
+  "model_config": "../agents/driverl/native.yaml",
+  "mode": "online_rl",
+  "initialization": "model_weights",
+  "budget": {
+    "max_wall_seconds": 3600,
+    "max_optimizer_steps": 1000,
+    "max_environment_steps": 600,
+    "max_scoring_agent_steps": 0
+  }
+}

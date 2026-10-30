@@ -1,0 +1,167 @@
+# Independent current-only student with training-only privileged online guidance.
+_target_: navsim.agents.chainflow_fpd_online_student.agent.ChainFlowFPDOnlineStudentAgent
+
+config:
+  training_stage: 2
+  distillation_stage: joint # One continuous joint fine-tuning run.
+  distillation_variant: distill
+  train_visual: true # Native LoRA/projection/scene tokens only, not full DINOv2 unfreezing.
+  teacher_target_cache: null # Verified static fallback; passed explicitly by launcher.
+  teacher_checkpoint: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_vla/chainflow_fpd_native_teacher/navtrainval/stage2/10.05_11.03.22_from_epoch23/lightning_logs/version_0/checkpoints/epoch-29-step-48390.ckpt
+  teacher_sha256: 69164938961be5a4886f5e73017bba0eeef4672aac2b02bd2998015456dd0a47
+  # Training targets only. Student get_sensor_config remains current-only at inference.
+  future_offset: 4
+  future_timestamp_policy: frame_index
+  future_timestamp_tolerance: 0.1
+  online_enabled: true
+  online_branch_enabled: true
+  online_branch_interval: 4 # Batches, not optimizer steps; all ranks use the same cadence.
+  online_ramp_epochs: 2
+  online_metric_weight: 0.1
+  online_preference_weight: 0.2
+  online_geometry_weight: 0.5
+  online_epsilon_weight: 0.05
+  online_minimum_improvement: 0.005
+  online_target_min_quality: 0.9
+  online_target_quality_margin: 0.05
+  online_max_targets: 4
+  online_min_distance: 1.0
+  online_metric_reliability_scale: 0.1
+  online_teacher_temperature: 0.02
+  online_student_temperature: 0.2
+  online_quality_minimum_gap: 0.01
+  online_teacher_minimum_gap: 0.005
+  multi_max_targets: 4
+  multi_min_quality: 0.9
+  multi_quality_margin: 0.05
+  multi_min_distance: 0.5 # Mean XY distance (m) + heading_weight * wrapped yaw.
+  multi_heading_weight: 0.5
+  proposal_num: 64
+  num_poses: 8
+  long_trajectory_additional_poses: 2
+  ref_num: 4
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  num_history_frames: 4
+  global_scene_num_layers: 2
+  global_scene_num_heads: 8
+  global_scene_dropout: 0.1
+  cam_f0: [3]
+  cam_b0: [3]
+  cam_l0: [3]
+  cam_r0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r1: []
+  cam_r2: []
+  lidar_pc: []
+  image_size: [1148, 672]
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: ${oc.env:NAVSIM_DEVKIT_ROOT}/weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  use_diffusion_decoder: true
+  eval_trajectory_source: diffusion
+  diffusion_type: ddim
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_condition_dim: 256
+  diffusion_use_ar_proposal_tokens: true
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: scaled_linear
+  diffusion_num_inference_steps: 12
+  condition_detach: false
+  sampling_noise_mode: fixed_modes # No scene identifier/teacher labels in prediction.
+  diffusion_activation_checkpointing: true # Full rollout gradient, recomputed activations.
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+  use_vlm_feature_cache: false
+  use_online_vlm: false
+
+  train_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+  validation_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+
+# Static fallback + GT/true PDM; online guidance is added separately by Agent.
+# Formula choices are an OPD-style adaptation, not an official FPD reproduction.
+loss:
+  _target_: navsim.agents.chainflow_fpd_online_student.losses.distillation.Stage2DistillationLoss
+  trajectory_weight: 0.1 # Native coarse AR GT supervision.
+  refined_multi_weight: 0.5 # On actual GT-free student DDIM samples, with gradient.
+  refined_gt_weight: 0.1
+  ar_anchor_weight: 0.1 # Retain teacher's coarse current-only AR modes.
+  teacher_preference_weight: 0.0
+  preference_source: teacher
+  teacher_pool_metric_weight: 0.0
+  safety_weight: 0.2
+  efficiency_weight: 0.2
+  match_targets_for_ranking: true
+  teacher_temperature: 0.02 # On teacher predicted normalized quality, not raw log rank.
+  student_temperature: 0.2 # On the actual inference log-composite rank.
+  reliability_scale: 0.1
+  teacher_minimum_gap: 0.005
+  quality_minimum_gap: 0.01
+  positive_quality_margin: 0.05
+  target_min_quality: 0.9
+  neighbor_radius: 2.0 # Mean XY (m) + 0.5 * wrapped heading (rad).
+  maximum_margin: 0.5
+
+# Evaluation loads a student; initialization transfers weights only, not optimizer.
+checkpoint_path: ''
+checkpoint_strict_load: true
+initialization_checkpoint: ''
+lr_args:
+  base_lr: 3e-5
+  dit_lr: 5e-6
+  ar_lr: 2e-6
+  visual_lr: 1e-6
+  weight_decay: 0.01
+scheduler_args:
+  num_epochs: 30 # Initial experiment budget; not a performance guarantee.
+  dataset_size: 103288
+  warmup_fraction: 0.05
+  min_lr_ratio: 0.01
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: null
+progress_bar: false
+console_log_every_n_steps: 20

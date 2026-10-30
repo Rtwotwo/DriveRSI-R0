@@ -1,0 +1,10 @@
+{
+  "model_path": "weights/vlm/Qwen3.5-2B",
+  "cameras": [
+    "CAM_F0",
+    "CAM_L0",
+    "CAM_R0"
+  ],
+  "max_side": 512,
+  "image_batch_size": 3
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 2,
+  "id": "augustus-evidence-selected-v1",
+  "label": "Evidence-selected native SFT; evidence must select a real admitted training case",
+  "budget": {
+    "max_wall_seconds": 7500,
+    "max_sim_agent_steps": 200000
+  },
+  "steps": [
+    {
+      "id": "decision",
+      "provider": "learning_decision",
+      "inputs": {},
+      "config": {
+        "evidence": "learning-evidence.json"
+      },
+      "max_wall_seconds": 30
+    },
+    {
+      "id": "proposals",
+      "provider": "drivetto_candidates",
+      "inputs": {},
+      "config": {
+        "bank": "/path/to/workspace/DriveScorer/exp/drivetto_feedback",
+        "cases": "drivetto-cases.json",
+        "protected_logs": "../policies/protected-navtest-logs.json",
+        "max_scenes": 16
+      },
+      "max_wall_seconds": 120
+    },
+    {
+      "id": "dataset",
+      "provider": "native_model_dataset",
+      "inputs": {
+        "proposals": "proposals"
+      },
+      "config": {
+        "manifest": "../../agents/augustus/source-manifest.example.json",
+        "python": "../../../../../conda_env/driverl_navsim/bin/python3.11",
+        "max_wall_seconds": 300
+      },
+      "max_wall_seconds": 330
+    },
+    {
+      "id": "train",
+      "provider": "native_model_selected_training",
+      "inputs": {
+        "dataset": "dataset",
+        "decision": "decision"
+      },
+      "config": {
+        "model_config": "../../agents/augustus/native.yaml",
+        "max_wall_seconds": 3600,
+        "max_sim_agent_steps": 100000,
+        "case_id": "selected-real-case",
+        "recipe_id": "bounded-native-sft",
+        "max_optimizer_steps": 1000
+      },
+      "max_wall_seconds": 3630
+    },
+    {
+      "id": "evaluation",
+      "provider": "native_model_rsi_evaluation",
+      "inputs": {
+        "dataset": "dataset",
+        "student": "train"
+      },
+      "config": {
+        "model_config": "../../agents/augustus/native.yaml",
+        "max_wall_seconds": 3000,
+        "max_sim_agent_steps": 100000
+      },
+      "max_wall_seconds": 3030
+    },
+    {
+      "id": "feedback",
+      "provider": "native_model_learning_feedback",
+      "inputs": {
+        "dataset": "dataset",
+        "student": "train",
+        "evaluation": "evaluation"
+      },
+      "config": {},
+      "max_wall_seconds": 30
+    }
+  ]
+}

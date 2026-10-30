@@ -1,0 +1,6 @@
+# Development partition uses train logs only, with navval logs held out.
+# The main full-refit configuration remains the audited 103288 tokens.
+defaults:
+  - scene_filter: navtrain
+data_split: trainval_fut
+include_val_logs_in_train: false

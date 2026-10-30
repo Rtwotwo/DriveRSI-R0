@@ -1,0 +1,9 @@
+defaults:
+  - chainflow_fpd_online_student
+  - _self_
+
+# Ablation: online same-pool scoring, with static geometry but no teacher branch.
+config:
+  online_branch_enabled: false
+  online_geometry_weight: 0.0
+  online_epsilon_weight: 0.0

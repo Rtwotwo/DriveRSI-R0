@@ -1,0 +1,50 @@
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra           # Store hydra's config breakdown here for debugging
+  searchpath:                                       # Only <exp_dir> in these paths are discoverable
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: False
+
+defaults:
+  - default_common
+  - default_evaluation
+  - default_scoring_parameters
+  - ddp
+  - agent: constant_velocity_agent
+  - _self_
+  - override train_test_split: navtest
+
+metric_cache_path: ${oc.env:NAVSIM_EXP_ROOT}/metric_cache # path to metric cache
+seed: 0
+deterministic: false
+
+# TOAD-style test-time trajectory optimization. Disabled is a true no-op: the
+# optional package is not imported and the model output is left untouched.
+test_time_optimizer:
+  enabled: false
+  num_iterations: 5
+  num_samples: 64
+  num_elites: 8
+  trajectory_dt: 0.5
+  history_dt: 0.5
+  alpha: 1.0
+  std_floor_accel: 0.1
+  std_floor_yaw_rate: 0.025
+  comfort_weight: 0.05
+  anchor_weight: 0.5
+  init_std_scale: 0.5
+  vote: true
+  seed: 2
+  trajectory_key: trajectory
+  proposals_key: proposals
+  ego_status_key: ego_status
+  scorer_module_path: null
+  preflight_check: true
+  allow_postprocessor_bypass: false
+  fallback_num_proposals: 32
+  fallback_std_accel: 0.8
+  fallback_std_yaw_rate: 0.12
+  on_error: raise
+  log_every_n_batches: 50

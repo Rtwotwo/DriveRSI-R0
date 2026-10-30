@@ -1,0 +1,7 @@
+defaults:
+- scene_filter: navpilot_fut_v3
+data_split: trainval_fut
+training_log_partitions:
+- train
+include_val_logs_in_train: false
+expected_real_train_samples: 1024

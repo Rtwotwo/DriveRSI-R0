@@ -1,0 +1,148 @@
+_target_: navsim.agents.chainflow_jepa_native_teacher.agent.ChainFlowJEPANativeTeacherAgent
+
+config:
+  training_stage: 1
+  run_epoch_budget: 0  # Complete the stage by default; a positive value explicitly limits each invocation.
+  sampled_score_fraction: 1.0  # Stage 2 scorer sees the same free DiT candidates as deployment.
+  diffusion_warmup_epochs: 1.0  # First Stage 2 epoch ramps denoising losses from 0.1 to 1.
+  # Original ChainFlow proposal generator and scoring network.
+  proposal_num: 64
+  num_poses: 8
+  long_trajectory_additional_poses: 2
+  ref_num: 4
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  # Future frames are training targets only. Inference generates these latent slots.
+  # Indices are relative to the current frame, not measured timestamps.
+  num_history_frames: 4
+  future_offsets: [2, 4, 6, 8]
+  jepa_target_cache_path: ""  # Optional fixed-encoder supervision; never a model input.
+  global_scene_num_layers: 2
+  global_scene_num_heads: 8
+  global_scene_dropout: 0.1
+  condition_detach: false
+  cam_f0: [0, 1, 2, 3]
+  cam_b0: [0, 1, 2, 3]
+  cam_l0: [0, 1, 2, 3]
+  cam_r0: [0, 1, 2, 3]
+  cam_l1: []
+  cam_l2: []
+  cam_r1: []
+  cam_r2: []
+  lidar_pc: []
+  image_size: [1148, 672]
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: ${oc.env:NAVSIM_DEVKIT_ROOT}/weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  jepa_num_layers: 4
+  jepa_num_heads: 8
+  jepa_num_inference_steps: 4
+  jepa_noise_seed: 27
+  jepa_noise_scale: 1.0
+  jepa_loss_weight: 1.0
+  jepa_logit_mean: -0.2
+  jepa_logit_std: 1.6
+  jepa_time_min: 0.001
+
+  # Native DDIM architecture; scene memory replaces language condition tokens.
+  use_diffusion_decoder: false
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  diffusion_type: ddim
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_condition_dim: 256
+  diffusion_use_ar_proposal_tokens: true
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: scaled_linear
+  diffusion_num_inference_steps: 12
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+  use_vlm_feature_cache: false
+  use_online_vlm: false
+
+  # Planning always sees generated future latents; real future images are targets only.
+  future_teacher_validation: true
+  teacher_development_validation: false
+  train_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+  validation_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+
+loss:
+  _target_: navsim.agents.chainflow_jepa_native_teacher.losses.loss.ChainFlowVLALoss
+  trajectory_weight: 1.0
+  prev_weight: 0.5
+  inter_weight: 0.0
+  final_score_weight: 1.0
+  diffusion_loss_weight: 0.0
+  diffusion_trajectory_loss_weight: 0.0
+  selection_regret_weight: 0.1
+  selection_temperature: 1.0
+  dynamic_score_weighting_enabled: false
+
+# Bootstrap loads compatible mature planning/visual/GSE weights for fresh Stage 1.
+# Stage 2 initializes from this agent's Stage 1; full resume restores optimizer state.
+checkpoint_path: ''
+bootstrap_checkpoint_path: ''
+stage1_checkpoint_path: ''
+checkpoint_strict_load: true
+lr_args:
+  name: AdamW
+  base_lr: 5e-5   # transferred scene fusion; Stage 2 also uses this for new DiT
+  scorer_lr: 3e-5 # mature scorer adapts separately from new JEPA modules
+  ar_lr: 2e-5     # native AR and ego encoder
+  visual_lr: 1e-6 # trainable visual adapters, projection and scene queries
+  jepa_lr: 1e-4   # future latent generator
+  weight_decay: 0.01
+scheduler_args:
+  num_epochs: 25
+  dataset_size: 103288  # informational; actual optimizer steps drive the schedule
+  warmup_fraction: 0.1
+  min_lr_ratio: 0.01
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: null
+progress_bar: false
+console_log_every_n_steps: 20

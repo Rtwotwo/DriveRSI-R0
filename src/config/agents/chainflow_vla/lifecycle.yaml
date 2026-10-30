@@ -1,0 +1,19 @@
+schema_version: 1
+model: chainflow_stage1
+family: end_to_end_planner
+repository: agents/chainflow/native
+revision: 3efa2be9876d5f430bc8917197a9917d4e6a0d6c
+python: "@DRIVERSI_ROOT@/.venvs/chainflow/bin/python"
+weights:
+  checkpoint: weights/chainflow/stage1_navtrainval_9405.ckpt
+  backbone: weights/chainflow/dinov2.safetensors
+paths:
+  maps: /path/to/datasets/maps
+settings:
+  gpu: 1
+  gpu_memory_fraction: 0.12
+capabilities:
+  train: true
+  online_control: false
+input_contract: native_four_history_ten_future_stage1_current_four_cameras
+output_contract: native_lightning_weights_and_complete_recovery_checkpoint

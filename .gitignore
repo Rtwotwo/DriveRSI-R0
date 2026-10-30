@@ -1,0 +1,57 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+.venvs/
+/build/
+dist/
+.scratch/
+outputs/
+clones/
+/data/
+src/config/local/
+.env
+.env.*
+!.env.example
+*.so
+*.pyd
+
+/weights/
+exp/
+viz/
+/dataset/
+
+# Host-specific deployment runtimes
+.runtimes/
+
+# Managed private retrieval assets (registries live in src/config)
+lib/
+
+# Generated private scene caption library; maintained code stays in src/data.
+lib/cluster_caption/
+
+# Paper build archives and sync snapshots (generated, large)
+assets/cvpr2027/
+
+# Preserve empty data-layout documentation in source releases
+!/data/
+/data/*
+!/data/README.md
+!/weights/
+/weights/*
+!/weights/README.md
+!/lib/
+/lib/*
+!/lib/README.md
+!/dataset/
+/dataset/*
+!/dataset/README.md
+!/dataset/sensor_blobs/
+!/dataset/navsim_logs/
+/dataset/sensor_blobs/*
+/dataset/navsim_logs/*
+!/dataset/sensor_blobs/.gitkeep
+!/dataset/navsim_logs/.gitkeep

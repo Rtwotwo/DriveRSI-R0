@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DriveRSI · 相机绑定白膜与轨迹对比</title><link rel="stylesheet" href="gallery.css"></head><body>
+<header><a href="../index.html">← 白膜图库</a><h1>结构化白膜 · 原日志与新轨迹</h1><span>NAVSIM · Boston · 6 秒 · 10 路机位</span></header>
+<main><section class="workspace"><div class="toolbar">
+<label id="cameraControl">绑定相机 <select id="camera" aria-label="绑定相机"></select></label>
+<label>展示 <select id="mode" aria-label="展示内容"><option value="structure">结构化三维白膜（可环绕）</option><option value="whitebox">标定相机白膜</option><option value="rgb">实拍 / GS 图像</option><option value="bev">结构化 BEV</option><option value="quad">图像＋白膜四联</option></select></label>
+<label id="styleControl">白膜样式 <select id="style"><option value="wire">语义线框</option><option value="solid">实体白膜</option></select></label>
+<label id="overlayControl"><input id="overlay" type="checkbox">RGB 叠加语义框</label><span id="binding" class="tag">载入相机…</span></div>
+<div id="structureControls" class="toolbar structureToolbar">
+<label>观察视角 <select id="viewpoint" aria-label="观察视角"><option value="chase">跟随视角</option><option value="front">主体前视</option><option value="orbit">自由环绕</option><option value="bird">俯视总览</option></select></label>
+<label>跟踪对象 <select id="focusActor" aria-label="跟踪对象"></select></label>
+<button id="rotateLeft" aria-label="向左环绕">↶ 左转</button><button id="rotateRight" aria-label="向右环绕">右转 ↷</button>
+<button id="zoomIn">拉近</button><button id="zoomOut">拉远</button><button id="resetView">重置视角</button>
+<label><input id="showTrajectory" type="checkbox" checked>实际轨迹</label><label><input id="showObjectLabels" type="checkbox">对象标签</label><label><input id="showSignals" type="checkbox" checked>日志信号</label>
+<label><input id="sourceGhosts" type="checkbox">分支叠加仅日志对象</label>
+<span>拖动旋转 · Shift 拖动平移 · 滚轮缩放</span></div>
+<div id="coverage" class="coverage" role="status"></div><div id="stage" class="stage"><section id="sourcePanel" class="panel"><h2>原始日志 <small id="sourceStamp"></small></h2><canvas id="sourceCanvas" width="960" height="540" aria-label="原日志视角"></canvas></section><section class="panel"><h2>新轨迹 <small id="branchStamp"></small></h2><canvas id="branchCanvas" width="960" height="540" aria-label="新轨迹视角"></canvas></section><section id="sourceExtra" class="panel" hidden><h2>原日志 · 语义白膜</h2><canvas id="sourceWhitebox" width="960" height="540"></canvas></section><section id="branchExtra" class="panel" hidden><h2>新轨迹 · 语义白膜</h2><canvas id="branchWhitebox" width="960" height="540"></canvas></section></div>
+<div id="status" role="status">载入场景索引…</div>
+<div class="controls"><button id="reset">回到开始</button><button id="prev">上一帧</button><button id="play" class="primary">播放</button><button id="next">下一帧</button><input id="time" aria-label="时间轴" type="range" min="0" max="30" value="0"><strong id="clock">—</strong><label>速度 <select id="speed"><option value=".5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label></div>
+</section>
+<section class="downloads card"><h2>下载标定相机白膜视频 <small id="videoCamera"></small></h2><div class="toolbar"><label>视频机位 <select id="downloadCamera" aria-label="视频机位"></select></label><label>视频样式 <select id="downloadStyle" aria-label="视频样式"><option value="wire">语义线框</option><option value="solid">实体白膜</option></select></label></div><div id="videoLinks" class="links"></div><div id="videoArchive" class="links"></div><p id="videoStatus">正在读取下载清单…</p><a id="dataDownload" download="camera-bound-records.json">下载完整结构化记录 JSON</a></section>
+<p id="limits" class="warning"></p>
+<div class="meta"><section class="card"><h2>完整对象类别</h2><div id="kinds"></div><p id="objectCoverage"></p></section><section class="card"><h2>交通信号与执行状态</h2><div id="signalRecords"></div><p id="executionState"></p></section></div>
+<div class="meta"><details class="card"><summary>地图图层与对象颜色</summary><div id="layers"></div><p>蓝：车辆 · 橙：行人 · 紫：骑行者 · 粉：缺少 GS 实例 · 青：选中对象（结构化视图中仅日志叠加对象为紫色虚线）</p><small>线框允许透视遮挡；道路采用地图平面近似，不能判断立交高度。下载视频随白膜样式切换；导出视频采用固定图层。</small></details><details class="card"><summary>场景来源与相机诊断</summary><p id="sourceMeta"></p><pre id="diagnostics"></pre></details></div>
+<details class="card" id="objectDetails"><summary>日志与分支对象（点击对象可高亮）</summary><div class="scroll"><table><thead><tr><th>对象</th><th>类别</th><th>日志位置</th><th>新位置 / 速度</th><th>控制 / 资产</th></tr></thead><tbody id="objects"></tbody></table></div></details>
+<details class="card" id="logDetails"><summary>当前原始日志字段</summary><pre id="log"></pre></details>
+<p class="note">结构化视角为独立诊断机位，不能用于解释另一机位的 RGB；标定模式分别使用原日志与分支有效标定。虚拟车辆没有同机位实拍，不借用 ego 图像。已有 GS 伪影保留；白膜用于对齐检查，不代表写实质量或训练资格。</p>
+</main><script src="projection.js"></script><script src="semantic.js"></script><script src="wireframe.js"></script><script src="structure-geometry.js"></script><script src="structure.js"></script><script src="structure-controls.js"></script><script src="gallery.js"></script></body></html>

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "source_log": "2021.08.17.13.10.50_veh-08_00122_00295",
+  "scene_sha256": "33a5901bcc06a7aeb77a815d9333c8440dadfa8eba747cee539c8852506c975c",
+  "protected_logs": [
+    "2021.08.18.06.04.33_veh-51",
+    "2021.05.12.19.36.12_veh-35"
+  ],
+  "split": "train",
+  "db_path": "/path/to/nuplan/nuplan-v1.1/splits/pittsburgh/2021.08.17.13.10.50_veh-08_00122_00295.db"
+}

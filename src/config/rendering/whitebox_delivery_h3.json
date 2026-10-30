@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "database": "@DRIVERSI_ROOT@/lib/retrieval/navtrain/catalog.sqlite",
+  "maps_root": "/path/to/datasets/maps",
+  "output": "@DRIVERSI_ROOT@/exp/whitebox-h3-delivery-v1",
+  "reviews_root": "@DRIVERSI_ROOT@/exp/whitebox-appearance-reviews-v1",
+  "renderer_site_packages": "@DRIVERSI_ROOT@/.venvs/whitebox-video/lib/python3.11/site-packages",
+  "prompt_profile": "minimax_h3_ref2va_v1",
+  "seed": 0
+}

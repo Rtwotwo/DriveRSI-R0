@@ -1,0 +1,13 @@
+schema_version: 1
+runtime: driverl_nuplan
+release_id: driverl-teacher-u2400
+# Relative paths are anchored at this config, never at the shell working directory.
+python: ../../../../.venvs/driverl/bin/python
+driverl_root: ../../../../agents/driverl/native/DriveRL
+nuplan_root: ../../../../agents/driverl/native/DriveRL/nuplan-devkit
+data_root: /path/to/datasets/nuplan-v1.1
+maps_root: /path/to/datasets/maps
+split: mini
+preflight_timeout_seconds: 120
+
+checkpoint: ../../../../weights/driverl/checkpoint_2400.pt

@@ -1,0 +1,52 @@
+{
+  "repository": "https://github.com/OpenDriveLab/WorldEngine",
+  "commit": "3eded7e8ac64e5bed817860765089b5914ab698f",
+  "files": [
+    {
+      "upstream_path": "projects/SimEngine/worldengine/render/mtgs/gaussian_model/vanilla_gaussian_splatting.py",
+      "upstream_sha256": "75f9547f7b65e7e554a095d5666f31cd4fade5ec9ce125f580b77d034aed2238",
+      "owned_path": "src/rendering/gaussian/worldengine_native/gaussian_model/vanilla_gaussian_splatting.py",
+      "owned_sha256": "75f9547f7b65e7e554a095d5666f31cd4fade5ec9ce125f580b77d034aed2238",
+      "changes": [
+        "package_import_namespace_only"
+      ]
+    },
+    {
+      "upstream_path": "projects/SimEngine/worldengine/render/mtgs/gaussian_model/rigid_object.py",
+      "upstream_sha256": "f4f6ec9c0c1c327636e968dcb549dd70328422d9d7a6d692f3863160fd9b6e39",
+      "owned_path": "src/rendering/gaussian/worldengine_native/gaussian_model/rigid_object.py",
+      "owned_sha256": "9373a1a1ceba40d705e7e57d74af5d3c6a50e6dec62345c8ca36bb2ea2339fef",
+      "changes": [
+        "package_import_namespace_only"
+      ]
+    },
+    {
+      "upstream_path": "projects/SimEngine/worldengine/render/mtgs/gaussian_model/rigid_object_mirrored.py",
+      "upstream_sha256": "cb3a8fe6eaaf8347b3405e4b1a7fcc6335480fb9c02f9c2aa8add4ff0439f866",
+      "owned_path": "src/rendering/gaussian/worldengine_native/gaussian_model/rigid_object_mirrored.py",
+      "owned_sha256": "4ab57cde9f1760c540b6cf9823b3f5938c8d5fd6d08a3ce8546020021efc7a56",
+      "changes": [
+        "package_import_namespace_only"
+      ]
+    },
+    {
+      "upstream_path": "projects/SimEngine/worldengine/render/mtgs/utils/gaussian_utils.py",
+      "upstream_sha256": "38e94a2da6bfc8406113d48f7c93f49334357c95771e28e53e2518eed34d8f27",
+      "owned_path": "src/rendering/gaussian/worldengine_native/utils/gaussian_utils.py",
+      "owned_sha256": "38e94a2da6bfc8406113d48f7c93f49334357c95771e28e53e2518eed34d8f27",
+      "changes": [
+        "package_import_namespace_only"
+      ]
+    },
+    {
+      "upstream_path": "projects/SimEngine/worldengine/render/mtgs/utils/portable_utils.py",
+      "upstream_sha256": "77b3e2bc3f423e686268ad8bafd20215495f18bba0f39daccec09235a24bd048",
+      "owned_path": "src/rendering/gaussian/worldengine_native/utils/portable_utils.py",
+      "owned_sha256": "77b3e2bc3f423e686268ad8bafd20215495f18bba0f39daccec09235a24bd048",
+      "changes": [
+        "package_import_namespace_only"
+      ]
+    }
+  ],
+  "runtime_imports_from_clones": false
+}

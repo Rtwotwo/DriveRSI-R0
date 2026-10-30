@@ -1,0 +1,29 @@
+schema_version: 1
+model: fpd_drive
+family: end_to_end
+repository: agents/fpd_drive/native
+revision: 79bfad7c77c936138d14f8ecea0b3a55f6d563ff
+python: .venvs/fpd_drive/bin/python
+weights:
+  checkpoint: weights/fpd_drive/pro_v1.pt
+  backbone: weights/backbones/dinov2/model.safetensors
+paths:
+  nuplan: src/vendor/driving/nuplan-devkit
+  navsim_v1: src/vendor/driving/drivor
+  navsim_v2: src/vendor/driving/navsim-v2.2
+  data: /path/to/datasets
+  maps: /path/to/datasets/maps
+  metric_cache: /path/to/datasets/metric_cache_v1
+  synthetic_sensors: /path/to/datasets/navhard_two_stage/sensor_blobs
+  synthetic_scenes: /path/to/datasets/navhard_two_stage/synthetic_scene_pickles
+settings:
+  variant: pro
+  benchmark: v1
+  gpu: 3
+capabilities:
+  inference: true
+  evaluate: true
+  train: false
+  online_control: false
+input_contract: native_current_four_cameras_ego_history_navigation
+output_contract: native_8x3_rear_axle_se2_0.5s

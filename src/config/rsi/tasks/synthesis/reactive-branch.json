@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "id": "reactive-synthesis-demo",
+  "label": "Executed multi-actor branch to GS and NAVSIM inspection; strict quality gate",
+  "budget": {
+    "max_wall_seconds": 2400,
+    "max_sim_agent_steps": 15000
+  },
+  "steps": [
+    {
+      "id": "world",
+      "provider": "reactive_synthesis_skill",
+      "inputs": {},
+      "config": {
+        "scene": "@DRIVERSI_ROOT@/outputs/datasets/navsim-mtgs-boston-v1/scene.npz",
+        "road_graph": "@DRIVERSI_ROOT@/outputs/datasets/navsim-mtgs-boston-v1/road_graph.json",
+        "log": "/path/to/datasets/navsim_logs/trainval/2021.09.15.16.17.26_veh-28_01085_01182.pkl",
+        "sensor_root": "/path/to/datasets/sensor_blobs/trainval_all",
+        "explore_steps": 20,
+        "explore_speed": 6.0,
+        "desired_speed": 13.0
+      },
+      "max_wall_seconds": 300
+    },
+    {
+      "id": "selected",
+      "provider": "reactive_branch_selection",
+      "inputs": {
+        "world": "world"
+      },
+      "config": {
+        "branch": "challenge"
+      },
+      "max_wall_seconds": 30
+    },
+    {
+      "id": "render",
+      "provider": "selected_branch_gs",
+      "inputs": {
+        "branch": "selected"
+      },
+      "config": {
+        "config": "@DRIVERSI_ROOT@/exp/harness-skills-v1/inputs/render-v2.json",
+        "python": "@DRIVERSI_ROOT@/.venvs/mtgs/bin/python",
+        "max_wall_seconds": 1500,
+        "max_sim_agent_steps": 6000,
+        "gpu": 1
+      },
+      "max_wall_seconds": 1560
+    },
+    {
+      "id": "package",
+      "provider": "selected_branch_navsim_export",
+      "inputs": {
+        "rendered": "render"
+      },
+      "config": {
+        "cameras": [
+          "CAM_F0",
+          "CAM_L0",
+          "CAM_R0"
+        ],
+        "future_images": true
+      },
+      "max_wall_seconds": 120
+    }
+  ]
+}

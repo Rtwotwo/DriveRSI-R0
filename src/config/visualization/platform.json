@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "site_root": "exp/local-view",
+  "output": "exp/local-view/platform",
+  "experiments": [],
+  "training": [],
+  "production": [],
+  "scenes": [],
+  "whitebox": [],
+  "harness": [],
+  "legacy": []
+}

@@ -1,0 +1,16 @@
+{
+  "source_project": "DriveScorer",
+  "source_module": "navsim/evaluate/epdms",
+  "source_sha256": {
+    "evaluate.py": "20754f03445f2e2a9fda6d06204946c9d6c4fac8aa7ef7bd4f174323dbe3effb",
+    "one_stage.py": "972bca862ec6ef7cd5cf9721f043461326d8db071437e16808966774ca7708a0",
+    "two_stage.py": "0dd9a3a66685b2829978590535bc67141d742f4bc770eac29e56701ea4867520"
+  },
+  "changes": [
+    "owned source namespace",
+    "project config paths",
+    "navtest CLI only; no benchmark token duplication",
+    "explicit extended-comfort coverage reporting separate from scene coverage"
+  ],
+  "native_metric_math_changed": false
+}

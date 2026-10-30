@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "presets": [
+    {
+      "id": "studies/augustus-paired.json",
+      "title": "AUGUstus 原始标签配对实验",
+      "role": "studies",
+      "status": "requires_preparation",
+      "purpose": "复用原始锚点五阶段模板，固定训练预算与收益门槛；实验前准备数据与环境。"
+    },
+    {
+      "id": "skills/augustus-teacher-student.json",
+      "title": "DriveRL教师—AUGUstus学生服务绑定",
+      "role": "skills",
+      "status": "registered",
+      "purpose": "被VLA技能记忆入口读取，固定教师、学生与监督协议。"
+    },
+    {
+      "id": "examples/chainflow-navtest-campaign.json",
+      "title": "ChainFlow 旧基准实验模板",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "历史基准计划；保留评分协议与数据隔离示例，不是当前默认训练入口。"
+    },
+    {
+      "id": "examples/drivetto-cases.json",
+      "title": "DriveTTO 候选来源示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "供原始锚点标签对照模板引用；具体候选库路径需要重新准备。"
+    },
+    {
+      "id": "examples/recovery/active.json",
+      "title": "主动恢复课程示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "旧 Pittsburgh 来源的主动困难状态课程；场景与证书需重新准备。"
+    },
+    {
+      "id": "examples/augustus-adaptive.json",
+      "title": "AUGUstus 旧自适应实验",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "早期能力反馈与数据选择示例，依赖历史证据库；不会自动运行。"
+    },
+    {
+      "id": "examples/augustus-original-study.json",
+      "title": "AUGUstus 原始锚点标签对照",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "由 studies/augustus-paired.json 引用，比较原标签与既有DriveTTO标签；不代表新历史生成。"
+    },
+    {
+      "id": "examples/repair/boston-task.json",
+      "title": "Boston 反馈修复任务示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "连接修复规则与历史任务；仅用于回溯和复现准备。"
+    },
+    {
+      "id": "examples/repair/feedback.json",
+      "title": "反馈修复示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "历史失败回执驱动修复的配置，保留待执行证据约束。"
+    },
+    {
+      "id": "examples/recovery/hard.json",
+      "title": "困难状态恢复示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "旧 Boston 来源的困难状态恢复任务；保留历史方法配置。"
+    },
+    {
+      "id": "examples/recovery/learned-collection.json",
+      "title": "晋级模型重新采集示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "旧模型重新进入采集环节的模板，不能据模板存在断言已晋级。"
+    },
+    {
+      "id": "tasks/preflight/driverl.json",
+      "title": "DriveRL 原生清单与严格加载",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/synthesis/navsim-selection.json",
+      "title": "NAVSIM 场景扩充选择",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/synthesis/navsim-history.json",
+      "title": "NAVSIM 历史数据导出",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/synthesis/reactive-branch.json",
+      "title": "交互分支、GS与数据导出",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "examples/recovery/curriculum.json",
+      "title": "DriveRL 恢复课程示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "调用有界训练生命周期比较普通起点与困难状态；需重新准备输入。"
+    },
+    {
+      "id": "examples/repair/boston-spec.json",
+      "title": "Boston Harness 修复规格",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "历史修复执行规格；由 boston-task.json 引用。"
+    },
+    {
+      "id": "tasks/synthesis/paired-augmentation.json",
+      "title": "轨迹搜索与配对训练模板",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "examples/recovery/teacher.json",
+      "title": "同锚点教师恢复示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "旧 Pittsburgh 教师搜索与恢复验收配置，不保证候选能通过准入。"
+    },
+    {
+      "id": "tasks/training/augustus.json",
+      "title": "AUGUstus 统一训练入口",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/training/driverl.json",
+      "title": "DriveRL 有界强化学习入口",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "examples/learning-evidence.json",
+      "title": "训练收益证据示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "旧自适应任务的学习证据配置，不是当前可用收益证明。"
+    },
+    {
+      "id": "tasks/lifecycle/augustus-evaluation-retry.json",
+      "title": "AUGUstus 只恢复评测阶段",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/lifecycle/augustus.json",
+      "title": "AUGUstus 训练、续训、评测和反馈",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "tasks/lifecycle/driverl.json",
+      "title": "DriveRL 训练、续训、评测和反馈",
+      "role": "tasks",
+      "status": "requires_preparation",
+      "purpose": "显式任务模板，需要匹配环境、权重、数据及产物预检。"
+    },
+    {
+      "id": "examples/fpd-drive-unavailable-trainer.json",
+      "title": "FPD 未公开训练器占位配置",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "仅保留接口能力缺口记录；不能执行原生训练。"
+    },
+    {
+      "id": "examples/llm-advisor.json",
+      "title": "外部LLM建议器配置示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "只配置服务与环境变量名称，不保存API密钥；调用仍需执行入口显式启用。"
+    },
+    {
+      "id": "policies/protected-navtest-logs.json",
+      "title": "测试来源保护清单",
+      "role": "policies",
+      "status": "registered",
+      "purpose": "数据隔离模块读取；其逐日志内容不导出到可视化。"
+    },
+    {
+      "id": "examples/sources/boston-recovery.json",
+      "title": "Boston 恢复来源示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "历史恢复任务使用的训练来源规格。"
+    },
+    {
+      "id": "examples/sources/pittsburgh-recovery.json",
+      "title": "Pittsburgh 恢复来源示例",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "主动恢复与教师恢复任务共同使用的历史来源规格。"
+    },
+    {
+      "id": "examples/repair/boston-release-spec.json",
+      "title": "Boston 旧发布修复规则",
+      "role": "examples",
+      "status": "historical_example",
+      "purpose": "绑定旧产物的修复规则，重新运行需检查版本与源数据。"
+    },
+    {
+      "id": "registry/services.json",
+      "title": "Harness 服务注册目录",
+      "role": "registry",
+      "status": "registered",
+      "purpose": "80个现有provider的统一发现入口；注册状态不代表运行环境已齐备。"
+    },
+    {
+      "id": "policies/continual-scene-learning.json",
+      "title": "逐问题持续学习与能力保持",
+      "role": "policies",
+      "status": "requires_preparation",
+      "purpose": "一个活跃问题、有限新数据与同预算训练；完整评测通过后更新当前模型。"
+    },
+    {
+      "id": "skills/augustus-frozen-prefix.json",
+      "title": "Frozen AUGUstus prefix skills",
+      "role": "skills",
+      "status": "requires_preparation",
+      "purpose": "Current-observation prompt interventions for a paired frozen-policy pilot; no automatic promotion."
+    },
+    {
+      "id": "policies/augustus-skill-evolution.json",
+      "title": "AUGUstus frozen skill evolution pilot",
+      "role": "policies",
+      "status": "requires_preparation",
+      "purpose": "Bounded automatic Doctor proposals, cross-drive validation and experiment-scoped persistent promotion or rollback."
+    }
+  ]
+}

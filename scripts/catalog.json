@@ -1,0 +1,712 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "path": "scripts/build/build_pufferdrive.py",
+      "domain": "build",
+      "status": "requires_preflight",
+      "purpose": "Build only DriveRSI's native adapter against the pinned, unmodified PufferDrive header.",
+      "implementation": "scripts/build/build_pufferdrive.py"
+    },
+    {
+      "path": "scripts/build/build_wheel.py",
+      "domain": "build",
+      "status": "requires_preflight",
+      "purpose": "Build from clean source staging so moved modules cannot survive in build/lib.",
+      "implementation": "scripts/build/build_wheel.py"
+    },
+    {
+      "path": "scripts/build/native_boundary_patch.py",
+      "domain": "build",
+      "status": "requires_preflight",
+      "purpose": "Build-time boundary profile; upstream sources and official scores stay unchanged.",
+      "implementation": "scripts/build/native_boundary_patch.py"
+    },
+    {
+      "path": "scripts/data/analyze_geometry_captions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Descriptive pilot measurements; not an automatic visual admission test.",
+      "implementation": "scripts/data/analyze_geometry_captions.py"
+    },
+    {
+      "path": "scripts/data/annotate_caption_partition.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Annotate isolated NAVSIM test scenes with the frozen train caption contract only after predecessor audit; finish with offline repair and source verification.",
+      "implementation": "src/data/catalog/cluster_caption_partition.py"
+    },
+    {
+      "path": "scripts/data/annotate_cluster_captions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Copy and augment official training annotations with bounded parallel current-view clustering captions; resumable spend-limited private API execution.",
+      "implementation": "driversi.data.catalog.cluster_caption_batch"
+    },
+    {
+      "path": "scripts/data/audit_navsim_asset_windows.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Rank exact NAVSIM training windows by actual loaded GS asset coverage.",
+      "implementation": "scripts/data/audit_navsim_asset_windows.py"
+    },
+    {
+      "path": "scripts/data/build_augustus_evaluation_cache.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Build the native AUGUstus PDM context without executing any model training.",
+      "implementation": "scripts/data/build_augustus_evaluation_cache.py"
+    },
+    {
+      "path": "scripts/data/cluster_scenes.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Fit a training-only hierarchy from finalized caption JSONL, anchor state and factual map topology; no image similarity vectors or student scoring.",
+      "implementation": "driversi.data.catalog.scene_hierarchy"
+    },
+    {
+      "path": "scripts/data/describe_annotations.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Prepare bounded original-training scene descriptors from official AUGUstus labels and source log/map facts; optional short grounded text pilot.",
+      "implementation": "driversi.data.catalog.annotation_description_jobs"
+    },
+    {
+      "path": "scripts/data/export_semantic_conditions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Build training-side semantic condition bundles or an exhaustive batch plan.",
+      "implementation": "scripts/data/export_semantic_conditions.py"
+    },
+    {
+      "path": "scripts/data/extract_scene_topology.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Extract current-anchor map facts from native NAVSIM logs and source maps without student scoring.",
+      "implementation": "driversi.data.catalog.scene_topology"
+    },
+    {
+      "path": "scripts/data/index_worldengine_assets.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Join the complete released WorldEngine index to local NAVSIM training logs.",
+      "implementation": "scripts/data/index_worldengine_assets.py"
+    },
+    {
+      "path": "scripts/data/label_scene.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "One retrospective scene label for explicit review; no bulk labeling or production pool writes.",
+      "implementation": "src/data/catalog/scene_label_jobs.py"
+    },
+    {
+      "path": "scripts/data/manage_scene_catalog.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.data.catalog.cli.",
+      "implementation": "driversi.data.catalog.cli"
+    },
+    {
+      "path": "scripts/data/package_semantic_conditions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Create a complete, checked source-whitebox archive (no real photos).",
+      "implementation": "scripts/data/package_semantic_conditions.py"
+    },
+    {
+      "path": "scripts/data/recover_scene_vectors.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Recover visual vectors from explicitly selected irregular real histories.",
+      "implementation": "scripts/data/recover_scene_vectors.py"
+    },
+    {
+      "path": "scripts/data/regenerate_failed_captions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Explicit bounded paid regeneration of frozen failed captions, with lossless offline repair and in-place primary shard publication.",
+      "implementation": "src/data/catalog/cluster_caption_regeneration.py"
+    },
+    {
+      "path": "scripts/data/repair_cluster_captions.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Offline lossless caption repair and one-shot post-production corpus/native-label/usage audit; no model API calls.",
+      "implementation": "driversi.data.catalog.cluster_caption_repair"
+    },
+    {
+      "path": "scripts/data/run_geometry_caption.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Bounded real-source appearance pilot; no test source, no training or publishing.",
+      "implementation": "scripts/data/run_geometry_caption.py"
+    },
+    {
+      "path": "scripts/data/run_private_caption.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Prepare or run bounded private-network VLM comparisons for whitebox bundles.",
+      "implementation": "scripts/data/run_private_caption.py"
+    },
+    {
+      "path": "scripts/data/run_scene_corpus.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.data.catalog.corpus_cli.",
+      "implementation": "driversi.data.catalog.corpus_cli"
+    },
+    {
+      "path": "scripts/data/run_semantic_caption.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Bounded local Qwen captions; structure remains authoritative and raw text unreviewed.",
+      "implementation": "scripts/data/run_semantic_caption.py"
+    },
+    {
+      "path": "scripts/data/run_whitebox_delivery.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Bounded, resumable NAVSIM whitebox delivery; full planning uses export_semantic_conditions.py.",
+      "implementation": "scripts/data/run_whitebox_delivery.py"
+    },
+    {
+      "path": "scripts/data/validate_navsim_package.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Validate a locally generated DriveRSI package with an installed NAVSIM loader.",
+      "implementation": "scripts/data/validate_navsim_package.py"
+    },
+    {
+      "path": "scripts/data/verify_nuplan_interface.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Exercise compiled real DB scenes through the existing joint-action interface.",
+      "implementation": "scripts/data/verify_nuplan_interface.py"
+    },
+    {
+      "path": "scripts/diagnostics/diagnose_recorded_blockage.py",
+      "domain": "diagnostics",
+      "status": "requires_preflight",
+      "purpose": "Read-only blocker evidence for a continuous nuPlan diagnostic run.",
+      "implementation": "scripts/diagnostics/diagnose_recorded_blockage.py"
+    },
+    {
+      "path": "scripts/diagnostics/diagnose_render_optics.py",
+      "domain": "diagnostics",
+      "status": "requires_preflight",
+      "purpose": "Fixed-source MTGS optics diagnosis; no world edits or image completion.",
+      "implementation": "scripts/diagnostics/diagnose_render_optics.py"
+    },
+    {
+      "path": "scripts/diagnostics/diagnose_tto_shortfalls.py",
+      "domain": "diagnostics",
+      "status": "requires_preflight",
+      "purpose": "Bounded official-score contrasts; never modifies a candidate bank or samples new goals.\nRun in the original DriveScorer scoring environment, with its feedback/src on PYTHONPATH.",
+      "implementation": "scripts/diagnostics/diagnose_tto_shortfalls.py"
+    },
+    {
+      "path": "scripts/diagnostics/export_driverl_failure_analysis.py",
+      "domain": "diagnostics",
+      "status": "requires_preflight",
+      "purpose": "Original scores, changed worlds and correction attempts remain separate.",
+      "implementation": "scripts/diagnostics/export_driverl_failure_analysis.py"
+    },
+    {
+      "path": "scripts/evaluation/audit_driverl_benchmark.py",
+      "domain": "evaluation",
+      "status": "requires_preflight",
+      "purpose": "Exact released benchmark token coverage; no replacement or silent subset.",
+      "implementation": "scripts/evaluation/audit_driverl_benchmark.py"
+    },
+    {
+      "path": "scripts/evaluation/export_driverl_benchmark.py",
+      "domain": "evaluation",
+      "status": "requires_preflight",
+      "purpose": "Publish exact-denominator official benchmark progress, never success-only scores.",
+      "implementation": "scripts/evaluation/export_driverl_benchmark.py"
+    },
+    {
+      "path": "scripts/evaluation/finalize_driverl_record.py",
+      "domain": "evaluation",
+      "status": "requires_preflight",
+      "purpose": "Resume export/scoring of a completed rollout without resimulating it.",
+      "implementation": "scripts/evaluation/finalize_driverl_record.py"
+    },
+    {
+      "path": "scripts/evaluation/publish_driverl_progress.py",
+      "domain": "evaluation",
+      "status": "requires_preflight",
+      "purpose": "Bounded result publishing for already-running DriveRL evaluation jobs.",
+      "implementation": "scripts/evaluation/publish_driverl_progress.py"
+    },
+    {
+      "path": "scripts/evaluation/run_augustus_benchmark.py",
+      "domain": "evaluation",
+      "status": "requires_preflight",
+      "purpose": "Resumable complete AUGUstus SFT navtest evaluation with strict population coverage.",
+      "implementation": "agents/augustus/full_evaluation.py"
+    },
+    {
+      "path": "scripts/legacy/reports/build_platform_progress_page.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Build a static, interactive companion to the editable DriveRSI progress SVG.",
+      "implementation": "scripts/legacy/reports/build_platform_progress_page.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_active_recovery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish actual active-generation attempts and conditional learning evidence.",
+      "implementation": "scripts/legacy/reports/export_active_recovery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_branch_expansion.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Export only training-side expansion evidence; does not grant admission.",
+      "implementation": "scripts/legacy/reports/export_branch_expansion.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_caption_geometry_review.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Local-only caption review page. Never publishes or calls providers.",
+      "implementation": "scripts/legacy/reports/export_caption_geometry_review.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_chainflow_gs_loop.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Export the small ChainFlow learning/GS experiment without inferring success.",
+      "implementation": "scripts/legacy/reports/export_chainflow_gs_loop.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_chainflow_synthetic_pair.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish sealed synthetic-pair progress without turning blocked stages into gains.",
+      "implementation": "scripts/legacy/reports/export_chainflow_synthetic_pair.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_conditioned_video.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish real native-video output and physical overlays, never training admission.",
+      "implementation": "scripts/legacy/reports/export_conditioned_video.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_driverl_multicity.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Evidence-only multicity index, including failed attempts and official reference.",
+      "implementation": "scripts/legacy/reports/export_driverl_multicity.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_driverl_navigation_repair.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish same-anchor correction evidence, never merge it with native benchmark scores.",
+      "implementation": "scripts/legacy/reports/export_driverl_navigation_repair.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_gs_asset_gallery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish same-branch GS transport comparisons and rejected source coverage.",
+      "implementation": "scripts/legacy/reports/export_gs_asset_gallery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_gs_multiview_training.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish bounded training/GS evidence without test-scene identities.",
+      "implementation": "scripts/legacy/reports/export_gs_multiview_training.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_h3_whitebox_gallery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish prepared H3 conditioning samples only; never run video generation.",
+      "implementation": "scripts/legacy/reports/export_h3_whitebox_gallery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_hard_recovery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Evidence gallery for fixed long recovery and heldout evaluation attempts.",
+      "implementation": "scripts/legacy/reports/export_hard_recovery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_interaction_showcase.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Build an evidence-linked gallery dataset from sealed server-side rollouts.",
+      "implementation": "scripts/legacy/reports/export_interaction_showcase.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_multiview_showcase.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Curate one sealed multi-owner camera case without rerendering or altering evidence.",
+      "implementation": "scripts/legacy/reports/export_multiview_showcase.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_navsim_trajectory_gallery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Export a read-only gallery from actual bounded NAVSIM teacher task receipts.",
+      "implementation": "scripts/legacy/reports/export_navsim_trajectory_gallery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_navtest_campaign.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish bounded public evidence for a full NAVSIM evaluation/mining campaign.",
+      "implementation": "scripts/legacy/reports/export_navtest_campaign.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_reached_state_gallery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish evidence and existing BEV players for a completed collection task.",
+      "implementation": "scripts/legacy/reports/export_reached_state_gallery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_recovery_curriculum.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish actual Harness evidence, including rejected and interrupted tasks.",
+      "implementation": "scripts/legacy/reports/export_recovery_curriculum.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_showcase_preview.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Deterministically create a single-file SVG contact sheet from actual gallery data.",
+      "implementation": "scripts/legacy/reports/export_showcase_preview.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_streetcrafter_diagnostic.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Export actual bounded StreetCrafter outputs for physical/visual inspection.",
+      "implementation": "scripts/legacy/reports/export_streetcrafter_diagnostic.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_teacher_recovery.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Read-only evidence gallery: actual lane association, forecasts and workflow gates.",
+      "implementation": "scripts/legacy/reports/export_teacher_recovery.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_traffic_continuity_comparison.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish a reproducible all-actor comparison from recorded continuity runs.",
+      "implementation": "scripts/legacy/reports/export_traffic_continuity_comparison.py"
+    },
+    {
+      "path": "scripts/legacy/reports/export_training_readiness.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Publish bounded ChainFlow readiness evidence without turning probes into benchmarks.",
+      "implementation": "scripts/legacy/reports/export_training_readiness.py"
+    },
+    {
+      "path": "scripts/legacy/reports/render_closed_loop_figure.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Render the versioned DriveRSI closed-loop FigureSpec as editable SVG.",
+      "implementation": "scripts/legacy/reports/render_closed_loop_figure.py"
+    },
+    {
+      "path": "scripts/legacy/reports/render_platform_progress.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Render the DriveRSI platform progress spec as deterministic, editable SVG.",
+      "implementation": "scripts/legacy/reports/render_platform_progress.py"
+    },
+    {
+      "path": "scripts/legacy/reports/render_system_architecture.py",
+      "domain": "legacy",
+      "status": "historical",
+      "purpose": "Render the maintained DriveRSI FigureSpec into a standalone, editable SVG.",
+      "implementation": "scripts/legacy/reports/render_system_architecture.py"
+    },
+    {
+      "path": "scripts/rendering/catalog_worldengine_assets.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Read all WorldEngine archive metadata pages without downloading assets.",
+      "implementation": "scripts/rendering/catalog_worldengine_assets.py"
+    },
+    {
+      "path": "scripts/rendering/check_streetcrafter_history_dependence.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Native same-seed future-conditioning probe; outputs can never train a student.",
+      "implementation": "scripts/rendering/check_streetcrafter_history_dependence.py"
+    },
+    {
+      "path": "scripts/rendering/export_camera_gallery.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Integrate the calibrated RGB/whitebox case into the whitebox gallery.",
+      "implementation": "driversi.rendering.camera_review.gallery"
+    },
+    {
+      "path": "scripts/rendering/export_camera_review.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Export camera-bound semantic review from an existing MTGS episode.",
+      "implementation": "driversi.rendering.camera_review.exporter"
+    },
+    {
+      "path": "scripts/rendering/export_showcase_pages.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Export a local self-contained gallery; no GitHub Pages workflow or network publication.",
+      "implementation": "driversi.visualization.publication.pages"
+    },
+    {
+      "path": "scripts/rendering/export_whitebox.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Export actual log and physical-branch structured whitebox inspection data.",
+      "implementation": "driversi.rendering.whitebox.exporter"
+    },
+    {
+      "path": "scripts/rendering/export_whitebox_videos.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Export downloadable whitebox MP4s without advancing the simulation.",
+      "implementation": "driversi.rendering.camera_review.video_export"
+    },
+    {
+      "path": "scripts/rendering/inspect_multiview_gs_window.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.rendering.diagnostics.window_review.",
+      "implementation": "driversi.rendering.diagnostics.window_review"
+    },
+    {
+      "path": "scripts/rendering/publish_interaction_showcase.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.visualization.publication.gallery.",
+      "implementation": "driversi.visualization.publication.gallery"
+    },
+    {
+      "path": "scripts/rendering/publish_whitebox.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.visualization.publication.whitebox.",
+      "implementation": "driversi.visualization.publication.whitebox"
+    },
+    {
+      "path": "scripts/rendering/render_bound_camera_sequence.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Re-render a recorded joint trajectory with all configured source cameras.",
+      "implementation": "scripts/rendering/render_bound_camera_sequence.py"
+    },
+    {
+      "path": "scripts/rendering/run_multiview_gs_window.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Command entry; implementation: driversi.rendering.gaussian.window_cli.",
+      "implementation": "driversi.rendering.gaussian.window_cli"
+    },
+    {
+      "path": "scripts/rendering/serve_showcase.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Manage the dedicated DriveRSI team preview; not a public production server.",
+      "implementation": "driversi.rendering.inspection.showcase_server"
+    },
+    {
+      "path": "scripts/rendering/verify_collision_gs.py",
+      "domain": "rendering",
+      "status": "requires_preflight",
+      "purpose": "Bounded real-asset regression for authoritative fleet presence and GS bindings.",
+      "implementation": "scripts/rendering/verify_collision_gs.py"
+    },
+    {
+      "path": "scripts/rsi/benchmark_synthesis_postprocess.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Preflight or explicitly execute an isolated prepared-branch resident multi-GPU postprocessing benchmark; no production publication or training.",
+      "implementation": "src/rsi/experiments/resident_batch.py"
+    },
+    {
+      "path": "scripts/rsi/build_navtrain_index.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Build a CPU-only navtrain history index from a manifest or streaming native logs.",
+      "implementation": "scripts/rsi/build_navtrain_index.py"
+    },
+    {
+      "path": "scripts/rsi/run_branch_expansion.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Bounded native teacher expansion; no student scoring or training launch.",
+      "implementation": "scripts/rsi/run_branch_expansion.py"
+    },
+    {
+      "path": "scripts/rsi/run_capability_skill.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Execute one capability-selected NAVSIM teacher skill; never score navtrain students.",
+      "implementation": "scripts/rsi/run_capability_skill.py"
+    },
+    {
+      "path": "scripts/rsi/run_chainflow_round.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Compile an admitted ChainFlow data increment; --execute runs the Harness.",
+      "implementation": "scripts/rsi/run_chainflow_round.py"
+    },
+    {
+      "path": "scripts/rsi/run_intervention_campaign.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Run prospectively sealed native paired skills selected from verified aggregate outcomes; no automatic promotion.",
+      "implementation": "src/rsi/experiments/intervention_campaign.py"
+    },
+    {
+      "path": "scripts/rsi/run_navval_loop.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Bounded native AUGUstus navval vector retrieval and paired learning.",
+      "implementation": "src/rsi/experiments/navval_loop.py"
+    },
+    {
+      "path": "scripts/rsi/run_platform_spine.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Prepare or resume existing DriveHarness services; never launch103kimplicitly.",
+      "implementation": "scripts/rsi/run_platform_spine.py"
+    },
+    {
+      "path": "scripts/rsi/run_synthesis_campaign.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Run the existing explicitly configured synthesis/evaluation campaign; supports executed history perturbation with bounded physical prefetch.",
+      "implementation": "src/rsi/experiments/reactive_autoloop.py"
+    },
+    {
+      "path": "scripts/rsi/run_vla_memory_episode.py",
+      "domain": "rsi",
+      "status": "requires_preflight",
+      "purpose": "Run a bounded VLA memory/diagnosis episode on an existing native branch.",
+      "implementation": "scripts/rsi/run_vla_memory_episode.py"
+    },
+    {
+      "path": "scripts/simulation/run_driverl_multicity.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Bounded execution of a fixed corpus. No training or success-only selection.",
+      "implementation": "scripts/simulation/run_driverl_multicity.py"
+    },
+    {
+      "path": "scripts/simulation/verify_continuous_nuplan.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Bounded continuous nuPlan execution and same-anchor diagnostics; no model training.",
+      "implementation": "scripts/simulation/verify_continuous_nuplan.py"
+    },
+    {
+      "path": "scripts/simulation/verify_driverl_closed_loop.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Native DriveRL parity and real long-log execution; no training or admission.",
+      "implementation": "scripts/simulation/verify_driverl_closed_loop.py"
+    },
+    {
+      "path": "scripts/simulation/verify_driverl_multicity.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Fixed eight-log preparation and native evaluation; failure cases are retained.",
+      "implementation": "scripts/simulation/verify_driverl_multicity.py"
+    },
+    {
+      "path": "scripts/simulation/verify_driverl_official.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Unmodified nuPlan reactive simulation with a serialized-input shadow planner.",
+      "implementation": "scripts/simulation/verify_driverl_official.py"
+    },
+    {
+      "path": "scripts/simulation/verify_nuplan_runtime.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Real nuPlan causal-history and 60-second continuity regression (no training).",
+      "implementation": "scripts/simulation/verify_nuplan_runtime.py"
+    },
+    {
+      "path": "scripts/simulation/verify_traffic_continuity.py",
+      "domain": "simulation",
+      "status": "requires_preflight",
+      "purpose": "Prepare and verify a continuity correction against an immutable source case.",
+      "implementation": "scripts/simulation/verify_traffic_continuity.py"
+    },
+    {
+      "path": "scripts/training/prepare_synthesis_pilot.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Build a small real-data Harness study, without starting training.",
+      "implementation": "scripts/training/prepare_synthesis_pilot.py"
+    },
+    {
+      "path": "scripts/training/run_chainflow_epoch.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Use the unified lifecycle for an explicitly budgeted ChainFlow epoch attempt.",
+      "implementation": "scripts/training/run_chainflow_epoch.py"
+    },
+    {
+      "path": "scripts/training/validate_rsi_learning.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Replay archived real nuPlan evidence through the RSI decision provider.\nNo new rollout, score query, parameter update or promotion is performed.",
+      "implementation": "scripts/training/validate_rsi_learning.py"
+    },
+    {
+      "path": "scripts/training/validate_unified_training.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Read-only alignment audit of archived native DriveRL execution, never training data admission.",
+      "implementation": "scripts/training/validate_unified_training.py"
+    },
+    {
+      "path": "scripts/training/verify_augustus_pilot.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Bounded AUGUstus native-component update/recovery test; never a benchmark.",
+      "implementation": "scripts/training/verify_augustus_pilot.py"
+    },
+    {
+      "path": "scripts/training/verify_native_training_pilot_driverl.py",
+      "domain": "training",
+      "status": "requires_preflight",
+      "purpose": "Small real-world native inference check; not a DriveRL learning test.",
+      "implementation": "scripts/training/verify_native_training_pilot_driverl.py"
+    },
+    {
+      "path": "scripts/data/classify_synthetic_scenes.py",
+      "domain": "data",
+      "status": "requires_preflight",
+      "purpose": "Classify generated anchor captions and topology into frozen scene clusters; separate synthetic library.",
+      "implementation": "src/rsi/services/synthetic_classification.py"
+    },
+    {
+      "path": "scripts/build/materialize_config.py",
+      "domain": "build",
+      "status": "requires_preflight",
+      "purpose": "Resolve checkout tokens into a new local JSON configuration; never launch a job.",
+      "implementation": "driversi.configuration.read_mapping"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "delay_steps": 0,
+    "duration_steps": 10,
+    "target_acceleration_mps2": -1
+  },
+  {
+    "delay_steps": 0,
+    "duration_steps": 20,
+    "target_acceleration_mps2": -3
+  },
+  {
+    "delay_steps": 0,
+    "duration_steps": 20,
+    "target_acceleration_mps2": -5
+  },
+  {
+    "delay_steps": 5,
+    "duration_steps": 20,
+    "target_acceleration_mps2": -3
+  },
+  {
+    "delay_steps": 10,
+    "duration_steps": 20,
+    "target_acceleration_mps2": -3
+  }
+]

@@ -1,0 +1,13 @@
+# VATIX-like integration template, not a verified model or timing configuration.
+# Replace the example dt/horizon with the actual backend contract before integration.
+schema_version: 1
+role: observation_generator
+input_schema: source-rgb-history-and-planned-ego-trajectory-v1
+output_schema: generated-camera-video-v1
+input_clock: history_and_planned_future
+output_clock: future_sequence
+output_dt_seconds: 0.5
+horizon_seconds: 4.0
+state_scope: explicit_world
+likelihood: none
+authority: observation_only

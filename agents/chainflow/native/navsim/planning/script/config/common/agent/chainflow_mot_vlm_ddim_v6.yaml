@@ -1,0 +1,272 @@
+# VLM-V6 + causal control-space DDIM in the final AR4 decoder.
+# The deployed cached-VLM P4 refiner is retained unchanged; post-P4 DiT is off.
+_target_: navsim.agents.chainflow_mot_vlm_ddim_v6.chainflow_vla_agent.ChainFlowVLAAgent
+
+config:
+
+  ####################
+  # Trajectory / proposal config
+  proposal_num: 64 # number of proposals (trajectories)
+  num_poses: 8 # size of the trajectories
+  long_trajectory_additional_poses: 2
+  ref_num: 4 # number of refining steps
+  scorer_ref_num: 4
+  shared_refiner: false
+
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  ####################
+  # Stage1: Autoregressive decoder
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+
+  # Only AR4 changes. At each causal AR step, six residual MLP blocks perform
+  # four-step DDIM sampling in normalized [acceleration, yaw-rate] space.
+  # The main train/eval rollout starts from pure noise; GT-noised samples are
+  # used only by the epsilon-prediction auxiliary loss.
+  ar_ddim_enabled: true
+  ar_ddim_hidden_dim: 128
+  ar_ddim_ffn_dim: 512
+  ar_ddim_num_layers: 6
+  ar_ddim_dropout: 0.0
+  ar_ddim_num_train_timesteps: 1000
+  ar_ddim_num_inference_steps: 4
+  ar_ddim_beta_schedule: scaled_linear
+  ar_ddim_control_scales: [4.0, 0.5]
+  ar_ddim_x0_clip: 2.0
+  ar_ddim_gate_max: 0.25
+  ar_ddim_gate_init: -3.8918203
+  ar_ddim_gate_warmup_steps: 2000
+  ar_ddim_train_noise_seed: 1729
+  ar_ddim_eval_noise_seed: 0
+
+  # V1 private banks, router, seeds and initialization are unchanged.
+  mot_num_experts: 4
+  mot_top_k: 2
+  mot_num_thought_tokens: 4
+  mot_num_heads: 4
+  mot_expert_depths: [1, 2, 2, 1]
+  mot_router_temperature: 1.0
+  mot_router_jitter: 0.1
+  mot_dropout: 0.1
+  mot_score_gradient_scale: 0.1
+  # "legacy" is an explicit V1-compatible final-evaluator control.
+  # Fresh evaluation reads P4/h4 with bank3, without a new AR step or seed.
+  mot_final_world_evaluation: fresh
+
+  # Cached VLM semantics guide a dedicated deterministic P4 trajectory refiner
+  # through pooled conditioning and token-level cross-attention. There is no
+  # scalar gate and no VLM injection inside the four MoT stages.
+  use_vlm_refiner: true
+  train_vlm_refiner_only: false
+  vlm_hidden_dim: 1536
+  # Legacy caches omitted the tokenizer mask and were left padded. Restricting
+  # context to the causal right tail avoids deliberately sampling PAD rows;
+  # those final hidden states still summarize preceding image/prompt tokens.
+  vlm_refiner_tail_tokens: 256
+  vlm_refiner_uniform_tokens: 0
+  vlm_refiner_num_layers: 2
+  vlm_refiner_num_heads: 8
+  vlm_refiner_d_ffn: 1024
+  vlm_refiner_ego_dim: 8
+  vlm_refiner_dropout: 0.1
+  vlm_refiner_trajectory_scales: [20.0, 10.0, 3.141592653589793]
+  # Hard final-horizon bounds for longitudinal/lateral/yaw residuals. Earlier
+  # waypoints receive linearly smaller limits to avoid discontinuous starts.
+  vlm_refiner_max_deltas: [2.0, 1.0, 0.25]
+  vlm_refiner_horizon_power: 1.0
+  vlm_refiner_output_scale: 1.0
+  # matched=normal; zero is an evaluation-only semantic ablation.
+  vlm_refiner_context_mode: matched
+
+
+  ####################
+  # Stage2: Diffusion decoder
+  use_diffusion_decoder: false
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  diffusion_type: "ddim" # optional: flow_matching
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 0
+  diffusion_ego_status_dim: 8
+  diffusion_vlm_hidden_dim: 1536
+  diffusion_use_ar_proposal_tokens: false
+  # DDIM-specific
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: "scaled_linear"
+  diffusion_num_inference_steps: 2
+  # Flow-matching-specific
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+
+  ####################
+  # VLM feature cache
+  use_vlm_feature_cache: true
+  vlm_feature_cache_path: ""
+  vlm_feature_cache_format: gz
+  vlm_feature_cache_name: internvl_feature
+  vlm_hidden_key: last_hidden_state
+
+  ####################
+  # PDM scoring weights
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+
+  ####################
+  # Transformer feature dims
+  tf_d_model: 256 # general feature size of the model
+  tf_d_ffn: 1024 # hidden size of the heads
+
+  ####################
+  # Sensor config
+  cam_f0: [3]
+  cam_l0: [3]
+  cam_l1: []
+  cam_l2: []
+  cam_r0: [3]
+  cam_r1: []
+  cam_r2: []
+  cam_b0: [3]
+  lidar_pc: []
+
+  ####################
+  # Image branch params
+  image_size: [1148, 672] # input image size
+
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  ####################
+  # Lidar branch params
+  lidar_min_x: -35
+  lidar_max_x: 35
+  lidar_min_y: -35
+  lidar_max_y: 35
+  lidar_image_size: [518, 518] # input image size
+  lidar_hist_max_per_pixel: 5
+  lidar_max_height: 100.0
+  lidar_split_height: 0.2
+  lidar_use_ground_plane: true
+  lidar_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    in_chans: 2 # 2 if use ground plane, 1 otherwise
+
+  ####################
+  # Scorer / refiner params
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+
+
+####################
+# Loss weights
+loss:
+  _target_: navsim.agents.chainflow_mot_vlm_ddim_v6.losses.loss.ChainFlowVLALoss
+  trajectory_weight: 1.0
+  inter_weight: 0.02
+  sub_score_weight: 0.0
+  final_score_weight: 1.0
+  pred_ce_weight: 1.0
+  pred_l1_weight: 0.1
+  pred_area_weight: 2.0
+  prev_weight: 0.0
+  agent_class_weight: 1.0
+  agent_box_weight: 0.1
+  bev_semantic_weight: 1.0
+  div_weight: 0.0
+  diffusion_loss_weight: 0.0
+  diffusion_trajectory_loss_weight: 0.0
+  # Winner-only short/long epsilon supervision for AR4 control diffusion.
+  # VLM-refiner, trajectory, scorer and MoT losses below remain unchanged.
+  ar_ddim_noise_weight: 0.5
+  # Retain complete V6 supervision for the from-scratch AR+MoT generator.
+  # Base-P4 and refined-P4 PDM labels are computed separately.
+  mot_world_weight: 0.5
+  mot_specialization_weight: 0.25
+  mot_ranking_weight: 0.05
+  mot_router_balance_weight: 0.05
+  mot_router_z_weight: 0.001
+  mot_router_entropy_weight: 0.01
+  mot_thought_diversity_weight: 0.02
+  mot_router_entropy_floor: 0.65
+  mot_score_supervision: pdms
+  mot_pdms_weight: 0.05
+  mot_pdms_beta: 0.10
+  mot_rank_target_temperature: 0.10
+  mot_rank_student_temperature: 0.10
+  # Direct semantic-generator supervision. These weights are deliberately not
+  # copied from DDIM's 10/20 because deterministic delta and noise MSE have
+  # different scales.
+  vlm_refiner_delta_loss_weight: 0.5
+  vlm_refiner_short_trajectory_loss_weight: 1.0
+  vlm_refiner_long_trajectory_loss_weight: 0.25
+  vlm_refiner_smoothness_loss_weight: 0.05
+  vlm_refiner_nonwinner_identity_weight: 0.01
+  vlm_refiner_delta_beta: 0.10
+  # Keep targets inside tanh's finite-logit range instead of fitting ±1 exactly.
+  vlm_refiner_target_clip_ratio: 0.95
+
+
+
+####################
+# Checkpoint
+checkpoint_path: ''
+checkpoint_strict_load: false
+
+####################
+# Optimizer / scheduler
+lr_args:
+  name: AdamW
+  # Match V6 from-scratch scaling: effective peak LR is 1.7320508e-4 at batch48.
+  base_lr: 2e-4
+  base_batch_size: 64
+scheduler_args:
+  # One-stage end-to-end MoT-AR+VLM training. The shared Lightning trainer and the
+  # warmup+cosine scheduler both resolve this same value.
+  num_epochs: 40
+  dataset_size: 103000 # launcher's DATA_SIZE override remains authoritative
+
+####################
+# Runtime / training
+batch_size: ${oc.select:dataloader.params.batch_size,6}
+num_gpus: 8 # the batchsize is per gpu --> need to update for steps
+# null = follow CHAINFLOW_ENABLE_RAY env (default on for training). PDM eval sets agent.enable_ray=false.
+enable_ray: null
+
+progress_bar: false # default progress bar. if false replace by a console print every N iterations
+console_log_every_n_steps: 100

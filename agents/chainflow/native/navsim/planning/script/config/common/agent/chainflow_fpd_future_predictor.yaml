@@ -1,0 +1,130 @@
+_target_: navsim.agents.chainflow_fpd_future_predictor.agent.ChainFlowFPDFuturePredictorAgent
+
+config:
+  proposal_num: 64
+  num_poses: 8
+  long_trajectory_additional_poses: 0
+  ref_num: 4
+  scorer_ref_num: 4
+  shared_refiner: false
+  num_scene_tokens: 16
+  one_token_per_traj: true
+  full_history_status: false
+  ar_decoder_num_layers: 1
+  ar_bicycle_dt: 0.5
+  tf_d_model: 256
+  tf_d_ffn: 1024
+  trajectory_sampling:
+    _target_: nuplan.planning.simulation.trajectory.trajectory_sampling.TrajectorySampling
+    time_horizon: 4
+    interval_length: 0.5
+
+  num_history_frames: 4
+  future_offset: 4
+  future_image_source: predicted  # predicted latent, no future images at inference
+  use_future_pose: true          # GSE receives predicted pose and configured query time
+  global_scene_num_layers: 2
+  global_scene_num_heads: 8
+  global_scene_dropout: 0.1
+  condition_detach: false
+  cam_f0: [2, 3]
+  cam_b0: [2, 3]
+  cam_l0: [2, 3]
+  cam_r0: [2, 3]
+  cam_l1: []
+  cam_l2: []
+  cam_r1: []
+  cam_r2: []
+  lidar_pc: []
+  image_size: [1148, 672]
+  image_backbone:
+    model_name: timm/vit_small_patch14_reg4_dinov2.lvd142m
+    model_weights: ${oc.env:NAVSIM_DEVKIT_ROOT}/weights/vit_small_patch14_reg4_dinov2.lvd142m/model.safetensors
+    use_lora: true
+    finetune: false
+    lora_rank: 32
+    focus_front_cam: false
+    use_feature_pooling: false
+    compress_fc: false
+
+  use_diffusion_decoder: true
+  train_diffusion_decoder_only: false
+  train_scorer: true
+  diffusion_type: ddim
+  diffusion_num_layers: 12
+  diffusion_num_heads: 8
+  diffusion_d_ffn: 1024
+  diffusion_delta_scale: 1.0
+  diffusion_eval_noise_seed: 27
+  diffusion_ego_status_dim: 8
+  diffusion_condition_dim: 256
+  diffusion_use_ar_proposal_tokens: true
+  ddim_num_train_timesteps: 1000
+  ddim_beta_schedule: scaled_linear
+  diffusion_num_inference_steps: 12
+  flow_matching_num_timestep_buckets: 1000
+  flow_matching_noise_beta_alpha: 1.5
+  flow_matching_noise_beta_beta: 1.0
+  flow_matching_noise_scale: 0.999
+  scorer_detach_proposals: true
+  pdm_score_detach_proposals: true
+  scorer_use_serial_vlm_context: false
+  scorer_use_mode_cross_attention: false
+  scorer_mode_cross_attn_heads: null
+  double_score: false
+  agent_pred: false
+  area_pred: false
+  bev_map: false
+  bev_agent: false
+  refiner_num_heads: 1
+  refiner_ls_values: 0.0
+  noc: 1.0
+  dac: 1.0
+  ddc: 0.0
+  ttc: 5.0
+  ep: 5.0
+  comfort: 2.0
+  use_vlm_feature_cache: false
+  use_online_vlm: false
+
+  train_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+  validation_metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/train_metric_cache
+  # Current/history observations are the only model inputs.
+  teacher_sha256: '69164938961be5a4886f5e73017bba0eeef4672aac2b02bd2998015456dd0a47'
+  latent_target_cache: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_vla/chainflow_fpd_future_predictor/navtrainval/latent_cache/epoch-29-step-48390
+  prediction_horizon: 2.0
+  planning_target_protocol: actual_time_interpolation_v1
+  diagnostic_scenes: 64 # Fixed TRAINING subset; no held-out performance claim.
+  diagnostic_batch_size: 2
+  predictor_layers: 2
+  task_ramp_epochs: 2.0
+  latent_weight: 1.0
+  cosine_weight: 0.2
+  motion_weight: 1.0
+  motion_huber_delta_m: 1.0
+  motion_position_scale_m: 5.0
+  heading_weight: 0.5
+  denoise_weight: 1.0
+  denoised_trajectory_weight: 1.0
+  score_weight: 1.0
+  regret_weight: 0.1
+  selection_temperature: 0.2
+
+checkpoint_path: ''
+initialization_checkpoint: ${oc.env:NAVSIM_EXP_ROOT}/chainflow_vla/chainflow_fpd_native_teacher/navtrainval/stage2/10.05_11.03.22_from_epoch23/lightning_logs/version_0/checkpoints/epoch-29-step-48390.ckpt
+checkpoint_strict_load: true
+lr_args:
+  prediction_lr: 1e-4
+  task_lr: 3e-5
+  weight_decay: 0.01
+scheduler_args:
+  num_epochs: 40
+  prediction_epochs: 20
+  dataset_size: 103288
+  warmup_fraction: 0.05
+  min_lr_ratio: 0.1
+batch_size: ${dataloader.params.batch_size}
+num_gpus: 8
+enable_ray: null
+progress_bar: false
+console_log_every_n_steps: 20

@@ -1,0 +1,5 @@
+defaults:
+  - chainflow_fpd_native_teacher_v2
+  - _self_
+
+# Explicit alias for the 25-epoch AR + future-guided scorer stage.

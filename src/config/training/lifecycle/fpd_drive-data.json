@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "parent_provenance": "unknown",
+  "navsim_log_path": "@DRIVERSI_ROOT@/outputs/datasets/training-pilot-v1/wa-window-view/navsim_logs/trainval",
+  "sensor_blobs_path": "@DRIVERSI_ROOT@/outputs/datasets/training-pilot-v1/wa-window-view/sensor_blobs/trainval",
+  "filter": "@DRIVERSI_ROOT@/outputs/datasets/training-pilot-v1/wa-filter.yaml",
+  "train": {
+    "source_logs": [
+      "2021.10.05.07.49.39_veh-52_00934_01406"
+    ]
+  },
+  "development": {
+    "source_logs": [
+      "2021.06.23.14.54.32_veh-16_00636_00840"
+    ]
+  }
+}

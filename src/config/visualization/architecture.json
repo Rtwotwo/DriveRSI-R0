@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-28",
+  "summary": "逐问题持续学习：检索、物理合成、独立语义库、配对训练与受控晋级",
+  "boundary": "本页描述源码职责和接入范围，实际执行以当前任务回执为准。当前学生为ChainFlow stage1，无DiT；已实现的控制器与已验证的加速组件，不等于已验证全量自动生产或持续收益。",
+  "steps": [
+    {
+      "id": "sft",
+      "title": "初始模型与当前有效模型",
+      "short": "原生模型",
+      "subtitle": "固定父模型、数据与训练协议",
+      "status": "pilot",
+      "inputs": "原始navtrain数据、原生SFT检查点和模型配置。",
+      "operation": "原生模型适配器保留网络、loss、输入窗口和评分；通过晋级指针选定下一轮共同父模型。",
+      "outputs": "检查点身份、原生配置、优化器与恢复证据。",
+      "acceptance": "已有SFT能力可作为起点；不能把其他模型的评测短板或收益移植到当前学生。",
+      "current": "当前持续课程使用ChainFlow stage1。AUGUstus仍是平台VLA适配路线，但不参与这份ChainFlow失败队列。",
+      "evidence": ""
+    },
+    {
+      "id": "evaluate",
+      "title": "完整评测与能力保持",
+      "short": "全量评测",
+      "subtitle": "同协议覆盖12,146个场景",
+      "status": "pilot",
+      "inputs": "固定模型、完整navtest成员集合和原生评测协议。",
+      "operation": "逐场景计算原生指标，私有保存身份与细项；当前模型、普通续训和扩充组按同协议比较。",
+      "outputs": "完整覆盖回执、均分、失败类型和历史问题保持情况。",
+      "acceptance": "缺失场景不能按零或成功补齐；使用navtest反馈迭代属于适应实验，不能称为盲测泛化。",
+      "current": "持续控制器要求两臂完整覆盖、真实样本消费和恢复回执后，才执行晋级判定。",
+      "evidence": ""
+    },
+    {
+      "id": "diagnose",
+      "title": "逐问题队列与干预记录",
+      "short": "问题队列",
+      "subtitle": "场景事实与模型失败分开",
+      "status": "pilot",
+      "inputs": "私有逐场景评分、当前模型身份和已解决问题集合。",
+      "operation": "按声明规则选零分或低分问题，记录指标证据、诊断状态与预算；一次只激活一个问题。",
+      "outputs": "固定问题队列、当前回合、源场景目标、拒绝及暂缓原因。",
+      "acceptance": "相似场景和簇标签不是失败原因；必须区分观测事实、相关性与已验证干预。",
+      "current": "本轮使用固定239个零分问题；低于0.6的队列是支持的历史策略。排序仍是确定性规则，尚未学会自主选题。",
+      "evidence": ""
+    },
+    {
+      "id": "retrieve",
+      "title": "全库视觉映射与语义对照",
+      "short": "训练侧映射",
+      "subtitle": "无定位Top3；语义簇独立",
+      "status": "pilot",
+      "inputs": "navtest问题向量、navtrain向量库及连续历史有效性。文本、当前状态和地图拓扑构成独立语义索引。",
+      "operation": "生产复用全库视觉排序，每个问题取三个不同来源日志；不用坐标、地图身份、距离、绝对航向或GT未来筛选。文本结构簇支持理解、对照和后续检索策略。",
+      "outputs": "私有查询映射、训练侧来源清单、资产准备或修复队列。",
+      "acceptance": "当前生产不能被簇内排序或地理审计改写。Recall@K须说明相关性真值；地理接近不证明同类交互。",
+      "current": "冻结映射有717对、562个唯一训练源。训练侧拟合语义树，navtest和新合成数据仅冻结映射；多模态联合检索仍待独立验证。",
+      "evidence": ""
+    },
+    {
+      "id": "generate",
+      "title": "扰动历史、真实未来与同分支渲染",
+      "short": "物理合成",
+      "subtitle": "实际0–7秒；来源身份完整",
+      "status": "pilot",
+      "inputs": "训练源日志、地图、可用GS窗口和带预算的扰动候选。",
+      "operation": "0–2秒由LQR物理跟踪扰动历史，2–7秒从实际锚点用DriveRL原生TTS8续接。验收后由同一分支生成四相机图像。资产缺失进入准备队列。",
+      "outputs": "71个状态、70个动作；4帧新历史和10帧未来的四相机图像；原生评分、ADE、源位姿质量与来源回执。",
+      "acceptance": "完整7秒实际执行；教师PDMS严格>95只覆盖锚点后4秒。当前课程源位姿PSNR>25dB及0.5米ADE按配置验收；历史27dB试验不混算。",
+      "current": "历史扰动+TTS已产出可训练分支，不是梯度TTO或全7秒DriveRL。资产常驻、源对照缓存、批量相机和并行后处理已有组件验证；自动资产重建及完整多卡生产尚未验证。",
+      "evidence": ""
+    },
+    {
+      "id": "index",
+      "title": "封存数据与独立合成分类库",
+      "short": "独立合成库",
+      "subtitle": "新图像、新特征、新锚点文本",
+      "status": "pilot",
+      "inputs": "封存分支、原生加载和训练准入回执、新历史图像及当前锚点事实。",
+      "operation": "封存像素与日志，提供hist/future/logs/sensors兼容视图。重新编码新图像；从新锚点生成文本和结构标签，映射到冻结的训练侧语义树。",
+      "outputs": "独立synthetic_navtrain样本包、生成向量库、caption及粗中细叶簇记录；合格池与隔离池分别保存。",
+      "acceptance": "不混入原始navtrain；分类成功不等于训练合格。消费端重新验证来源、原生准入与特征；未来图像和轨迹不能进入历史caption输入。",
+      "current": "Harness分类服务已接入，真实试验仍含隔离样本。未经审核的自动caption不作为官方语言监督；单独语义库不是训练清单。",
+      "evidence": ""
+    },
+    {
+      "id": "skill",
+      "title": "可执行技能与持久实验记忆",
+      "short": "Harness记忆",
+      "subtitle": "记录方法、条件、收益与成本",
+      "status": "partial",
+      "inputs": "查询与来源、物理方法身份、拒绝原因、真实成本、训练消费、配对收益和退化。",
+      "operation": "将检索、合成、验收和训练步骤作为有版本的执行程序；累计场景簇、适用条件、成功与失败证据，为后续预算与策略提供依据。",
+      "outputs": "技能版本、实验台账、可追溯干预记录、候选策略与适用范围。",
+      "acceptance": "prompt或簇名称不等于驾驶技能；有记忆不等于系统已学会更好选题。模型能力与Harness选择效率分别验证。",
+      "current": "当前控制器按固定规则推进，并保存反馈；尚未证明跨轮学习到更高的干预收益或更优的成本分配。",
+      "evidence": ""
+    },
+    {
+      "id": "retrain",
+      "title": "同预算配对续训与受控晋级",
+      "short": "配对与晋级",
+      "subtitle": "恢复、消费、保持能力再晋级",
+      "status": "pilot",
+      "inputs": "当前有效模型、完整navtrain普通池、最多32条此前合格回放，以及本轮新合成训练清单。",
+      "operation": "每源先10条、后续轮20条；普通臂与扩充臂同父模型同更新预算。原生训练、跨进程恢复和新增样本非零学习率消费检查后全量复评。",
+      "outputs": "两臂检查点、完整复评、干预反馈；仅全部晋级条件通过后更新有效模型指针。",
+      "acceptance": "当前目标严格改善且≥0.95，完整覆盖、均分及指定逐场景安全项不退化，已解决问题保持，且优于普通续训。固定合成槽位使回放曝光未必相同，解释为混合数据干预。",
+      "current": "有界auto入口串联prepare/dispatch/train/settle；最多两轮/问题，资产、资源或未知结果阻塞时停止。晋级后跳过已改善排队问题；初始检索冻结，不冒称重新检索。",
+      "evidence": ""
+    }
+  ],
+  "layers": [
+    {
+      "id": "catalog",
+      "title": "1 · 数据与场景语义",
+      "owner": "src/data/catalog · src/data/datasets",
+      "status": "pilot",
+      "description": "原始训练、测试、合成分库。视觉检索与文本/状态/拓扑分类分通道；训练侧拟合语义模型，其他数据冻结映射。SimScale式存储视图复用封存像素。",
+      "outputs": "来源清单、视觉向量、语义簇、hist/future日志视图与独立训练清单",
+      "evidence": ""
+    },
+    {
+      "id": "harness",
+      "title": "2 · Harness与持续课程",
+      "owner": "src/rsi/decisions · experiments · services · plugins",
+      "status": "pilot",
+      "description": "逐问题有限状态机维护父模型、预算、阶段锁、在途任务、恢复与反馈。检索身份和方法身份固定，未知结果不重发；合格数与尝试数分开。",
+      "outputs": "计划、租约、阶段回执、逐源配额、晋级指针与技能记忆",
+      "evidence": ""
+    },
+    {
+      "id": "physics",
+      "title": "3 · 物理世界与纠正生成",
+      "owner": "src/rsi/correction · src/simulation · agents/driverl",
+      "status": "pilot",
+      "description": "历史扰动参考经过原生控制实际执行，再从真实锚点搜索未来。仿真状态权威决定车辆、相机与终止；不拼接未执行路径。",
+      "outputs": "全7秒实际状态/动作、原生PDMS、空间与速度差异证据",
+      "evidence": ""
+    },
+    {
+      "id": "rendering",
+      "title": "4 · 渲染与加速执行",
+      "owner": "src/rendering/gaussian · src/rsi/experiments/resident_batch.py",
+      "status": "pilot",
+      "description": "常驻GS、分支状态复位、精确源位姿缓存、多相机批处理、无损PNG与本地暂存；常驻原生导出及特征服务。多路基准入口和生产调度接入状态分别记录。",
+      "outputs": "新像素、source PSNR、缓存键、吞吐与像素/标签/向量一致性报告",
+      "evidence": ""
+    },
+    {
+      "id": "learning",
+      "title": "5 · 原生学习与评测",
+      "owner": "agents/chainflow · agents/augustus · src/evaluation",
+      "status": "pilot",
+      "description": "模型专属数据消费者保留原生loss与评分。配对续训、恢复、样本消费和全量能力保持控制晋级；模型收益不能由生成数量推断。",
+      "outputs": "原生训练、完整评测、回放消费与比较回执",
+      "evidence": ""
+    },
+    {
+      "id": "workspace",
+      "title": "6 · 统一工作台",
+      "owner": "src/visualization · src/config/visualization",
+      "status": "active",
+      "description": "同一界面展示当前课程与静态总体架构；当前模式不读取历史实验回执。只投影聚合信息，不公开测试身份或私有路径。",
+      "outputs": "当前任务状态、架构SVG、分层说明与可核对边界",
+      "evidence": ""
+    }
+  ],
+  "models": [
+    {
+      "id": "chainflow",
+      "title": "ChainFlow stage1",
+      "role": "当前学生与配对续训",
+      "status": "pilot",
+      "detail": "当前239个问题来自本模型固定全量评测。只用stage1轨迹监督，不启用DiT。"
+    },
+    {
+      "id": "driverl",
+      "title": "DriveRL + 原生LQR",
+      "role": "结构化教师与未来TTS",
+      "status": "pilot",
+      "detail": "当前方法历史0–2秒LQR跟踪，未来2–7秒DriveRL TTS8；原生模型和评分保持。"
+    },
+    {
+      "id": "augustus",
+      "title": "AUGUstus",
+      "role": "VLA专属训练与技能适配",
+      "status": "partial",
+      "detail": "模型适配和分支监督接口保留。自动几何标签不能称为完整官方语言标注，也不继承ChainFlow本轮成绩。"
+    },
+    {
+      "id": "video",
+      "title": "条件视频模型",
+      "role": "后续观测增强支路",
+      "status": "planned",
+      "detail": "MiniMax-H3提示词/条件接口与已有视频适配属于可选扩展；当前GS主线没有用视频生成替代物理状态或补造资产。"
+    }
+  ],
+  "priorities": [
+    {
+      "id": "assets",
+      "title": "资产准备与可靠重建",
+      "status": "partial",
+      "detail": "先按真正检索到的来源准备重建输入与覆盖证据；缺资产不替换成无关场景。准备清单已添加，仍缺已注册、可无人值守验收的重建后端。",
+      "evidence": ""
+    },
+    {
+      "id": "throughput",
+      "title": "把组件加速接到生产调度",
+      "status": "partial",
+      "detail": "组件与隔离批处理已验证。还需让自动课程使用持久渲染/导出队列、预算与恢复一致的多路执行，再报告整条合格样本/小时。",
+      "evidence": ""
+    },
+    {
+      "id": "semantics",
+      "title": "检索相关性与技能有效性",
+      "status": "partial",
+      "detail": "文本结构分类已接入；多通道检索策略需语义标注/干预对照，不能以地理近邻或簇名代替Recall真值和因果归因。",
+      "evidence": ""
+    },
+    {
+      "id": "learning",
+      "title": "持续收益与遗忘检查",
+      "status": "partial",
+      "detail": "控制器已实现严格配对与晋级；是否能反复提高模型及干预效率，仍取决于真实新数据、训练和完整复评回执。",
+      "evidence": ""
+    }
+  ],
+  "contracts": [
+    "时间口径：实际0–7秒；锚点2秒；历史0.5/1/1.5/2秒，未来2.5至7秒。原生PDMS仅覆盖锚点后4秒。",
+    "质量条件属于版本化实验配置。当前课程为PDMS>95、source PSNR>25dB及0.5米ADE；此前27dB试验不追改。源位姿PSNR不证明新视角像素质量。",
+    "图像变化必须重新编码；合成数据、派生向量和文本结构簇独立管理，不修改原始navtrain/navtest库。",
+    "训练清单需要原生准入和样本绑定；已存盘、已分类、已索引、已消费、已获益、已晋级是不同状态。",
+    "数值试验中的高程、其他对象外观和VLM结论保留诊断；不通过架构修改恢复旧否决条件或放宽现行门槛。",
+    "按源场景统计10条/后续20条唯一合格样本；尝试次数、重复分支和性能基准重放不计新增产量。",
+    "缓存与暂存必须校验资产、时间、相机、代码和分支身份，分支切换复位对象；未知在途请求先结算再重试。",
+    "采用navtest失败指导下一轮属于适应实验。公开只显示聚合结果，测试图像、标签和身份不进入训练库。",
+    "架构说明不启动任务，不改变自动化预算，也不证明八卡生产、自动资产重建或持续自进化效果已经成立。"
+  ]
+}

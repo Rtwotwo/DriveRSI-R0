@@ -1,0 +1,10 @@
+schema_version: 1
+runtime: driverl_continuous_v1
+python: "@DRIVERSI_ROOT@/.venvs/driverl/bin/python"
+repository: agents/driverl/native/DriveRL
+checkpoint: weights/driverl/checkpoint_2400.pt
+maps_root: /path/to/datasets/maps
+device: cuda:0
+policy_scope: ego
+train: false
+upstream_revision: 24959547edac549d64c34b2aab62d5c52599d078

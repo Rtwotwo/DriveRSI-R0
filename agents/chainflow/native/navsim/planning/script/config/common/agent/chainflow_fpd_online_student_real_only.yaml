@@ -1,0 +1,20 @@
+defaults:
+  - chainflow_fpd_online_student
+  - _self_
+
+# Same teacher initialization and student architecture; no teacher loss/guidance.
+# Static cache remains required by the data contract, but is not a loss target.
+config:
+  distillation_variant: real_only
+  online_enabled: false
+  online_branch_enabled: false
+  online_metric_weight: 0.0
+  online_preference_weight: 0.0
+  online_geometry_weight: 0.0
+  online_epsilon_weight: 0.0
+loss:
+  refined_multi_weight: 0.0
+  ar_anchor_weight: 0.0
+  teacher_preference_weight: 0.0
+  teacher_pool_metric_weight: 0.0
+  match_targets_for_ranking: false

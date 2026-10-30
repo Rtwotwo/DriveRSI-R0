@@ -1,0 +1,4 @@
+{
+  "teacher_config": "../../agents/driverl/native.yaml",
+  "student_config": "../../agents/augustus/lifecycle.yaml"
+}

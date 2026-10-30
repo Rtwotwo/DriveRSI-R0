@@ -1,0 +1,18 @@
+{
+  "max_candidates": 20,
+  "max_rounds": 3,
+  "targets": [10, 20, 20],
+  "source_caps": [5, 5, 6],
+  "similarity_margins": [0.03, 0.03, 0.06],
+  "mastery_pdms": 0.0,
+  "strict_target": true,
+  "attempts_per_source": 32,
+  "replay_limit": 0,
+  "training_population": "synthetic_only",
+  "sft_epochs": 4,
+  "visual_quality_profile": "experimental_numeric27_strict_ade05_v1",
+  "strict_source_psnr_gt": 27.0,
+  "location_role": "audit_only",
+  "release_scope": "full_navtest_adaptive",
+  "preserve_native_loss": true
+}

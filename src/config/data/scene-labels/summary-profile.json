@@ -1,0 +1,17 @@
+{
+  "version": "driversi.scene_label_summary.v1",
+  "visual_environment_labels": [
+    "construction_adjacent",
+    "low_illumination",
+    "wet_looking_road",
+    "snow_visible"
+  ],
+  "ego_only_event_types": [
+    "ego_forward_progress",
+    "ego_turn",
+    "ego_slowing",
+    "ego_stopping",
+    "ego_lane_change"
+  ],
+  "note": "Compact scene view only. Full claims, raw trajectories and evidence remain in the linked audit. No new classifier or approval."
+}

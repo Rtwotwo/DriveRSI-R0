@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "id": "unified-driverl-training",
+  "label": "Native driverl training; completion requires independent evaluation",
+  "budget": {
+    "max_wall_seconds": 3700,
+    "max_sim_agent_steps": 100600
+  },
+  "steps": [
+    {
+      "id": "train",
+      "provider": "native_model_unified_training",
+      "inputs": {},
+      "config": {
+        "request": "../../../training/driverl.json"
+      },
+      "max_wall_seconds": 3660
+    }
+  ]
+}

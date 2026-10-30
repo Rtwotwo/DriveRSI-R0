@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "dataset_root": "/path/to/nuplan",
+  "source_format": "nuplan_db",
+  "maps_root": "/path/to/nuplan/maps",
+  "partitions": [
+    "boston",
+    "pittsburgh",
+    "singapore",
+    "vegas_1"
+  ],
+  "duration_seconds": 9.0,
+  "history_seconds": 1.5,
+  "max_policy_actors": 32,
+  "protected_logs": [
+    "src/config/rsi/policies/protected-navtest-logs.json"
+  ],
+  "split_policy": null,
+  "default_role": "unassigned",
+  "training_enabled": false,
+  "limits": [
+    "10Hz planar simulation, 9s cap",
+    "source lights/routes preserved; traffic rules not implemented",
+    "file inventory is not full DB validation",
+    "1024 stable IDs per window; 32 policy slots; no actor truncation"
+  ],
+  "max_world_actors": 1024
+}

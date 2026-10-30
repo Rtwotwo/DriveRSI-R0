@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "harness-boston-repair-v1",
+  "case": {
+    "scene": "../../../../../outputs/demonstrations/four-frame-augmentation-v1/boston/scene.npz",
+    "rollout": "../../../../../outputs/demonstrations/four-frame-augmentation-v1/boston/challenge.npz",
+    "actor": "ego",
+    "anchor_tick": 20,
+    "future_steps": 40,
+    "failure_type": "diagnostic"
+  },
+  "baseline": {
+    "id": "route-6-headway15-v1",
+    "backend": "route_following_v1",
+    "desired_speed": 6.0,
+    "headway": 1.5
+  },
+  "recipes": [
+    {
+      "id": "route-8-headway15-v1",
+      "backend": "route_following_v1",
+      "desired_speed": 8.0,
+      "headway": 1.5
+    },
+    {
+      "id": "route-13-headway15-v1",
+      "backend": "route_following_v1",
+      "desired_speed": 13.0,
+      "headway": 1.5
+    },
+    {
+      "id": "route-8-headway25-v1",
+      "backend": "route_following_v1",
+      "desired_speed": 8.0,
+      "headway": 2.5
+    }
+  ],
+  "verifier": {
+    "version": "supported-route-engineering-v1",
+    "min_progress_m": 1.0
+  },
+  "budget": {
+    "max_attempts": 4,
+    "max_sim_agent_steps": 1500,
+    "max_wall_seconds": 90
+  }
+}

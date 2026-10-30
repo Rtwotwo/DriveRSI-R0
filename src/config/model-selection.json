@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "active_models": [
+    "driverl",
+    "augustus",
+    "fpd_drive",
+    "chainflow_stage1"
+  ],
+  "primary_teacher": "driverl",
+  "primary_student": "augustus",
+  "reference_models": [
+    "fpd_drive",
+    "chainflow_stage1"
+  ],
+  "planned_models": [
+    "drive_jepa"
+  ],
+  "models": [
+    {
+      "model": "driverl",
+      "role": "privileged_teacher_and_online_rl_learner",
+      "source": "agents/driverl",
+      "weights": "weights/driverl",
+      "native_config": "src/config/agents/driverl/native.yaml",
+      "learning_config": "src/config/training/lifecycle/driverl.json",
+      "training_status": "bounded_paper_derived_online_learner_not_official_training_release",
+      "full_scale_ready": false
+    },
+    {
+      "model": "augustus",
+      "role": "primary_vla_student",
+      "source": "agents/augustus",
+      "weights": "weights/augustus",
+      "native_config": "src/config/agents/augustus/native.yaml",
+      "learning_config": "src/config/training/lifecycle/augustus.json",
+      "training_status": "native_sft_paired_training_resume_evaluation_verified_pilot",
+      "grpo_online_connected": false,
+      "stable_improvement_demonstrated": false,
+      "evidence": "exp/harness-service-training-v2/implementation-ledger.json"
+    },
+    {
+      "model": "fpd_drive",
+      "role": "inference_evaluation_reference",
+      "source": "agents/fpd_drive",
+      "weights": "weights/fpd_drive",
+      "native_config": "src/config/agents/fpd_drive/native.yaml",
+      "training_status": "native_training_backend_not_available"
+    },
+    {
+      "model": "chainflow_stage1",
+      "role": "end_to_end_training_and_evaluation_reference",
+      "source": "agents/chainflow",
+      "weights": "weights/chainflow",
+      "config": "src/config/agents/chainflow_vla/stage1.json",
+      "training_status": "native_loss_paired_training_adapter",
+      "strict_vla": false,
+      "stable_improvement_demonstrated": false
+    },
+    {
+      "model": "drive_jepa",
+      "role": "planned_world_representation_and_planning",
+      "repository": "https://github.com/linhanwang/Drive-JEPA",
+      "status": "not_integrated",
+      "training_connected": false,
+      "weights_present": false,
+      "relationship_to_wa_jepa": "distinct_project_no_weight_or_config_alias",
+      "generative_world_simulator": false
+    }
+  ],
+  "rendering": {
+    "platform": "src/rendering",
+    "upstream": [
+      "src/vendor/rendering/mtgs",
+      "src/vendor/rendering/streetcrafter",
+      "src/vendor/rendering/worlddreamer"
+    ],
+    "checkpoint_roots": [
+      "weights/streetcrafter",
+      "weights/worlddreamer",
+      "outputs/datasets"
+    ],
+    "required_auxiliary": [
+      "weights/sam",
+      "weights/vlm"
+    ]
+  },
+  "training_outputs": "exp",
+  "retired": [
+    "wa_jepa",
+    "privileged_mlp",
+    "linear_actor_critic"
+  ],
+  "native_model_loss_scoring_changed": false
+}

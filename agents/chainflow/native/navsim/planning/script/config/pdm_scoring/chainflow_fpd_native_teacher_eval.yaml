@@ -1,0 +1,57 @@
+defaults:
+  - default_common
+  - default_evaluation
+  - default_scoring_parameters
+  - ddp
+  - agent: chainflow_fpd_native_teacher
+  - _self_
+  - override train_test_split: navtest
+
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: ${output_dir}/code/hydra
+  searchpath:
+    - pkg://navsim.planning.script.config.common
+  job:
+    chdir: false
+
+metric_cache_path: ${oc.env:NAVSIM_METRIC_CACHE_ROOT}/metric_cache
+experiment_name: chainflow_fpd_native_teacher/development
+seed: 0
+deterministic: true
+# These opt-ins preserve the teacher contract in the shared evaluator.
+restore_training_config: true
+require_complete_evaluation: true
+write_evaluation_summary: true
+privileged_future_input: true
+evaluation_agent_overrides:
+  checkpoint_strict_load: true
+  enable_ray: false
+  config:
+    long_trajectory_additional_poses: 0
+    teacher_development_validation: false
+expected_eval_scenes: 12146
+training_config_path: null
+eval_future_image_source: null  # recorded/current; null uses training snapshot
+eval_use_future_pose: null      # null uses training snapshot
+
+agent:
+  enable_ray: false
+  checkpoint_strict_load: true
+  config:
+    long_trajectory_additional_poses: 0
+    teacher_development_validation: false
+
+dataloader:
+  params:
+    batch_size: 8
+    num_workers: 4
+
+trainer:
+  params:
+    devices: 8
+    precision: bf16-mixed
+
+test_time_optimizer:
+  enabled: false

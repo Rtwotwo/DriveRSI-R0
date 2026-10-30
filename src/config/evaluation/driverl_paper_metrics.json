@@ -1,0 +1,68 @@
+{
+  "source": "https://arxiv.org/html/2609.06055v1#A5.T5",
+  "table": "A5",
+  "scale": 100,
+  "tts": false,
+  "results": {
+    "val14_nr": {
+      "no_ego_at_fault_collisions": 98.75,
+      "drivable_area_compliance": 100,
+      "driving_direction_compliance": 99.6,
+      "ego_is_making_progress": 98.93,
+      "time_to_collision_within_bound": 95.97,
+      "ego_progress_along_expert_route": 96.3,
+      "speed_limit_compliance": 98.8,
+      "ego_is_comfortable": 98.84
+    },
+    "val14_r": {
+      "no_ego_at_fault_collisions": 98.57,
+      "drivable_area_compliance": 100,
+      "driving_direction_compliance": 99.24,
+      "ego_is_making_progress": 98.75,
+      "time_to_collision_within_bound": 95.8,
+      "ego_progress_along_expert_route": 93.83,
+      "speed_limit_compliance": 99.21,
+      "ego_is_comfortable": 98.66
+    },
+    "test14hard_nr": {
+      "no_ego_at_fault_collisions": 98.9,
+      "drivable_area_compliance": 98.9,
+      "driving_direction_compliance": 98.16,
+      "ego_is_making_progress": 98.16,
+      "time_to_collision_within_bound": 93.38,
+      "ego_progress_along_expert_route": 91.74,
+      "speed_limit_compliance": 97.67,
+      "ego_is_comfortable": 95.96
+    },
+    "test14hard_r": {
+      "no_ego_at_fault_collisions": 97.43,
+      "drivable_area_compliance": 99.26,
+      "driving_direction_compliance": 98.53,
+      "ego_is_making_progress": 96.69,
+      "time_to_collision_within_bound": 94.49,
+      "ego_progress_along_expert_route": 88.73,
+      "speed_limit_compliance": 98.69,
+      "ego_is_comfortable": 96.32
+    },
+    "test14random_nr": {
+      "no_ego_at_fault_collisions": 98.08,
+      "drivable_area_compliance": 99.23,
+      "driving_direction_compliance": 99.81,
+      "ego_is_making_progress": 100,
+      "time_to_collision_within_bound": 95.4,
+      "ego_progress_along_expert_route": 95.48,
+      "speed_limit_compliance": 98.33,
+      "ego_is_comfortable": 98.85
+    },
+    "test14random_r": {
+      "no_ego_at_fault_collisions": 98.85,
+      "drivable_area_compliance": 99.62,
+      "driving_direction_compliance": 100,
+      "ego_is_making_progress": 99.62,
+      "time_to_collision_within_bound": 96.55,
+      "ego_progress_along_expert_route": 93.34,
+      "speed_limit_compliance": 98.85,
+      "ego_is_comfortable": 98.85
+    }
+  }
+}

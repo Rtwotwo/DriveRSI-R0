@@ -1,0 +1,13 @@
+{
+  "backend": "qwen3_5",
+  "model_path": "weights/vlm/Qwen3.5-2B",
+  "cameras": [
+    "CAM_F0",
+    "CAM_L0",
+    "CAM_R0"
+  ],
+  "max_side": 512,
+  "max_new_tokens": 1024,
+  "max_seconds_per_scene": 120,
+  "prompt_version": "retrieval_v3"
+}
